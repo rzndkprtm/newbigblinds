@@ -138,7 +138,7 @@ Partial Class Setting_Customer_Detail
 
                     Try
                         Using thisConn As New SqlConnection(myConn)
-                            Using myCmd As New SqlCommand("INSERT INTO OrderHeaders (Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', GETDATE(),, @CreateDate, 0, 1); INSERT INTO OrderQuotes VALUES (@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
+                            Using myCmd As New SqlCommand("INSERT INTO OrderHeaders (Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', @CreatedBy, GETDATE(), 0, 1); INSERT INTO OrderQuotes VALUES (@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
                                 myCmd.Parameters.AddWithValue("@Id", thisId)
                                 myCmd.Parameters.AddWithValue("@OrderId", orderId)
                                 myCmd.Parameters.AddWithValue("@CustomerId", lblId.Text)
@@ -163,22 +163,6 @@ Partial Class Setting_Customer_Detail
                         End If
                     End Try
                 Loop
-
-                Using thisConn As New SqlConnection(myConn)
-                    Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderHeaders(Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', @CreatedBy, GETDATE(), 0, 1); INSERT INTO OrderQuotes VALUES(@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
-                        myCmd.Parameters.AddWithValue("@Id", thisId)
-                        myCmd.Parameters.AddWithValue("@OrderId", orderId)
-                        myCmd.Parameters.AddWithValue("@CustomerId", lblId.Text)
-                        myCmd.Parameters.AddWithValue("@OrderNumber", txtOrderNumber.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@OrderName", txtOrderName.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@OrderNote", txtOrderNote.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@OrderType", ddlOrderType.SelectedValue)
-                        myCmd.Parameters.AddWithValue("@CreatedBy", Session("LoginId").ToString())
-
-                        thisConn.Open()
-                        myCmd.ExecuteNonQuery()
-                    End Using
-                End Using
 
                 If ddlOrderType.SelectedValue = "Builder" Then
                     Using thisConn As New SqlConnection(myConn)
