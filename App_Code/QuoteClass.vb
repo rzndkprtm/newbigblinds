@@ -200,9 +200,11 @@ Public Class QuoteClass
                 invoiceFrom &= "Attention: Yudi Tjan"
                 invoiceFrom &= vbCrLf
                 invoiceFrom &= vbCrLf
-                invoiceFrom &= "Ruko De Mansion Blok D No 9, Kunciran"
+                invoiceFrom &= "Ruko De Mansion Blok D No 9"
                 invoiceFrom &= vbCrLf
-                invoiceFrom &= "Kota Tangerang, Banten 15143"
+                invoiceFrom &= "Kunciran, Kota Tangerang"
+                invoiceFrom &= vbCrLf
+                invoiceFrom &= "Banten 15143"
                 invoiceFrom &= vbCrLf
                 invoiceFrom &= "Indonesia"
             End If
