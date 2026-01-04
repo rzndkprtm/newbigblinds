@@ -21,7 +21,7 @@
         MessageError(False, String.Empty)
         Try
             If msgError.InnerText = "" Then
-                Dim url As String = String.Format("boe?startdate={0}&enddate={1}&type={2}&status={3}&action=test", txtStartDate.Text, txtEndDate.Text, ddlOrderType.SelectedValue, ddlOrderStatus.SelectedValue)
+                Dim url As String = String.Format("boe?company={0}&status={1}&type={2}", ddlOrderCompany.SelectedValue, ddlOrderStatus.SelectedValue, ddlOrderType.SelectedValue)
                 Dim script As String = "window.open('" & ResolveUrl(url) & "', '_blank');"
                 ClientScript.RegisterStartupScript(Me.GetType(), "exportTab", script, True)
             End If
