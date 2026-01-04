@@ -22,6 +22,7 @@ Partial Class Setting_Customer_Default
             txtSearch.Text = Session("SearchCustomer")
 
             BindCompany()
+            ddlCompany.SelectedValue = Session("CompanyCustomer")
             BindData(txtSearch.Text, ddlCompany.SelectedValue, ddlActive.SelectedValue)
         End If
     End Sub
@@ -43,6 +44,7 @@ Partial Class Setting_Customer_Default
 
     Protected Sub btnAdd_Click(sender As Object, e As EventArgs)
         Session("SearchCustomer") = txtSearch.Text
+        Session("CompanyCustomer") = ddlCompany.SelectedValue
         Response.Redirect("~/setting/customer/add", False)
     End Sub
 
@@ -65,6 +67,7 @@ Partial Class Setting_Customer_Default
         If Not String.IsNullOrEmpty(e.CommandArgument) Then
             Dim dataId As String = e.CommandArgument.ToString()
             Session("SearchCustomer") = txtSearch.Text
+            Session("CompanyCustomer") = ddlCompany.SelectedValue
 
             If e.CommandName = "Detail" Then
                 MessageError(False, String.Empty)
@@ -115,6 +118,7 @@ Partial Class Setting_Customer_Default
             End Using
 
             Session("SearchCustomer") = txtSearch.Text
+            Session("CompanyCustomer") = ddlCompany.SelectedValue
             Response.Redirect("~/setting/customer", False)
         Catch ex As Exception
             MessageError(True, ex.ToString())
@@ -128,6 +132,7 @@ Partial Class Setting_Customer_Default
 
     Protected Sub BindData(searchText As String, companyText As String, activeText As String)
         Session("SearchCustomer") = String.Empty
+        Session("CompanyCustomer") = String.Empty
         Try
             Dim activeString As String = "WHERE Customers.Active='" & ddlActive.SelectedValue & "'"
             Dim searchString As String = String.Empty
