@@ -834,6 +834,19 @@ Public Class OrderClass
         Return result
     End Function
 
+    Public Function GenerateRandomCode() As String
+        Dim chars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        Dim rnd As New Random()
+        Dim result As New System.Text.StringBuilder()
+
+        For i As Integer = 1 To 5
+            Dim idx As Integer = rnd.Next(0, chars.Length)
+            result.Append(chars(idx))
+        Next
+
+        Return result.ToString()
+    End Function
+
     Public Function GetNewOrderHeaderId() As String
         Dim result As String = String.Empty
         Try

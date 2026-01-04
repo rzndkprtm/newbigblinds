@@ -40,7 +40,6 @@ Partial Class Order_Add
         BackColor()
         Try
             Dim companyAlias As String = orderClass.GetCompanyAliasByCustomer(ddlCustomer.SelectedValue)
-
             Dim companyDetailName As String = orderClass.GetCompanyDetailNameByCustomer(ddlCustomer.SelectedValue)
 
             If ddlCustomer.SelectedValue = "" Then
@@ -57,7 +56,7 @@ Partial Class Order_Add
                 Exit Sub
             End If
 
-            If InStr(txtOrderNumber.Text, "\") > 0 Or InStr(txtOrderNumber.Text, "/") > 0 Or InStr(txtOrderNumber.Text, ",") > 0 Or InStr(txtOrderNumber.Text, "&") > 0 Or InStr(txtOrderNumber.Text, ",") > 0 Or InStr(txtOrderNumber.Text, "#") > 0 Or InStr(txtOrderNumber.Text, "'") > 0 Or InStr(txtOrderNumber.Text, ".") > 0 Then
+            If InStr(txtOrderNumber.Text, "\") > 0 OrElse InStr(txtOrderNumber.Text, "/") > 0 OrElse InStr(txtOrderNumber.Text, ",") > 0 OrElse InStr(txtOrderNumber.Text, "&") > 0 OrElse InStr(txtOrderNumber.Text, "#") > 0 OrElse InStr(txtOrderNumber.Text, "'") > 0 OrElse InStr(txtOrderNumber.Text, ".") > 0 Then
                 MessageError(True, "PLEASE DON'T USE [ / ], [ \ ], [ & ], [ # ], [ ' ], [ . ] AND [ , ]")
                 txtOrderNumber.BackColor = Drawing.Color.Red
                 txtOrderNumber.Focus()
@@ -73,13 +72,6 @@ Partial Class Order_Add
 
             If txtOrderName.Text = "" Then
                 MessageError(True, "CUSTOMER NAME IS REQUIRED !")
-                txtOrderName.BackColor = Drawing.Color.Red
-                txtOrderName.Focus()
-                Exit Sub
-            End If
-
-            If InStr(txtOrderName.Text, "\") > 0 Or InStr(txtOrderName.Text, "/") > 0 Or InStr(txtOrderName.Text, ",") > 0 Or InStr(txtOrderName.Text, "&") > 0 Or InStr(txtOrderName.Text, ",") > 0 Or InStr(txtOrderName.Text, "#") > 0 Or InStr(txtOrderName.Text, "'") > 0 Or InStr(txtOrderName.Text, ".") > 0 Then
-                MessageError(True, "PLEASE DON'T USE [ / ], [ \ ], [ & ], [ # ], [ ' ], [ . ] AND [ , ]")
                 txtOrderName.BackColor = Drawing.Color.Red
                 txtOrderName.Focus()
                 Exit Sub
@@ -102,30 +94,53 @@ Partial Class Order_Add
             If msgError.InnerText = "" Then
                 Dim thisId As String = orderClass.GetNewOrderHeaderId()
 
-                Dim orderId As String = String.Format("{0}-{1}", companyAlias, thisId)
+                Dim success As Boolean = False
+                Dim retry As Integer = 0
+                Dim maxRetry As Integer = 10
+                Dim orderId As String = ""
 
-                Using thisConn As New SqlConnection(myConn)
-                    Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderHeaders(Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', @CreatedBy, @CreateDate, 0, 1); INSERT INTO OrderQuotes VALUES(@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
-                        myCmd.Parameters.AddWithValue("@Id", thisId)
-                        myCmd.Parameters.AddWithValue("@OrderId", orderId)
-                        myCmd.Parameters.AddWithValue("@CustomerId", ddlCustomer.SelectedValue)
-                        myCmd.Parameters.AddWithValue("@OrderNumber", txtOrderNumber.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@OrderName", txtOrderName.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@OrderNote", txtOrderNote.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@OrderType", ddlOrderType.SelectedValue)
-                        myCmd.Parameters.AddWithValue("@CreatedBy", ddlCreatedBy.SelectedValue)
-                        myCmd.Parameters.AddWithValue("@CreateDate", txtCreatedDate.Text)
+                Do While Not success
+                    retry += 1
+                    If retry > maxRetry Then
+                        Throw New Exception("FAILED TO GENERATE UNIQUE ORDER ID")
+                    End If
 
-                        thisConn.Open()
-                        myCmd.ExecuteNonQuery()
-                    End Using
-                End Using
+                    Dim randomCode As String = orderClass.GenerateRandomCode()
+                    orderId = companyAlias & randomCode
+
+                    Try
+                        Using thisConn As New SqlConnection(myConn)
+                            Using myCmd As New SqlCommand("INSERT INTO OrderHeaders (Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', @CreatedBy, @CreateDate, 0, 1); INSERT INTO OrderQuotes VALUES (@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
+                                myCmd.Parameters.AddWithValue("@Id", thisId)
+                                myCmd.Parameters.AddWithValue("@OrderId", orderId)
+                                myCmd.Parameters.AddWithValue("@CustomerId", ddlCustomer.SelectedValue)
+                                myCmd.Parameters.AddWithValue("@OrderNumber", txtOrderNumber.Text.Trim())
+                                myCmd.Parameters.AddWithValue("@OrderName", txtOrderName.Text.Trim())
+                                myCmd.Parameters.AddWithValue("@OrderNote", txtOrderNote.Text.Trim())
+                                myCmd.Parameters.AddWithValue("@OrderType", ddlOrderType.SelectedValue)
+                                myCmd.Parameters.AddWithValue("@CreatedBy", ddlCreatedBy.SelectedValue)
+                                myCmd.Parameters.AddWithValue("@CreateDate", txtCreatedDate.Text)
+
+                                thisConn.Open()
+                                myCmd.ExecuteNonQuery()
+                            End Using
+                        End Using
+
+                        success = True
+
+                    Catch exSql As SqlException
+                        If exSql.Number = 2601 OrElse exSql.Number = 2627 Then
+                            success = False
+                        Else
+                            Throw
+                        End If
+                    End Try
+                Loop
 
                 If ddlOrderType.SelectedValue = "Builder" Then
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderBuilders(Id) VALUES (@Id)", thisConn)
+                        Using myCmd As New SqlCommand("INSERT INTO OrderBuilders(Id) VALUES (@Id)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
-
                             thisConn.Open()
                             myCmd.ExecuteNonQuery()
                         End Using
@@ -143,6 +158,7 @@ Partial Class Order_Add
                 url = String.Format("~/order/detail?orderid={0}", thisId)
                 Response.Redirect(url, False)
             End If
+
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then
