@@ -2388,6 +2388,25 @@ Public Class PreviewEvents
             innerTable.AddCell(textCell)
         End If
 
+        If pageCompany = "3" Then
+            Dim phraseTitle As New Phrase()
+            phraseTitle.Add(New Chunk("Accent At Home", New Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD)))
+            phraseTitle.Add(New Chunk(Environment.NewLine))
+            phraseTitle.Add(New Chunk(Environment.NewLine))
+            phraseTitle.Add(New Chunk("Ruko De Mansion Blok D No 9, Kunciran", New Font(Font.FontFamily.TIMES_ROMAN, 8)))
+            phraseTitle.Add(New Chunk(Environment.NewLine))
+            phraseTitle.Add(New Chunk("Kota Tangerang, Banten 15143", New Font(Font.FontFamily.TIMES_ROMAN, 8)))
+            phraseTitle.Add(New Chunk(Environment.NewLine))
+            phraseTitle.Add(New Chunk(Environment.NewLine))
+            phraseTitle.Add(New Chunk("Phone : 0855-8005-092", New Font(Font.FontFamily.TIMES_ROMAN, 8)))
+            phraseTitle.Add(New Chunk(Environment.NewLine))
+            phraseTitle.Add(New Chunk("Email : ", New Font(Font.FontFamily.TIMES_ROMAN, 8)))
+            Dim textCell As New PdfPCell(phraseTitle)
+            textCell.Border = 0
+            textCell.HorizontalAlignment = Element.ALIGN_LEFT
+            innerTable.AddCell(textCell)
+        End If
+
         Dim firstHeaderCell As New PdfPCell(innerTable)
         firstHeaderCell.Border = 0
         firstHeaderCell.HorizontalAlignment = Element.ALIGN_LEFT
