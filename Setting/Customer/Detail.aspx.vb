@@ -115,14 +115,54 @@ Partial Class Setting_Customer_Detail
             End If
 
             If msgErrorCreateOrder.InnerText = "" Then
+                If ddlOrderType.SelectedValue = "" Then ddlOrderType.SelectedValue = "Regular"
+
                 Dim orderClass As New OrderClass
 
                 Dim thisId As String = orderClass.GetNewOrderHeaderId()
                 Dim companyAlias As String = orderClass.GetCompanyAliasByCustomer(lblId.Text)
 
-                Dim orderId As String = String.Format("{0}-{1}", companyAlias, thisId)
+                Dim success As Boolean = False
+                Dim retry As Integer = 0
+                Dim maxRetry As Integer = 10
+                Dim orderId As String = ""
 
-                If ddlOrderType.SelectedValue = "" Then ddlOrderType.SelectedValue = "Regular"
+                Do While Not success
+                    retry += 1
+                    If retry > maxRetry Then
+                        Throw New Exception("FAILED TO GENERATE UNIQUE ORDER ID")
+                    End If
+
+                    Dim randomCode As String = orderClass.GenerateRandomCode()
+                    orderId = companyAlias & randomCode
+
+                    Try
+                        Using thisConn As New SqlConnection(myConn)
+                            Using myCmd As New SqlCommand("INSERT INTO OrderHeaders (Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', GETDATE(),, @CreateDate, 0, 1); INSERT INTO OrderQuotes VALUES (@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
+                                myCmd.Parameters.AddWithValue("@Id", thisId)
+                                myCmd.Parameters.AddWithValue("@OrderId", orderId)
+                                myCmd.Parameters.AddWithValue("@CustomerId", lblId.Text)
+                                myCmd.Parameters.AddWithValue("@OrderNumber", txtOrderNumber.Text.Trim())
+                                myCmd.Parameters.AddWithValue("@OrderName", txtOrderName.Text.Trim())
+                                myCmd.Parameters.AddWithValue("@OrderNote", txtOrderNote.Text.Trim())
+                                myCmd.Parameters.AddWithValue("@OrderType", ddlOrderType.SelectedValue)
+                                myCmd.Parameters.AddWithValue("@CreatedBy", Session("LoginId").ToString())
+
+                                thisConn.Open()
+                                myCmd.ExecuteNonQuery()
+                            End Using
+                        End Using
+
+                        success = True
+
+                    Catch exSql As SqlException
+                        If exSql.Number = 2601 OrElse exSql.Number = 2627 Then
+                            success = False
+                        Else
+                            Throw
+                        End If
+                    End Try
+                Loop
 
                 Using thisConn As New SqlConnection(myConn)
                     Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderHeaders(Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', @CreatedBy, GETDATE(), 0, 1); INSERT INTO OrderQuotes VALUES(@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
@@ -151,8 +191,8 @@ Partial Class Setting_Customer_Detail
                     End Using
 
                     Dim directoryOrder As String = Server.MapPath(String.Format("~/File/Builder/{0}/", orderId))
-                    If Not io.Directory.Exists(directoryOrder) Then
-                        io.Directory.CreateDirectory(directoryOrder)
+                    If Not IO.Directory.Exists(directoryOrder) Then
+                        IO.Directory.CreateDirectory(directoryOrder)
                     End If
                 End If
 
