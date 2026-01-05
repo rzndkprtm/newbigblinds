@@ -672,7 +672,7 @@
 
                 Dim springAssist As String = thisData.Tables(0).Rows(i).Item("SpringAssist").ToString()
 
-                If blindName = "Single Blind" Then
+                If blindName = "Single Blind" OrElse blindName = "Full Cassette" OrElse blindName = "Semi Cassette" OrElse blindName = "Wire Guide" Then
                     kitId = GetItemData("SELECT KitId FROM ProductKits WHERE ProductId='" & productId & "'")
                     Dim kitName As String = String.Empty
 
