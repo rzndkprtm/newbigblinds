@@ -82,6 +82,9 @@ Partial Class Setting_Additional_Log
             If type = "OrderHeaders" Then
                 thisQuery = String.Format("SELECT OrderId FROM {0} WHERE Id={1}", type, dataId)
             End If
+            If type = "OrderDetails" Then
+                thisQuery = String.Format("SELECT Id FROM {0} WHERE Id={1}", type, dataId)
+            End If
 
             Dim dataName As String = settingClass.GetItemData(thisQuery)
 

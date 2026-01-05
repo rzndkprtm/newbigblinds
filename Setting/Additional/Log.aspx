@@ -98,7 +98,7 @@
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-danger">
-                    <h5 class="modal-title white">Delete Mounting</h5>
+                    <h5 class="modal-title white">Delete Log</h5>
                 </div>
 
                 <div class="modal-body">
