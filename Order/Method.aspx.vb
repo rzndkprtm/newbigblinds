@@ -3235,13 +3235,15 @@ Partial Class Order_Method
         If Not Integer.TryParse(data.width, width) OrElse width <= 0 Then Return "PLEASE CHECK YOUR WIDTH ORDER !"
 
         If width < 600 Then Return "MINIMUM WIDTH IS 600MM !"
+        If width > 2400 AndAlso (blindName = "Full Cassette" OrElse blindName = "Semi Cassette") Then Return "MAXIMUM WIDTH IS 2400MM !"
         If width > 2910 Then Return "MAXIMUM WIDTH IS 2910MM !"
 
         If String.IsNullOrEmpty(data.drop) Then Return "DROP IS REQUIRED !"
         If Not Integer.TryParse(data.drop, drop) OrElse drop <= 0 Then Return "PLEASE CHECK YOUR DROP ORDER !"
 
         If drop < 500 Then Return "MINIUM DROP IS 500MM !"
-        If drop > 3200 Then Return "MINIUM DROP IS 3200MM !"
+        If width > 2200 AndAlso (blindName = "Full Cassette" OrElse blindName = "Semi Cassette") Then Return "MAXIMUM DROP IS 2200MM !"
+        If drop > 3200 Then Return "MAXIMUM DROP IS 3200MM !"
 
         squareMetre = width * drop / 1000000
 
