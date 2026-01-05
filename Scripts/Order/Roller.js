@@ -2563,7 +2563,7 @@ function startCountdown(seconds) {
         countdown--;
 
         if (countdown >= 0) {
-            setTimeout(updateButton, 1000);
+            setTimeout(updateButton, 500);
         } else {
             window.location.href = `/order/detail?orderid=${headerId}`;
         }
@@ -2836,9 +2836,7 @@ async function bindItemOrder(itemId) {
         const blindtype = itemData.BlindType;
         const tubetype = itemData.TubeType;
         const controltype = itemData.ControlType;
-        const colourtype = itemData.ColourType;
-
-        
+        const colourtype = itemData.ColourType;        
 
         const fabrictype = itemData.FabricType;
         const fabrictypeb = itemData.FabricTypeB;
@@ -2873,20 +2871,20 @@ async function bindItemOrder(itemId) {
 
         await bindTubeType(blindtype);
         await bindMounting(blindtype);
-        await delay(100);
+        await delay(50);
 
         await bindControlType(blindtype, tubetype);
-        await delay(110);
+        await delay(50);
 
         await bindColourType(blindtype, tubetype, controltype);
-        await delay(130);
+        await delay(50);
 
         await Promise.all([
             bindFabricType(designId),
             bindChainRemote(designId, blindtype, controltype),
             bindBottomType(designId)
         ]);
-        await delay(130);
+        await delay(50);
 
         await Promise.all([
             bindChainStopper(chaincolour),
@@ -2903,7 +2901,7 @@ async function bindItemOrder(itemId) {
             bindFabricColourE(fabrictypee),
             bindFabricColourF(fabrictypef),
         ]);
-        await delay(150);
+        await delay(70);
 
         await Promise.all([
             bindBottomColour(bottomtype),
@@ -2913,7 +2911,7 @@ async function bindItemOrder(itemId) {
             bindBottomColourE(bottomtypee),
             bindBottomColourF(bottomtypef),
         ]);
-        await delay(150);
+        await delay(70);
 
         setFormValues(itemData);
 
@@ -2950,7 +2948,7 @@ async function bindItemOrder(itemId) {
             visibleChainStopperLength(controltype, chaincolourf, 6),
             visibleCustomChainLength(chaincolourf, controllengthf, 6)
         ]);
-        await delay(200);
+        await delay(100);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
