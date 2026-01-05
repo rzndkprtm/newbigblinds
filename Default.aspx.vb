@@ -21,6 +21,11 @@ Partial Class _Default
 
     Protected Sub BindData()
         Try
+
+            If Session("CompanyId") = "3" OrElse Session("CompanyId") = "5" Then
+                Response.Redirect("~/order", False)
+                Exit Sub
+            End If
             Dim thisData As DataSet = settingClass.GetListData("SELECT * FROM Newsletters WHERE CompanyId='" & Session("CompanyId") & "' Active=1")
             If thisData.Tables(0).Rows.Count = 0 Then
                 Exit Sub
