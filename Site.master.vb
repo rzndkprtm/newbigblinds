@@ -304,11 +304,12 @@ Public Partial Class SiteMaster
                 liOldOrder.Visible = True
                 liGuide.Visible = True
                 liTicket.Visible = True
-                liReport.Visible = True
-                liSales.Visible = True
+                If Session("LevelName") = "Leader" Then
+                    liReport.Visible = True
+                    liSales.Visible = True
+                End If
 
                 liSetting.Visible = True
-
                 liCustomer.Visible = True
             End If
 
