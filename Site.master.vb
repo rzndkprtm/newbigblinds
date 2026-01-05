@@ -300,6 +300,18 @@ Public Partial Class SiteMaster
                 liPricePromo.Visible = True
             End If
 
+            If Session("RoleName") = "Representative" Then
+                liOldOrder.Visible = True
+                liGuide.Visible = True
+                liTicket.Visible = True
+                liReport.Visible = True
+                liSales.Visible = True
+
+                liSetting.Visible = True
+
+                liCustomer.Visible = True
+            End If
+
             If Session("RoleName") = "Production" Then
                 liGuide.Visible = True
                 liTicket.Visible = True
