@@ -2114,19 +2114,19 @@ async function checkSession() {
         return window.location.href = `/order/detail?orderid=${headerId}`;
     }
 
+    await Promise.all([
+        getDesignName(designId),
+        getFormAction(itemAction),
+        loader(itemAction)
+    ]);
+
     // 🔥 paralel
     await Promise.all([
         getCompanyOrder(headerId),
         getCompanyDetailOrder(headerId),
         getRoleAccess(loginId),
         getPriceAccess(loginId)
-    ]);
-
-    await Promise.all([
-        getDesignName(designId),
-        getFormAction(itemAction),
-        loader(itemAction)
-    ]);
+    ]);    
 
     if (itemAction === "create") {
         visibleDetail("", "", "", "");
