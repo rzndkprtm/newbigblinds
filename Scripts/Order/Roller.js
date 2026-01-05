@@ -2571,7 +2571,7 @@ function startCountdown(seconds) {
     updateButton();
 }
 
-function delay(ms) {
+function delay(ms = 30) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -2829,7 +2829,7 @@ async function bindItemOrder(itemId) {
         });
 
         const data = response.d;
-        if (!data.length) return;
+        if (!data || !data.length) return;
 
         const itemData = data[0];
 
@@ -2866,27 +2866,39 @@ async function bindItemOrder(itemId) {
         const controllengthe = itemData.ControlLengthE;
         const controllengthf = itemData.ControlLengthF;
 
+        /* ===========================
+           STEP 1 – WAJIB BERURUTAN
+        =========================== */
+
         await bindBlindType(designId);
-        await delay(150);
+        await delay();
 
         await bindTubeType(blindtype);
-        await delay(200);
+        await delay();
 
         await bindControlType(blindtype, tubetype);
-        await delay(250);
+        await delay();
 
         await bindColourType(blindtype, tubetype, controltype);
-        await delay(300);
+        await delay();
 
         await bindMounting(blindtype);
-        await delay(350);
+        await delay();
+
+        /* ===========================
+           STEP 2 – BISA PARALEL
+        =========================== */
 
         await Promise.all([
             bindFabricType(designId),
             bindChainRemote(designId, blindtype, controltype),
             bindBottomType(designId)
         ]);
-        await delay(450);
+        await delay();
+
+        /* ===========================
+           STEP 3 – FABRIC & CHAIN
+        =========================== */
 
         await Promise.all([
             bindChainStopper(chaincolour),
@@ -2901,9 +2913,13 @@ async function bindItemOrder(itemId) {
             bindFabricColourC(fabrictypec),
             bindFabricColourD(fabrictyped),
             bindFabricColourE(fabrictypee),
-            bindFabricColourF(fabrictypef),
+            bindFabricColourF(fabrictypef)
         ]);
-        await delay(500);
+        await delay();
+
+        /* ===========================
+           STEP 4 – BOTTOM COLOUR
+        =========================== */
 
         await Promise.all([
             bindBottomColour(bottomtype),
@@ -2911,11 +2927,19 @@ async function bindItemOrder(itemId) {
             bindBottomColourC(bottomtypec),
             bindBottomColourD(bottomtyped),
             bindBottomColourE(bottomtypee),
-            bindBottomColourF(bottomtypef),
+            bindBottomColourF(bottomtypef)
         ]);
-        await delay(550);
+        await delay();
+
+        /* ===========================
+           STEP 5 – SET VALUE
+        =========================== */
 
         setFormValues(itemData);
+
+        /* ===========================
+           STEP 6 – VISIBILITY
+        =========================== */
 
         await Promise.all([
             visibleDetail(blindtype, tubetype, controltype, colourtype),
@@ -2950,12 +2974,13 @@ async function bindItemOrder(itemId) {
             visibleChainStopperLength(controltype, chaincolourf, 6),
             visibleCustomChainLength(chaincolourf, controllengthf, 6)
         ]);
-        await delay(1000);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
+
     } catch (err) {
-        reject(error);
+        console.error(err);
+        document.getElementById("divloader").style.display = "none";
     }
 }
 
