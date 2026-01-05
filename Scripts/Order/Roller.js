@@ -2838,6 +2838,8 @@ async function bindItemOrder(itemId) {
         const controltype = itemData.ControlType;
         const colourtype = itemData.ColourType;
 
+        
+
         const fabrictype = itemData.FabricType;
         const fabrictypeb = itemData.FabricTypeB;
         const fabrictypec = itemData.FabricTypeC;
@@ -2867,26 +2869,24 @@ async function bindItemOrder(itemId) {
         const controllengthf = itemData.ControlLengthF;
 
         await bindBlindType(designId);
-        await delay(150);
+        await delay(50);
 
         await bindTubeType(blindtype);
-        await delay(200);
+        await bindMounting(blindtype);
+        await delay(100);
 
         await bindControlType(blindtype, tubetype);
-        await delay(250);
+        await delay(110);
 
         await bindColourType(blindtype, tubetype, controltype);
-        await delay(300);
-
-        await bindMounting(blindtype);
-        await delay(350);
+        await delay(130);
 
         await Promise.all([
             bindFabricType(designId),
             bindChainRemote(designId, blindtype, controltype),
             bindBottomType(designId)
         ]);
-        await delay(450);
+        await delay(130);
 
         await Promise.all([
             bindChainStopper(chaincolour),
@@ -2903,7 +2903,7 @@ async function bindItemOrder(itemId) {
             bindFabricColourE(fabrictypee),
             bindFabricColourF(fabrictypef),
         ]);
-        await delay(500);
+        await delay(150);
 
         await Promise.all([
             bindBottomColour(bottomtype),
@@ -2913,7 +2913,7 @@ async function bindItemOrder(itemId) {
             bindBottomColourE(bottomtypee),
             bindBottomColourF(bottomtypef),
         ]);
-        await delay(550);
+        await delay(150);
 
         setFormValues(itemData);
 
@@ -2950,7 +2950,7 @@ async function bindItemOrder(itemId) {
             visibleChainStopperLength(controltype, chaincolourf, 6),
             visibleCustomChainLength(chaincolourf, controllengthf, 6)
         ]);
-        await delay(1000);
+        await delay(500);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
