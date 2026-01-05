@@ -56,8 +56,6 @@ Partial Class Setting_Additional_Log
             Dim thisId As String = txtIdDelete.Text
 
             Using thisConn As New SqlConnection(myConn)
-
-
                 Using myCmd As SqlCommand = New SqlCommand("DELETE FROM Logs WHERE Id=@Id", thisConn)
                     myCmd.Parameters.AddWithValue("@Id", thisId)
 
