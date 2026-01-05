@@ -27,7 +27,7 @@
                             <div class="container">
                                 <div class="logo">
                                     <a runat="server" href="~/">
-                                        <asp:Image runat="server" ID="imgLogo" ImageUrl="~/Assets/images/logo/boos.jpg" AlternateText="BOOS" />
+                                        <asp:Image runat="server" ID="imgLogo" ImageUrl="~/Assets/images/logo/general.jpg" AlternateText="BOOS" />
                                     </a>
                                 </div>
                                 <div class="header-top-right">
