@@ -1,12 +1,16 @@
-﻿Partial Class Setting_Additional_Log
+﻿Imports System.Data.SqlClient
+
+Partial Class Setting_Additional_Log
     Inherits Page
 
     Dim settingClass As New SettingClass
 
+    Dim myConn As String = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
+
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim pageAccess As Boolean = PageAction("Load")
         If pageAccess = False Then
-            Response.Redirect("~/setting/price", False)
+            Response.Redirect("~/additional", False)
             Exit Sub
         End If
 
@@ -38,6 +42,31 @@
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()
+        Catch ex As Exception
+            MessageError(True, ex.ToString())
+            If Not Session("RoleName") = "Developer" Then
+                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
+            End If
+        End Try
+    End Sub
+
+    Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
+        MessageError(False, String.Empty)
+        Try
+            Dim thisId As String = txtIdDelete.Text
+
+            Using thisConn As New SqlConnection(myConn)
+
+
+                Using myCmd As SqlCommand = New SqlCommand("DELETE FROM Logs WHERE Id=@Id", thisConn)
+                    myCmd.Parameters.AddWithValue("@Id", thisId)
+
+                    thisConn.Open()
+                    myCmd.ExecuteNonQuery()
+                End Using
+            End Using
+
+            Response.Redirect("~/setting/additional/log", False)
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then
