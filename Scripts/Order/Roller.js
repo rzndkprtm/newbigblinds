@@ -896,7 +896,7 @@ function bindChainStopper(chainColour) {
             return;
         }
 
-        const listData = {type: "ChainStopper", chaincolour: chainColour};
+        const listData = { type: "ChainStopper", chaincolour: chainColour };
 
         $.ajax({
             type: "POST",
@@ -1652,7 +1652,7 @@ function bindBottomColour(bottomType) {
             return;
         }
 
-        let listData = { type: "BottomColour", bottomtype: bottomType};
+        let listData = { type: "BottomColour", bottomtype: bottomType };
 
         $.ajax({
             type: "POST",
@@ -1974,7 +1974,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
 
         if (!blindType || !tubeType || !controlType || !colourType) return resolve();
 
-        toggleDisplay(detail, true);        
+        toggleDisplay(detail, true);
 
         Promise.all([
             getBlindName(blindType),
@@ -2102,7 +2102,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
             }
             else if (blindName === "DB Link 2 Blinds Dependent") {
                 divShow.push(
-                    "divdbfront", 
+                    "divdbfront",
                     "divfirstend", "divsecondend",
                     "divlinkdepfirst", "divfirstend",
                     "divlinkdepsecond", "divsecondend",
@@ -2114,7 +2114,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
                     "divbottomtypeb", "divsizeb",
                     "divfabricc", "divrollc", "divcontrolpositionc",
                     "divbottomtypec", "divsizec",
-                    "divbottomtyped", "divsized"                    
+                    "divbottomtyped", "divsized"
                 );
                 textdbfront.innerHTML = "ROLLER - FIRST SIDE";
                 textlinkdepfirst.innerHTML = "First Blind / Control Blind / Blind No 1";
@@ -2126,7 +2126,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
             }
             else if (blindName === "DB Link 2 Blinds Independent") {
                 divShow.push(
-                    "divdbfront", 
+                    "divdbfront",
                     "divfirstend", "divsecondend",
                     "divlinkindfirst", "divfirstend",
                     "divlinkindsecond", "divsecondend",
@@ -2138,7 +2138,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
                     "divbottomtypeb", "divsizeb",
                     "divfabricc", "divrollc",
                     "divbottomtypec", "divsizec",
-                    "divbottomtyped", "divsized"                    
+                    "divbottomtyped", "divsized"
                 );
                 textdbfront.innerHTML = "ROLLER - FIRST SIDE";
                 textlinkindfirst.innerHTML = "First Blind / Blind No 1";
@@ -2163,7 +2163,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
                     "divbottomtype", "divsize",
                     "divbottomtypeb", "divsizeb",
                     "divbottomtypec", "divsizec",
-                    "divfabricd", "divrolld", "divcontrolpositiond",                    
+                    "divfabricd", "divrolld", "divcontrolpositiond",
                     "divbottomtyped", "divsized",
                     "divbottomtypee", "divsizee",
                     "divbottomtypef", "divsizef"
@@ -2214,7 +2214,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
                 if (blindName === "Link 2 Blinds Dependent" || blindName === "Link 2 Blinds Independent" || blindName === "Link 3 Blinds Dependent" || blindName === "Link 3 Blinds Independent with Dependent") {
                     divShow.push("divadjusting");
                 }
-            }            
+            }
 
             if (tubeName === "Acmeda 49mm" && controlName === "Chain") {
                 divShow.push("divspringassist");
@@ -2571,7 +2571,7 @@ function startCountdown(seconds) {
     updateButton();
 }
 
-function delay(ms = 30) {
+function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -2629,7 +2629,7 @@ function setFormValues(itemData) {
         colourtype: "ColourType",
         qty: "Qty",
         room: "Room",
-        mounting: "Mounting",        
+        mounting: "Mounting",
         fabrictype: "FabricType", fabrictypeb: "FabricTypeB", fabrictypec: "FabricTypeC", fabrictyped: "FabricTypeD", fabrictypee: "FabricTypeE", fabrictypef: "FabricTypeF",
         fabriccolour: "FabricColour", fabriccolourb: "FabricColourB", fabriccolourc: "FabricColourC", fabriccolourd: "FabricColourD", fabriccoloure: "FabricColourE", fabriccolourf: "FabricColourF",
         roll: "Roll", rollb: "RollB", rollc: "RollC", rolld: "RollD", rolle: "RollE", rollf: "RollF",
@@ -2829,7 +2829,7 @@ async function bindItemOrder(itemId) {
         });
 
         const data = response.d;
-        if (!data || !data.length) return;
+        if (!data.length) return;
 
         const itemData = data[0];
 
@@ -2866,39 +2866,27 @@ async function bindItemOrder(itemId) {
         const controllengthe = itemData.ControlLengthE;
         const controllengthf = itemData.ControlLengthF;
 
-        /* ===========================
-           STEP 1 – WAJIB BERURUTAN
-        =========================== */
-
         await bindBlindType(designId);
-        await delay();
+        await delay(150);
 
         await bindTubeType(blindtype);
-        await delay();
+        await delay(200);
 
         await bindControlType(blindtype, tubetype);
-        await delay();
+        await delay(250);
 
         await bindColourType(blindtype, tubetype, controltype);
-        await delay();
+        await delay(300);
 
         await bindMounting(blindtype);
-        await delay();
-
-        /* ===========================
-           STEP 2 – BISA PARALEL
-        =========================== */
+        await delay(350);
 
         await Promise.all([
             bindFabricType(designId),
             bindChainRemote(designId, blindtype, controltype),
             bindBottomType(designId)
         ]);
-        await delay();
-
-        /* ===========================
-           STEP 3 – FABRIC & CHAIN
-        =========================== */
+        await delay(450);
 
         await Promise.all([
             bindChainStopper(chaincolour),
@@ -2913,13 +2901,9 @@ async function bindItemOrder(itemId) {
             bindFabricColourC(fabrictypec),
             bindFabricColourD(fabrictyped),
             bindFabricColourE(fabrictypee),
-            bindFabricColourF(fabrictypef)
+            bindFabricColourF(fabrictypef),
         ]);
-        await delay();
-
-        /* ===========================
-           STEP 4 – BOTTOM COLOUR
-        =========================== */
+        await delay(500);
 
         await Promise.all([
             bindBottomColour(bottomtype),
@@ -2927,19 +2911,11 @@ async function bindItemOrder(itemId) {
             bindBottomColourC(bottomtypec),
             bindBottomColourD(bottomtyped),
             bindBottomColourE(bottomtypee),
-            bindBottomColourF(bottomtypef)
+            bindBottomColourF(bottomtypef),
         ]);
-        await delay();
-
-        /* ===========================
-           STEP 5 – SET VALUE
-        =========================== */
+        await delay(550);
 
         setFormValues(itemData);
-
-        /* ===========================
-           STEP 6 – VISIBILITY
-        =========================== */
 
         await Promise.all([
             visibleDetail(blindtype, tubetype, controltype, colourtype),
@@ -2974,13 +2950,12 @@ async function bindItemOrder(itemId) {
             visibleChainStopperLength(controltype, chaincolourf, 6),
             visibleCustomChainLength(chaincolourf, controllengthf, 6)
         ]);
+        await delay(1000);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
-
     } catch (err) {
-        console.error(err);
-        document.getElementById("divloader").style.display = "none";
+        reject(error);
     }
 }
 
@@ -3079,7 +3054,7 @@ function showInfo(type) {
                 info = "<b>- Bottom Type</b> : <span style='color:red;'><span style='color:red;'>Flat Mohair</span>";
                 info += "<br />";
                 info += "A surcharge will be applied.";
-            }            
+            }
         }
         else if (type === "Second Bottom" || type === "Third Bottom") {
             title = "Bottom Rail Information";
@@ -3087,7 +3062,7 @@ function showInfo(type) {
             if (companyDetailName === "JPMD" || companyDetailName === "JPMD BP") {
                 info = "<b>- Bottom Type</b> : <span style='color:red;'>Deluxe Flat</span>, <span style='color:red;'>Deluxe Oval</span> & <span style='color:red;'>Flat Mohair</span>";
                 info += "<br />";
-                info += "A surcharge will be applied.";                
+                info += "A surcharge will be applied.";
             } else if (companyDetailName === "ACCENT" || companyDetailName === "OASIS") {
                 info = "<b>- Bottom Type</b> : <span style='color:red;'><span style='color:red;'>Flat Mohair</span>";
                 info += "<br />";
