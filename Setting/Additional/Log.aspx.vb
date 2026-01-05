@@ -75,7 +75,7 @@ Partial Class Setting_Additional_Log
 
     Protected Function GetDataName(type As String, dataId As String, desc As String) As String
         Try
-            If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(dataId) Then
+            If Not String.IsNullOrEmpty(type) OrElse Not String.IsNullOrEmpty(dataId) Then
                 Dim thisQuery As String = String.Format("SELECT Name FROM {0} WHERE Id={1}", type, dataId)
                 If type = "CustomerLogins" Then
                     thisQuery = String.Format("SELECT UserName FROM {0} WHERE Id={1}", type, dataId)
