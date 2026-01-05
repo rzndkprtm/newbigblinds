@@ -825,13 +825,11 @@ Public Class QuoteClass
                 Dim blindName As String = GetItemData("SELECT Name FROM Blinds WHERE Id='" & blindId & "'")
 
                 If designName = "Aluminium Blind" Then
-                    itemDescription = String.Format("{0} {1} {2}", productName, size, squareMetreText)
+                    itemDescription = productName
                     If totalItem = 2 Then
                         itemDescription = "2 on 1 Headrail"
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} {1} {2}", productName, size, squareMetreText)
-                        itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} {1} {2}", productName, sizeB, squareMetreTextB)
+                        itemDescription &= productName
                     End If
                 End If
 
@@ -839,13 +837,13 @@ Public Class QuoteClass
                     Dim fabricColourName As String = GetFabricColourName(fabricColourId)
                     Dim fabricColourNameB As String = GetFabricColourName(fabricColourIdB)
 
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, fabricColourName, size, squareMetreText)
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                     If blindName = "Day & Night" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} {1} {2}", fabricColourName, size, squareMetreText)
+                        itemDescription &= fabricColourName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} {1} {2}", fabricColourNameB, sizeB, squareMetreTextB)
+                        itemDescription &= fabricColourNameB
                     End If
                 End If
 
@@ -858,9 +856,9 @@ Public Class QuoteClass
                     If blindName = "Single Curtain & Track" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Fabric : {0} {1} {2}", fabricColourName, size, squareMetreText)
+                        itemDescription &= String.Format("Fabric : {0}", fabricColourName)
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Track : {0} ({1}mm) {2}", trackType, width, linearMetreText)
+                        itemDescription &= String.Format("Track : {0}", trackType)
                     End If
                     If blindName = "Double Curtain & Track" Then
                         itemDescription = productName
@@ -872,56 +870,42 @@ Public Class QuoteClass
                     If blindName = "Curtain Only" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} {1} {2}", fabricColourName, size, squareMetreText)
+                        itemDescription &= String.Format("{0}", fabricColourName)
                     End If
                     If blindName = "Track Only" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} ({1}mm) {2}", trackType, width, linearMetreText)
+                        itemDescription &= String.Format("{0}", trackType)
                     End If
                 End If
 
                 If designName = "Design Shades" Then
                     Dim fabricColourName As String = GetFabricColourName(fabricColourId)
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, fabricColourName, size, squareMetreText)
+
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                 End If
 
                 If designName = "Linea Valance" Then
-                    itemDescription = String.Format("{0} ({1}mm) {2}", productName, width, linearMetreText)
+                    itemDescription = productName
                 End If
 
                 If designName = "Panel Glide" Then
                     Dim fabricColourName As String = GetFabricColourName(fabricColourId)
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, fabricColourName, size, squareMetreText)
+
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                     If blindName = "Track Only" Then
-                        itemDescription = String.Format("{0} ({1}mm) {2}", productName, width, linearMetreText)
+                        itemDescription = productName
                     End If
                 End If
 
                 If designName = "Privacy Venetian" Then
-                    itemDescription = String.Format("{0} {1} {2}", productName, size, squareMetreText)
+                    itemDescription = productName
                 End If
 
                 If designName = "Pelmet" Then
                     Dim fabricColourName As String = GetFabricColourName(fabricColourId)
-                    itemDescription = String.Format("{0} {1} ({2}mm) {3}", productName, fabricColourName, width, linearMetreText)
-                    If layoutCode = "B" OrElse layoutCode = "C" Then
-                        itemDescription = productName
-                        itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} ({1}mm) {2}", fabricColourName, width, linearMetreText)
-                        itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} ({1}mm) {2}", fabricColourName, widthB, linearMetreTextB)
-                        itemDescription &= vbCrLf
-                    End If
-                    If layoutCode = "D" Then
-                        itemDescription = productName
-                        itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} ({1}mm) {2}", fabricColourName, width, linearMetreText)
-                        itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} ({1}mm) {2}", fabricColourName, widthB, linearMetreTextB)
-                        itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} ({1}mm) {2}", fabricColourName, widthC, linearMetreTextC)
-                    End If
+
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                 End If
 
                 If designName = "Roller Blind" Then
@@ -932,20 +916,21 @@ Public Class QuoteClass
                     Dim fabricColourNameE As String = GetFabricColourName(fabricColourIdE)
                     Dim fabricColourNameF As String = GetFabricColourName(fabricColourIdF)
 
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, fabricColourName, size, squareMetreText)
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                     If Not String.IsNullOrEmpty(printing) Then
                         itemDescription &= vbCrLf
                         itemDescription &= "Printed Fabric"
                     End If
+
                     If blindName = "Dual Blinds" OrElse blindName = "Link 2 Blinds Dependent" OrElse blindName = "Link 2 Blinds Independent" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("First Blind : {0} {1} {2}", fabricColourName, size, squareMetreText)
+                        itemDescription &= String.Format("First Blind : {0}", fabricColourName)
                         If Not String.IsNullOrEmpty(printing) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Second Blind : {0} {1} {2}", fabricColourNameB, sizeB, squareMetreTextB)
+                        itemDescription &= String.Format("Second Blind : {0}", fabricColourNameB)
                         If Not String.IsNullOrEmpty(printingB) Then
                             itemDescription &= " Printed Fabric"
                         End If
@@ -954,17 +939,17 @@ Public Class QuoteClass
                     If blindName = "Link 3 Blinds Dependent" OrElse blindName = "Link 3 Blinds Independent with Dependent" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("First Blind : {0} {1} {2}", fabricColourName, size, squareMetreText)
+                        itemDescription &= String.Format("First Blind : {0}", fabricColourName)
                         If Not String.IsNullOrEmpty(printing) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Second Blind : {0} {1} {2}", fabricColourNameB, sizeB, squareMetreTextB)
+                        itemDescription &= String.Format("Second Blind : {0}", fabricColourNameB)
                         If Not String.IsNullOrEmpty(printingB) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Third Blind : {0} {1} {2}", fabricColourNameC, sizeC, squareMetreTextC)
+                        itemDescription &= String.Format("Third Blind : {0}", fabricColourNameC)
                         If Not String.IsNullOrEmpty(printingC) Then
                             itemDescription &= " Printed Fabric"
                         End If
@@ -973,22 +958,22 @@ Public Class QuoteClass
                     If blindName = "DB Link 2 Blinds Dependent" OrElse blindName = "DB Link 2 Blinds Independent" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("First Blind : {0} {1} {2}", fabricColourName, size, squareMetreText)
+                        itemDescription &= String.Format("First Blind : {0}", fabricColourName)
                         If Not String.IsNullOrEmpty(printing) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Second Blind : {0} {1} {2}", fabricColourNameB, sizeB, squareMetreTextB)
+                        itemDescription &= String.Format("Second Blind : {0}", fabricColourNameB)
                         If Not String.IsNullOrEmpty(printingB) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Third Blind : {0} {1} {2}", fabricColourNameC, sizeC, squareMetreTextC)
+                        itemDescription &= String.Format("Third Blind : {0}", fabricColourNameC)
                         If Not String.IsNullOrEmpty(printingC) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Fourth Blind : {0} {1} {2}", fabricColourNameD, size, squareMetreText)
+                        itemDescription &= String.Format("Fourth Blind : {0}", fabricColourNameD)
                         If Not String.IsNullOrEmpty(printingD) Then
                             itemDescription &= " Printed Fabric"
                         End If
@@ -997,32 +982,32 @@ Public Class QuoteClass
                     If blindName = "DB Link 3 Blinds Dependent" OrElse blindName = "DB Link 3 Blinds Independent with Dependent" Then
                         itemDescription = productName
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("First Blind : {0} {1} {2}", fabricColourName, size, squareMetreText)
+                        itemDescription &= String.Format("First Blind : {0}", fabricColourName)
                         If Not String.IsNullOrEmpty(printing) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Second Blind : {0} {1} {2}", fabricColourNameB, sizeB, squareMetreTextB)
+                        itemDescription &= String.Format("Second Blind : {0}", fabricColourNameB)
                         If Not String.IsNullOrEmpty(printingB) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Third Blind : {0} {1} {2}", fabricColourNameC, sizeC, squareMetreTextC)
+                        itemDescription &= String.Format("Third Blind : {0}", fabricColourNameC)
                         If Not String.IsNullOrEmpty(printingC) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Fourth Blind : {0} {1} {2}", fabricColourNameD, sizeD, squareMetreTextD)
+                        itemDescription &= String.Format("Fourth Blind : {0}", fabricColourNameD)
                         If Not String.IsNullOrEmpty(printingD) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Fifth Blind : {0} {1} {2}", fabricColourNameE, sizeE, squareMetreTextE)
+                        itemDescription &= String.Format("Fifth Blind : {0}", fabricColourNameE)
                         If Not String.IsNullOrEmpty(printingE) Then
                             itemDescription &= " Printed Fabric"
                         End If
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("Sixth Blind : {0} {1} {2}", fabricColourNameF, sizeF, squareMetreTextF)
+                        itemDescription &= String.Format("Sixth Blind : {0}", fabricColourNameF)
                         If Not String.IsNullOrEmpty(printingF) Then
                             itemDescription &= " Printed Fabric"
                         End If
@@ -1031,45 +1016,46 @@ Public Class QuoteClass
 
                 If designName = "Roman Blind" Then
                     Dim fabricColourName As String = GetFabricColourName(fabricColourId)
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, fabricColourName, size, squareMetreText)
+
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                 End If
 
                 If designName = "Venetian Blind" Then
-                    itemDescription = String.Format("{0} {1} {2}", productName, size, squareMetreText)
+                    itemDescription = productName
                     If totalItem = 2 Then
                         itemDescription = "2 on 1 Headrail"
                         itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} {1} {2}", productName, size, squareMetreText)
-                        itemDescription &= vbCrLf
-                        itemDescription &= String.Format("{0} {1} {2}", productName, sizeB, squareMetreTextB)
+                        itemDescription &= productName
                     End If
                 End If
 
                 If designName = "Vertical" Then
                     Dim fabricColourName As String = GetFabricColourName(fabricColourId)
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, fabricColourName, size, squareMetreText)
+
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                     If blindName = "Track Only" Then
-                        itemDescription = String.Format("{0} ({1}mm) {2}", productName, width, linearMetreText)
+                        itemDescription = productName
                     End If
                 End If
 
                 If designName = "Saphora Drape" Then
                     Dim fabricColourName As String = GetFabricColourName(fabricColourId)
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, fabricColourName, size, squareMetreText)
+
+                    itemDescription = String.Format("{0} {1}", productName, fabricColourName)
                 End If
 
                 If designName = "Window" Then
-                    itemDescription = String.Format("{0} {1} {2} {3}", productName, frameColour, size, squareMetreText)
+                    itemDescription = String.Format("{0} {1}", productName, frameColour)
                 End If
 
                 If designName = "Skyline Shutter Express" Then
-                    itemDescription = String.Format("{0} {1} {2}", productName, size, squareMetreText)
+                    itemDescription = productName
                 End If
 
                 If designName = "Skyline Shutter Ocean" Then
-                    itemDescription = String.Format("{0} {1} {2}", productName, size, squareMetreText)
+                    itemDescription = productName
                     If doorCutOut = "Yes" Then
-                        itemDescription = String.Format("{0} - French Door Cut-Out {1} {2}", productName, size, squareMetreText)
+                        itemDescription = String.Format("{0} - French Door Cut-Out", productName)
                     End If
                 End If
 
