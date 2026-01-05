@@ -256,6 +256,11 @@ Partial Class Setting_Customer_Detail
                 Exit Sub
             End If
 
+            If customerId = "2" AndAlso (Session("RoleName") = "IT" OrElse Session("RoleName") = "Factory Office") Then
+                Response.Redirect("~/setting/customer", False)
+                Exit Sub
+            End If
+
             Dim priceGroupId As String = thisData.Tables(0).Rows(0).Item("PriceGroupId").ToString()
             Dim shutterPriceGroupId As String = thisData.Tables(0).Rows(0).Item("ShutterPriceGroupId").ToString()
             Dim doorPriceGroupId As String = thisData.Tables(0).Rows(0).Item("DoorPriceGroupId").ToString()
