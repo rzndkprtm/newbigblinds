@@ -2950,7 +2950,7 @@ async function bindItemOrder(itemId) {
             visibleChainStopperLength(controltype, chaincolourf, 6),
             visibleCustomChainLength(chaincolourf, controllengthf, 6)
         ]);
-        await delay(300);
+        await delay(200);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
