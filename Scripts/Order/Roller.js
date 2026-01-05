@@ -2136,13 +2136,13 @@ async function checkSession() {
             bindBlindType(designId),
             bindBottomType(designId)
         ]);
-    } else if (["edit", "view", "copy"].includes(itemAction)) {
-        await bindItemOrder(itemId);
+    } else if (["edit", "view", "copy"].includes(itemAction)) {        
         controlForm(
             itemAction === "view",
             itemAction === "edit",
             itemAction === "copy"
         );
+        await bindItemOrder(itemId);
     }
 }
 
