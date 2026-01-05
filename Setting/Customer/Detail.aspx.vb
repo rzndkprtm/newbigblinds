@@ -1642,7 +1642,7 @@ Partial Class Setting_Customer_Detail
                 End Using
             End Using
 
-            Dim dataLog As Object() = {"CustomerLogins", lblIdLogin.Text, Session("LoginId").ToString(), "Customer Login Reset Password"}
+            Dim dataLog As Object() = {"CustomerLogins", thisId, Session("LoginId").ToString(), "Customer Login Reset Password"}
             settingClass.Logs(dataLog)
 
             url = String.Format("~/setting/customer/detail?customerid={0}", lblId.Text)
