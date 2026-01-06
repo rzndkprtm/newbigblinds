@@ -75,23 +75,24 @@ Partial Class Setting_Additional_Log
 
     Protected Function GetDataName(type As String, dataId As String, desc As String) As String
         Try
-            If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(dataId) Then
-                Dim thisQuery As String = String.Format("SELECT Name FROM {0} WHERE Id={1}", type, dataId)
-                If type = "CustomerLogins" Then
-                    thisQuery = String.Format("SELECT UserName FROM {0} WHERE Id={1}", type, dataId)
-                End If
-                If type = "OrderHeaders" Then
-                    thisQuery = String.Format("SELECT OrderId FROM {0} WHERE Id={1}", type, dataId)
-                End If
-                If type = "OrderDetails" Then
-                    thisQuery = String.Format("SELECT Id FROM {0} WHERE Id={1}", type, dataId)
-                End If
+            'If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(dataId) Then
+            '    Dim thisQuery As String = String.Format("SELECT Name FROM {0} WHERE Id={1}", type, dataId)
+            '    If type = "CustomerLogins" Then
+            '        thisQuery = String.Format("SELECT UserName FROM {0} WHERE Id={1}", type, dataId)
+            '    End If
+            '    If type = "OrderHeaders" Then
+            '        thisQuery = String.Format("SELECT OrderId FROM {0} WHERE Id={1}", type, dataId)
+            '    End If
+            '    If type = "OrderDetails" Then
+            '        thisQuery = String.Format("SELECT Id FROM {0} WHERE Id={1}", type, dataId)
+            '    End If
 
-                Dim dataName As String = settingClass.GetItemData(thisQuery)
+            '    Dim dataName As String = settingClass.GetItemData(thisQuery)
 
-                Dim thisDes As String = String.Format("{0} -> {1}", dataName, desc)
-                Return thisDes
-            End If
+            '    Dim thisDes As String = String.Format("{0} -> {1}", dataName, desc)
+            '    Return thisDes
+            'End If
+            Return String.Empty
         Catch ex As Exception
             Return "Error"
         End Try
