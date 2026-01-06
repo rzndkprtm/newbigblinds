@@ -1281,6 +1281,7 @@ Partial Class Setting_Customer_Detail
                     lblLoginUserNameOld.Text = myData.Tables(0).Rows(0).Item("UserName").ToString()
                     txtLoginFullName.Text = myData.Tables(0).Rows(0).Item("FullName").ToString()
                     txtLoginEmail.Text = myData.Tables(0).Rows(0).Item("Email").ToString()
+                    ddlPricing.SelectedValue = Convert.ToInt32(myData.Tables(0).Rows(0).Item("Pricing"))
                     Dim password As String = myData.Tables(0).Rows(0).Item("Password").ToString()
                     txtLoginPassword.Text = settingClass.Decrypt(password)
 
