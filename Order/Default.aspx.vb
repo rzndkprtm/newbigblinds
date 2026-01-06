@@ -727,6 +727,7 @@ Partial Class Order_Default
             End If
 
             If Not String.IsNullOrEmpty(status) Then
+                byStatus = "AND OrderHeaders.Status='" & status & "'"
                 byOrder = "ORDER BY OrderHeaders.Id ASC"
             End If
 
