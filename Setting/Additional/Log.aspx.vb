@@ -40,23 +40,6 @@ Partial Class Setting_Additional_Log
         End Try
     End Sub
 
-    Protected Sub BindData(searchText As String)
-        Try
-            Dim searchString As String = String.Empty
-
-            If Not String.IsNullOrEmpty(searchText) Then
-                searchString = "WHERE Logs.Type LIKE '%" & searchText.Trim() & "%'"
-            End If
-
-            Dim thisString As String = String.Format("SELECT Logs.*, CustomerLogins.UserName AS ActionName FROM Logs LEFT JOIN CustomerLogins ON Logs.ActionBy=CustomerLogins.Id {0}", searchString)
-
-            gvList.DataSource = settingClass.GetListData(thisString)
-            gvList.DataBind()
-        Catch ex As Exception
-            MessageError(True, ex.ToString())
-        End Try
-    End Sub
-
     Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
         MessageError(False, String.Empty)
         Try
@@ -76,6 +59,25 @@ Partial Class Setting_Additional_Log
             MessageError(True, ex.ToString())
         End Try
     End Sub
+
+    Protected Sub BindData(searchText As String)
+        Try
+            Dim searchString As String = String.Empty
+
+            If Not String.IsNullOrEmpty(searchText) Then
+                searchString = "WHERE Logs.Type LIKE '%" & searchText.Trim() & "%' OR CustomerLogins.UserName LIKE '%" & searchText.Trim() & "%'"
+            End If
+
+            Dim thisString As String = String.Format("SELECT Logs.*, CustomerLogins.UserName AS ActionName FROM Logs LEFT JOIN CustomerLogins ON Logs.ActionBy=CustomerLogins.Id {0}", searchString)
+
+            gvList.DataSource = settingClass.GetListData(thisString)
+            gvList.DataBind()
+        Catch ex As Exception
+            MessageError(True, ex.ToString())
+        End Try
+    End Sub
+
+
 
     Protected Function GetDataName(type As String, dataId As String, desc As String) As String
         Try
