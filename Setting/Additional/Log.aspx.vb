@@ -30,6 +30,16 @@ Partial Class Setting_Additional_Log
         BindData(txtSearch.Text)
     End Sub
 
+    Protected Sub gvList_PageIndexChanging(sender As Object, e As GridViewPageEventArgs)
+        MessageError(False, String.Empty)
+        Try
+            gvList.PageIndex = e.NewPageIndex
+            BindData(txtSearch.Text)
+        Catch ex As Exception
+            MessageError(True, ex.ToString())
+        End Try
+    End Sub
+
     Protected Sub BindData(searchText As String)
         Try
             Dim searchString As String = String.Empty
@@ -44,9 +54,6 @@ Partial Class Setting_Additional_Log
             gvList.DataBind()
         Catch ex As Exception
             MessageError(True, ex.ToString())
-            If Not Session("RoleName") = "Developer" Then
-                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
-            End If
         End Try
     End Sub
 
@@ -67,31 +74,28 @@ Partial Class Setting_Additional_Log
             Response.Redirect("~/setting/additional/log", False)
         Catch ex As Exception
             MessageError(True, ex.ToString())
-            If Not Session("RoleName") = "Developer" Then
-                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
-            End If
         End Try
     End Sub
 
     Protected Function GetDataName(type As String, dataId As String, desc As String) As String
         Try
-            'If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(dataId) Then
-            '    Dim thisQuery As String = String.Format("SELECT Name FROM {0} WHERE Id={1}", type, dataId)
-            '    If type = "CustomerLogins" Then
-            '        thisQuery = String.Format("SELECT UserName FROM {0} WHERE Id={1}", type, dataId)
-            '    End If
-            '    If type = "OrderHeaders" Then
-            '        thisQuery = String.Format("SELECT OrderId FROM {0} WHERE Id={1}", type, dataId)
-            '    End If
-            '    If type = "OrderDetails" Then
-            '        thisQuery = String.Format("SELECT Id FROM {0} WHERE Id={1}", type, dataId)
-            '    End If
+            If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(dataId) Then
+                Dim thisQuery As String = String.Format("SELECT Name FROM {0} WHERE Id={1}", type, dataId)
+                If type = "CustomerLogins" Then
+                    thisQuery = String.Format("SELECT UserName FROM {0} WHERE Id={1}", type, dataId)
+                End If
+                If type = "OrderHeaders" Then
+                    thisQuery = String.Format("SELECT OrderId FROM {0} WHERE Id={1}", type, dataId)
+                End If
+                If type = "OrderDetails" Then
+                    thisQuery = String.Format("SELECT Id FROM {0} WHERE Id={1}", type, dataId)
+                End If
 
-            '    Dim dataName As String = settingClass.GetItemData(thisQuery)
+                Dim dataName As String = settingClass.GetItemData(thisQuery)
 
-            '    Dim thisDes As String = String.Format("{0} -> {1}", dataName, desc)
-            '    Return thisDes
-            'End If
+                Dim thisDes As String = String.Format("{0} -> {1}", dataName, desc)
+                Return thisDes
+            End If
             Return String.Empty
         Catch ex As Exception
             Return "Error"

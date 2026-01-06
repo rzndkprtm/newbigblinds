@@ -10,7 +10,7 @@ Partial Class Setting_Task
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If String.IsNullOrEmpty(Request.QueryString("action")) Then
-            Response.Redirect("~/", False)
+            Response.Redirect("~/additional", False)
             Exit Sub
         End If
 
@@ -39,6 +39,9 @@ Partial Class Setting_Task
         End If
         If thisAction = "productionorder" Then
             ProductionOrder()
+        End If
+        If thisAction = "clearsession" Then
+            ClearSession()
         End If
     End Sub
 
@@ -184,7 +187,19 @@ Partial Class Setting_Task
                 Next
             End If
         Catch ex As Exception
+        End Try
+    End Sub
 
+    Protected Sub ClearSession()
+        Try
+            Using thisConn As New SqlConnection(myConn)
+                Using myCmd As SqlCommand = New SqlCommand("DELETE FROM Sessions", thisConn)
+
+                    thisConn.Open()
+                    myCmd.ExecuteNonQuery()
+                End Using
+            End Using
+        Catch ex As Exception
         End Try
     End Sub
 End Class

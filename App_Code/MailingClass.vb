@@ -577,8 +577,8 @@ Public Class MailingClass
         smtpClient.Send(myMail)
     End Sub
 
-    Public Sub ProductionOrder(headerId As String, loginId As String)
-        If String.IsNullOrEmpty(headerId) OrElse String.IsNullOrEmpty(loginId) Then Exit Sub
+    Public Sub ProductionOrder(headerId As String)
+        If String.IsNullOrEmpty(headerId) Then Exit Sub
 
         Dim orderData As DataSet = GetListData("SELECT OrderHeaders.*, Customers.Name AS CustomerName, Customers.CompanyId AS CompanyId FROM OrderHeaders LEFT JOIN Customers ON OrderHeaders.CustomerId=Customers.Id WHERE OrderHeaders.Id='" & headerId & "'")
         If orderData.Tables(0).Rows.Count = 0 Then Exit Sub
@@ -601,7 +601,7 @@ Public Class MailingClass
         Dim createdRole As String = GetItemData("SELECT RoleId FROM CustomerLogins WHERE Id='" & orderCreated & "'")
         Dim createdLevel As String = GetItemData("SELECT LevelId FROM CustomerLogins WHERE Id='" & orderCreated & "'")
 
-        Dim mailData As DataSet = GetListData("SELECT * FROM Mailings WHERE CompanyId='" & companyId & "' AND Name='New Order' AND Active=1")
+        Dim mailData As DataSet = GetListData("SELECT * FROM Mailings WHERE CompanyId='" & companyId & "' AND Name='Production Order' AND Active=1")
         If mailData.Tables(0).Rows.Count = 0 Then Exit Sub
 
         Dim mailServer As String = mailData.Tables(0).Rows(0).Item("Server").ToString()
@@ -620,12 +620,6 @@ Public Class MailingClass
         Dim mailNetworkCredentials As Boolean = mailData.Tables(0).Rows(0).Item("NetworkCredentials")
         Dim mailDefaultCredentials As Boolean = mailData.Tables(0).Rows(0).Item("DefaultCredentials")
         Dim mailEnableSSL As Boolean = mailData.Tables(0).Rows(0).Item("EnableSSL")
-
-        Dim actionName As String = GetItemData("SELECT FullName FROM CustomerLogins WHERE Id='" & loginId & "'")
-        Dim actionEmail As String = GetItemData("SELECT Email FROM CustomerLogins WHERE Id='" & loginId & "'")
-        Dim actionRole As String = GetItemData("SELECT CustomerLoginRoles.Name FROM CustomerLogins LEFT JOIN CustomerLoginRoles ON CustomerLogins.RoleId=CustomerLoginRoles.Id WHERE CustomerLogins.Id='" & loginId & "'")
-
-        Dim signatureUser As String = String.Format("{0} - {1}", actionName, actionRole)
 
         Dim mailBody As String = String.Empty
 
@@ -659,23 +653,11 @@ Public Class MailingClass
         mailBody &= "<br /><br /><br />"
 
         mailBody &= "<span style='font-family: Cambria; font-size:16px;'>Kind Regards,</span>"
-        mailBody &= "<br />"
-        mailBody &= "<span style='font-family: Cambria; font-size:16px; font-weight: bold;'>" & signatureUser & "</span>"
-        mailBody &= "<br />"
-        mailBody &= "<span style='font-family: Cambria; font-size:16px;'>" & actionEmail & "</span>"
-        If companyId = "2" Then
-            mailBody &= "<br /><br /><br />"
-            mailBody &= "<span style='font-family: Cambria; font-size:16px; font-weight: bold;'>" & companyName & "</span>"
-            mailBody &= "<br />"
-            mailBody &= "<span style='font-family: Cambria; font-size:16px; color:red;'>Phone : </span><span style='font-family: Cambria; font-size:16px;'>0417 705 109</span>"
-            mailBody &= "<br />"
-            mailBody &= "<span style='font-family: Cambria; font-size:16px; color:red;'>Email : </span><span style='font-family: Cambria; font-size:16px;'>order@jpmdirect.com.au</span>"
-            mailBody &= "<br />"
-            mailBody &= "<span style='font-family: Cambria; font-size:16px; color:red;'>Website : </span><span style='font-family: Cambria; font-size:16px;'>http://jpmdirect.com.au/</span>"
-        End If
+        mailBody &= "<br /><br />"
+        mailBody &= "<span style='font-family: Cambria; font-size:16px; font-weight: bold;'>" & companyName & "</span>"
 
         Dim myMail As New MailMessage
-            
+
         Dim subject As String = String.Format("{0} - {1} - {2} - New Order # {3}", customerName, orderNumber, orderName, orderId)
 
         myMail.Subject = subject
@@ -685,28 +667,23 @@ Public Class MailingClass
             myMail.To.Add(createdMail)
         End If
 
-        Dim customerMail As DataSet = GetListData("SELECT Email FROM CustomerContacts WHERE CustomerId='" & customerId & "' AND [Primary]=1")
-
-        If customerMail.Tables(0).Rows.Count > 0 Then
-            For i As Integer = 0 To customerMail.Tables(0).Rows.Count - 1
-                Dim thisEmail As String = customerMail.Tables(0).Rows(i).Item("Email").ToString()
-                If thisEmail = createdMail Then Continue For
-                myMail.To.Add(thisEmail)
-            Next
+        Dim customerMail As String = GetItemData("SELECT Email FROM CustomerContacts WHERE CustomerId='" & customerId & "' AND [Primary]=1")
+        If Not String.IsNullOrEmpty(customerMail) Then
+            If Not customerMail = createdMail Then
+                myMail.To.Add(customerMail)
+            End If
         End If
 
         If myMail.To.Count = 0 Then Exit Sub
 
         Dim ccSet As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
 
-        If createdRole = "8" AndAlso createdLevel = "1" Then
-            Dim customerMail_CC As DataSet = GetListData("SELECT Email FROM CustomerContacts CROSS APPLY STRING_SPLIT(Tags, ',') AS thisArray WHERE CustomerId='" & customerId & "' AND thisArray.VALUE='Confirming' AND LTRIM(RTRIM(Email)) <> '' AND Email IS NOT NULL AND [Primary]=0")
-            If customerMail_CC.Tables(0).Rows.Count > 0 Then
-                If customerMail_CC.Tables.Count > 0 Then
-                    For Each row As DataRow In customerMail_CC.Tables(0).Rows
-                        ccSet.Add(row("Email").ToString().Trim())
-                    Next
-                End If
+        Dim customerMail_CC As DataSet = GetListData("SELECT Email FROM CustomerContacts CROSS APPLY STRING_SPLIT(Tags, ',') AS thisArray WHERE CustomerId='" & customerId & "' AND thisArray.VALUE='Confirming' AND LTRIM(RTRIM(Email)) <> '' AND Email IS NOT NULL AND [Primary]=0")
+        If customerMail_CC.Tables(0).Rows.Count > 0 Then
+            If customerMail_CC.Tables.Count > 0 Then
+                For Each row As DataRow In customerMail_CC.Tables(0).Rows
+                    ccSet.Add(row("Email").ToString().Trim())
+                Next
             End If
         End If
 

@@ -2154,7 +2154,7 @@ async function checkSession() {
         getCompanyDetailOrder(headerId),
         getRoleAccess(loginId),
         getPriceAccess(loginId)
-    ]);    
+    ]);
 
     if (itemAction === "create") {
         visibleDetail("", "", "", "");
@@ -2554,4 +2554,8 @@ function showInfo(type) {
     }).catch(function (error) {
         console.error("showInfo error:", error);
     });
+}
+
+function redirectOrder() {
+    window.location.replace("/order");
 }

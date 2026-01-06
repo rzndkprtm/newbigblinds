@@ -1698,7 +1698,7 @@ Partial Class Order_Detail
                 IO.Directory.Delete(folderPath, True)
             End If
 
-            Dim dataLog As Object() = {"OrderDetails", itemId, Session("LoginId"), "Delete Order Item"}
+            Dim dataLog As Object() = {"OrderDetails", thisId, Session("LoginId"), "Delete Order Item"}
             orderClass.Logs(dataLog)
 
             If companyId = "2" AndAlso (lblOrderStatus.Text = "In Production" OrElse lblOrderStatus.Text = "On Hold") Then

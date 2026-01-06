@@ -525,11 +525,6 @@ Partial Class Setting_Customer_Detail
         Try
             Dim thisId As String = txtIdContactDelete.Text
 
-            Dim contactName As String = settingClass.GetItemData("SELECT Name FROM CustomerContacts WHERE Id='" & thisId & "'")
-            Dim logDescription As String = String.Format("Delete Customer Contact : {0}", contactName)
-            Dim dataLog As Object() = {"CustomerContacts", "", Session("LoginId"), logDescription}
-            settingClass.Logs(dataLog)
-
             Using thisConn As New SqlConnection(myConn)
                 thisConn.Open()
 

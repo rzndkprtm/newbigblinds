@@ -896,7 +896,7 @@ function process() {
                 setTimeout(() => {
                     $('#modalSuccess').modal('show');
                     startCountdown(3);
-                }, 1000);
+                }, 500);
             } else {
                 isError(result);
                 toggleButtonState(false, "Submit");
@@ -964,31 +964,13 @@ async function bindItemOrder(itemId) {
         document.getElementById("divloader").style.display = "";
 
         await bindBlindType(designId);
-        await delay(150);
-
         await bindTubeType(blindtype);
-        await delay(250);
-
         await bindColourType(blindtype, tubetype);
-        await delay(300);
-
         await bindMounting(blindtype);
-        await delay(350);
+        await bindFabricType(designId, tubetype);
+        await bindFabricColour(fabrictype);
 
-        await Promise.all([
-            bindFabricType(designId, tubetype)
-        ]);
-        await delay(400);
-
-        await Promise.all([
-            bindFabricColour(fabrictype)
-        ]);
-        await delay(500);
-
-        await Promise.all([
-            bindLayoutCode(blindtype, tracktype)
-        ]);
-        await delay(200);
+        await bindLayoutCode(blindtype, tracktype);
 
         setFormValues(itemData);
         visibleProduct(blindtype);
@@ -998,7 +980,6 @@ async function bindItemOrder(itemId) {
             visibleLayoutCustom(layoutcode),
             visibleWandLength(wandlength)
         ]);
-        await delay(500);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
@@ -1086,11 +1067,7 @@ function controlForm(status, isEditItem, isCopyItem) {
 async function checkSession() {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get("boos");
-
-    if (!sessionId) {
-        window.location.href = "/order";
-        return;
-    }
+    if (!sessionId) return redirectOrder();
 
     const response = await fetch("Method.aspx/StringData", {
         method: "POST",
@@ -1099,14 +1076,9 @@ async function checkSession() {
     });
 
     const result = await response.json();
-    const queryString = result.d;
+    if (!result?.d) return redirectOrder();
 
-    if (!queryString) {
-        window.location.href = "/order";
-        return;
-    }
-
-    const params = new URLSearchParams(queryString);
+    const params = new URLSearchParams(result.d);
 
     itemAction = params.get("do");
     headerId = params.get("orderid");
@@ -1114,44 +1086,37 @@ async function checkSession() {
     designId = params.get("dtype");
     loginId = params.get("uid");
 
-    if (!headerId) {
-        window.location.href = "/order";
-        return;
-    }
-    if (!itemAction || !designId || !loginId) {
-        window.location.href = `/order/detail?orderid=${headerId}`;
-        return;
-    }
-    if (designId.toUpperCase() !== designIdOri) {
-        window.location.href = `/order/detail?orderid=${headerId}`;
-        return;
+    if (!headerId) return redirectOrder();
+
+    if (!itemAction || !designId || !loginId || designId !== designIdOri) {
+        return window.location.href = `/order/detail?orderid=${headerId}`;
     }
 
-    await getCompanyOrder(headerId);
-    await getCompanyDetailOrder(headerId);
-    await getRoleAccess(loginId);
-    await getPriceAccess(loginId);
+    await Promise.all([
+        getDesignName(designId),
+        getFormAction(itemAction),
+        loader(itemAction)
+    ]);
 
-    try {
-        await getDesignName(designId);
-        await getFormAction(itemAction);
-        await loader(itemAction);
+    await Promise.all([
+        getCompanyOrder(headerId),
+        getCompanyDetailOrder(headerId),
+        getRoleAccess(loginId),
+        getPriceAccess(loginId)
+    ]);
 
-        if (itemAction === "create") {
-            await bindBlindType(designId);
-            controlForm(false);
-            visibleProduct("");
-            visibleDetail("", "", "");
-        } else if (["edit", "view", "copy"].includes(itemAction)) {
-            await bindItemOrder(itemId);
-            controlForm(
-                itemAction === "view",
-                itemAction === "edit",
-                itemAction === "copy"
-            );
-        }
-    } catch (error) {
-        reject(error);
+    if (itemAction === "create") {
+        await bindBlindType(designId);
+        controlForm(false);
+        visibleProduct("");
+        visibleDetail("", "", "");
+    } else if (["edit", "view", "copy"].includes(itemAction)) {
+        await bindItemOrder(itemId);
+        controlForm(
+            itemAction === "view",
+            itemAction === "edit",
+            itemAction === "copy"
+        );
     }
 }
 
@@ -1180,4 +1145,8 @@ function showInfo(type) {
         info += "Maximum custom wand length is 1000mm.";
     }
     document.getElementById("spanInfo").innerHTML = info;
+}
+
+function redirectOrder() {
+    window.location.replace("/order");
 }
