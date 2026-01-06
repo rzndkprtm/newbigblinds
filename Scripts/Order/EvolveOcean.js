@@ -1731,7 +1731,7 @@ function process() {
                 setTimeout(() => {
                     $("#modalSuccess").modal("show");
                     startCountdown(3);
-                }, 1000);
+                }, 500);
             } else {
                 isError(result);
                 toggleButtonState(false, "Submit");
@@ -1746,11 +1746,7 @@ function process() {
 async function checkSession() {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get("boos");
-
-    if (!sessionId) {
-        window.location.href = "/order";
-        return;
-    }
+    if (!sessionId) return redirectOrder();
 
     const response = await fetch("Method.aspx/StringData", {
         method: "POST",
@@ -1759,14 +1755,9 @@ async function checkSession() {
     });
 
     const result = await response.json();
-    const queryString = result.d;
+    if (!result?.d) return redirectOrder();
 
-    if (!queryString) {
-        window.location.href = "/order";
-        return;
-    }
-
-    const params = new URLSearchParams(queryString);
+    const params = new URLSearchParams(result.d);
 
     itemAction = params.get("do");
     headerId = params.get("orderid");
@@ -1774,43 +1765,36 @@ async function checkSession() {
     designId = params.get("dtype");
     loginId = params.get("uid");
 
-    if (!headerId) {
-        window.location.href = "/order";
-        return;
-    }
-    if (!itemAction || !designId || !loginId) {
-        window.location.href = `/order/detail?orderid=${headerId}`;
-        return;
-    }
-    if (designId !== designIdOri) {
-        window.location.href = `/order/detail?orderid=${headerId}`;
-        return;
+    if (!headerId) return redirectOrder();
+
+    if (!itemAction || !designId || !loginId || designId !== designIdOri) {
+        return window.location.href = `/order/detail?orderid=${headerId}`;
     }
 
-    await getCompanyOrder(headerId);
-    await getCompanyDetailOrder(headerId);
-    await getRoleAccess(loginId);
-    await getPriceAccess(loginId);
+    await Promise.all([
+        getDesignName(designId),
+        getFormAction(itemAction),
+        loader(itemAction)
+    ]);
 
-    try {
-        await getDesignName(designId);
-        await getFormAction(itemAction);
-        await loader(itemAction);
+    await Promise.all([
+        getCompanyOrder(headerId),
+        getCompanyDetailOrder(headerId),
+        getRoleAccess(loginId),
+        getPriceAccess(loginId)
+    ]);
 
-        if (itemAction === "create") {
-            bindComponentForm("", "");
-            controlForm(false);
-            await bindBlindType(designId);
-        } else if (["edit", "view", "copy"].includes(itemAction)) {
-            await bindItemOrder(itemId);
-            controlForm(
-                itemAction === "view",
-                itemAction === "edit",
-                itemAction === "copy"
-            );
-        }
-    } catch (error) {
-        reject(error);
+    if (itemAction === "create") {
+        bindComponentForm("", "");
+        controlForm(false);
+        await bindBlindType(designId);
+    } else if (["edit", "view", "copy"].includes(itemAction)) {
+        await bindItemOrder(itemId);
+        controlForm(
+            itemAction === "view",
+            itemAction === "edit",
+            itemAction === "copy"
+        );
     }
 }
 
@@ -1857,17 +1841,14 @@ async function bindItemOrder(itemId) {
         await bindLayoutCode(blindtype);
         await bindMidrailCritical(height1, height2);
         await bindTiltrodSplit(height1);
-        await delay(150);
 
         await bindFrameType(blindtype, mounting);
         await bindLeftFrame(frameType);
         await bindRightFrame(frameType);
         await bindTopFrame(frameType, mounting);
         await bindBottomFrame(frameType);
-        await delay(200);
 
         await bindBottomTrack(blindtype, bottomFrame);
-        await delay(220);
 
         setFormValues(itemData);
 
@@ -1884,11 +1865,14 @@ async function bindItemOrder(itemId) {
             visibleSemiInside(blindtype, mounting),
             visibleSplitHeight(tiltrodSplit)
         ]);
-        await delay(300);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
     } catch (error) {
         reject(error);
     }
+}
+
+function redirectOrder() {
+    window.location.replace("/order");
 }
