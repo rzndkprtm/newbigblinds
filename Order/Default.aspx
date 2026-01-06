@@ -513,7 +513,7 @@
                 if (hideModal) {
                     $(`#${hideModal}`).modal("hide");
                 }
-            }, 30000);
+            }, 10000);
 
             return true;
         }
