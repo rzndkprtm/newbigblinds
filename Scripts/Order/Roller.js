@@ -2120,7 +2120,6 @@ async function checkSession() {
         loader(itemAction)
     ]);
 
-    // 🔥 paralel
     await Promise.all([
         getCompanyOrder(headerId),
         getCompanyDetailOrder(headerId),
@@ -2131,7 +2130,6 @@ async function checkSession() {
     if (itemAction === "create") {
         visibleDetail("", "", "", "");
         controlForm(false);
-
         await Promise.all([
             bindBlindType(designId),
             bindBottomType(designId)
@@ -2173,8 +2171,6 @@ async function bindItemOrder(itemId) {
             FabricTypeB: fabrictypeb,
             FabricTypeC: fabrictypec,
             FabricTypeD: fabrictyped,
-            FabricTypeE: fabrictypee,
-            FabricTypeF: fabrictypef,
 
             BottomType: bottomtype,
             BottomTypeB: bottomtypeb,
@@ -2187,14 +2183,12 @@ async function bindItemOrder(itemId) {
             ChainIdB: chaincolourb,
             ChainIdC: chaincolourc,
             ChainIdD: chaincolourd,
-            ChainIdE: chaincoloure,
             ChainIdF: chaincolourf,
 
             ControlLength: controllength,
             ControlLengthB: controllengthb,
             ControlLengthC: controllengthc,
             ControlLengthD: controllengthd,
-            ControlLengthE: controllengthe,
             ControlLengthF: controllengthf,
 
             TotalItems: totalitems

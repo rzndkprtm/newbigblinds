@@ -927,16 +927,9 @@ async function bindItemOrder(itemId) {
         document.getElementById("divloader").style.display = "";
 
         await bindBlindType(designId);
-        await delay(150);
-
         await bindColourType(blindtype);
-        await delay(200);
-
         await bindSubType(blindtype, colourtype);
-        await delay(250);
-
         await bindMounting(blindtype);
-        await delay(200);
 
         setFormValues(itemdata);       
 
@@ -952,11 +945,11 @@ async function bindItemOrder(itemId) {
             visibleCustom("WandLength", wandlength, "1"),
             visibleCustom("WandLength", wandlengthb, "2")
         ]);
-        await delay(300);
 
         document.getElementById("divloader").style.display = "none";
         document.getElementById("divorder").style.display = "";
     } catch (error) {
-        reject(error);
+        console.error(err);
+        document.getElementById("divloader").style.display = "none";
     }
 }
