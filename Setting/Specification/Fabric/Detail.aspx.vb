@@ -239,7 +239,7 @@ Partial Class Setting_Specification_Fabric_Detail
                     Dim dataLog As Object() = {"FabricColours", lblIdColour.Text, Session("LoginId").ToString(), "Fabric Colour Updated"}
                     settingClass.Logs(dataLog)
 
-                    url = String.Format(url, lblId.Text)
+                    url = String.Format("~/setting/specification/fabric/detail?fabricid={0}", lblId.Text)
                     Response.Redirect(url, False)
                 End If
             End If
