@@ -1474,7 +1474,7 @@ Partial Class Setting_Customer_Detail
 
                 If lblActionLogin.Text = "Edit" Then
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerLogins SET CustomerId=@CustomerId, RoleId=@RoleId, LevelId=@LevelId, UserName=@UserName, Password=@Password, FullName=@FullName, Email=@Email WHERE Id=@Id", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerLogins SET CustomerId=@CustomerId, RoleId=@RoleId, LevelId=@LevelId, UserName=@UserName, Password=@Password, FullName=@FullName, Email=@Email, Pricing=@Pricing WHERE Id=@Id", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", lblIdLogin.Text)
                             myCmd.Parameters.AddWithValue("@CustomerId", lblId.Text)
                             myCmd.Parameters.AddWithValue("@RoleId", ddlLoginRole.SelectedValue)
@@ -1483,6 +1483,7 @@ Partial Class Setting_Customer_Detail
                             myCmd.Parameters.AddWithValue("@Password", password)
                             myCmd.Parameters.AddWithValue("@FullName", txtLoginFullName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Email", txtLoginEmail.Text.Trim())
+                            myCmd.Parameters.AddWithValue("@Pricing", ddlPricing.SelectedValue)
 
                             thisConn.Open()
                             myCmd.ExecuteNonQuery()

@@ -3000,6 +3000,7 @@ Partial Class Order_Detail
             gvListItem.Columns(4).Visible = PageAction("Visible Buy Price")
             gvListItem.Columns(5).Visible = PageAction("Visible Sell Price")
             gvListItem.Columns(6).Visible = PageAction("Visible Price")
+
             gvListItem.Columns(7).Visible = False
             If Session("PriceAccess") = "Yes" Then gvListItem.Columns(7).Visible = True
 

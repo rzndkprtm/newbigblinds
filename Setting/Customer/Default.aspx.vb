@@ -166,7 +166,7 @@ Partial Class Setting_Customer_Default
             End If
 
             If Session("RoleName") = "Data Entry" Then
-                roleString = "AND Customers.CompanyId='" & Session("CompanyId").ToString() & "'"
+                roleString = "AND Customers.CompanyId<>'" & Session("CompanyId").ToString() & "'"
             End If
 
             Dim thisQuery As String = String.Format("SELECT Customers.*, CustomerLogins.FullName AS OperatorName, CASE WHEN Customers.CashSale=1 THEN 'Yes' WHEN Customers.CashSale=0 THEN 'No' ELSE 'Error' END AS CustomerCashSale, CASE WHEN Customers.OnStop=1 THEN 'Yes' WHEN Customers.OnStop=0 THEN 'No' ELSE 'Error' END AS CustomerOnStop, CASE WHEN Customers.MinSurcharge=1 THEN 'Yes' WHEN Customers.MinSurcharge=0 THEN 'No' ELSE 'Error' END AS CustomerMinSurcharge, CASE WHEN Customers.Active=1 THEN 'Yes' WHEN Customers.Active=0 THEN 'No' ELSE 'Error' END AS DataActive, Companys.Alias AS CompanyAlias, CompanyDetails.Name AS CompanyDetailName FROM Customers LEFT JOIN Companys ON Customers.CompanyId=Companys.Id LEFT JOIN CompanyDetails ON Customers.CompanyDetailId=CompanyDetails.Id LEFT JOIN CustomerLogins ON Customers.Operator=CustomerLogins.Id {0} {1} {2} {3} {4}", activeString, companyString, roleString, searchString, orderString)
