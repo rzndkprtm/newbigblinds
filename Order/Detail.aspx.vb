@@ -4250,7 +4250,7 @@ Partial Class Order_Detail
     Protected Function VisibleCosting() As Boolean
         Dim result As Boolean = False
 
-        If Session("RoleName") = "Developer" OrElse Session("RoleName") = "IT" OrElse Session("RoleName") = "Factory Office" OrElse Session("RoleName") = "Sales" OrElse Session("RoleName") = "Customer Service" OrElse Session("RoleName") = "Account" OrElse Session("RoleName") = "Data Entry" OrElse Session("RoleName") = "Customer" Then result = True
+        If Session("RoleName") = "Developer" OrElse Session("RoleName") = "IT" OrElse Session("RoleName") = "Factory Office" OrElse Session("RoleName") = "Sales" OrElse Session("RoleName") = "Customer Service" OrElse Session("RoleName") = "Account" OrElse Session("RoleName") = "Customer" Then result = True
 
         Return result
     End Function
