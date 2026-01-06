@@ -47,55 +47,55 @@
                             <div class="form form-horizontal">
                                 <div class="form-body">
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-12 col-sm-12 col-lg-3">
                                             <label>Type</label>
                                         </div>
-                                        <div class="col-4 form-group">
+                                        <div class="col-12 col-sm-12 col-lg-4 form-group">
                                             <select id="blindtype" class="form-select"></select>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-12 col-sm-12 col-lg-3">
                                             <label>Colour</label>
                                         </div>
-                                        <div class="col-3 form-group">
+                                        <div class="col-12 col-sm-12 col-lg-3 form-group">
                                             <select id="colourtype" class="form-select"></select>
                                         </div>
                                     </div>
                                     <div id="divdetail">
                                         <hr />
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Quantity</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <input type="number" id="qty" class="form-control" autocomplete="off" placeholder="Quantity" value="1" />
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Room / Location</label>
                                             </div>
-                                            <div class="col-9 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-9 form-group">
                                                 <input type="text" id="room" class="form-control" autocomplete="off" placeholder="Room / Location" />
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Mounting</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <select id="mounting" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3" id="divsemiinside">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Semi Inside Mount</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="semiinside" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Yes">Yes</option>
@@ -104,16 +104,16 @@
                                         </div>
 
                                         <div class="row mb-3">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Width x Height</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-text">W</span>
                                                     <input type="number" id="width" class="form-control" autocomplete="off" placeholder="Width ...." />
                                                 </div>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-text">H</span>
                                                     <input type="number" id="drop" class="form-control" autocomplete="off" placeholder="Height ...." />
@@ -122,10 +122,10 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Louvre Size</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="louvresize" class="form-select">
                                                     <option value=""></option>
                                                     <option value="89">89mm</option>
@@ -134,10 +134,10 @@
                                         </div>
 
                                         <div class="row" id="divlouvreposition">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Louvre Position</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="louvreposition" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Open">Open</option>
@@ -147,16 +147,16 @@
                                         </div>
 
                                         <div class="row mt-3">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Midrail Height</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <input type="number" id="midrailheight1" class="form-control" autocomplete="off" placeholder="Height ...." />
                                                     <span class="input-group-text">mm</span>
                                                 </div>
                                             </div>
-                                            <div class="col-3 form-group" id="divmidrailheight2">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group" id="divmidrailheight2">
                                                 <div class="input-group">
                                                     <input type="number" id="midrailheight2" class="form-control" autocomplete="off" placeholder="Height 2 ...." />
                                                     <span class="input-group-text">mm</span>
@@ -165,19 +165,19 @@
                                         </div>
 
                                         <div class="row" id="divmidrailcritical">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Critical Midrail</label>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <select id="midrailcritical" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row mt-3" id="divpanelqty">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Panel Qty</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="panelqty" class="form-select">
                                                     <option value=""></option>
                                                     <option value="1">1</option>
@@ -205,7 +205,7 @@
                                         </div>
 
                                         <div class="row" id="divjoinedpanels">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Co-Joined Panels</label>
                                             </div>
                                             <div class="col-2 form-group">
@@ -217,10 +217,10 @@
                                         </div>
 
                                         <div class="row mt-3" id="divhingecolour">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Hinge Colour</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <select id="hingecolour" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Stainless Steel">Stainless Steel</option>
@@ -230,10 +230,10 @@
                                         </div>
 
                                         <div class="row" id="divhingesloose">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Hinges Loose</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="hingesloose" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Yes">Yes</option>
@@ -242,10 +242,10 @@
                                         </div>
 
                                         <div class="row mt-3" id="divcustomheaderlength">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Custom Header</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <input type="number" id="customheaderlength" class="form-control" autocomplete="off" placeholder="Length ...." />
                                                     <span class="input-group-text">mm</span>
@@ -254,13 +254,13 @@
                                         </div>
 
                                         <div class="row mt-3" id="divlayoutcode">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Layout Code</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <select id="layoutcode" class="form-select"></select>
                                             </div>
-                                            <div class="col-4 form-group" id="divlayoutcodecustom">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group" id="divlayoutcodecustom">
                                                 <div class="input-group">
                                                     <input type="text" id="layoutcodecustom" class="form-control" autocomplete="off" placeholder="Custom ...." />
                                                     <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Layout Code');">?</a>
@@ -269,64 +269,64 @@
                                         </div>
 
                                         <div class="row mt-3" id="divframetype">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Frame Type</label>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <select id="frametype" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divframeleft">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Left Frame</label>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <select id="frameleft" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divframeright">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Right Frame</label>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <select id="frameright" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divframetop">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Top Frame</label>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <select id="frametop" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divframebottom">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Bottom Frame</label>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <select id="framebottom" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divbottomtracktype">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Bottom Track Type</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <select id="bottomtracktype" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divbottomtrackrecess">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Bottom Track Recess</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="bottomtrackrecess" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Yes">Yes</option>
@@ -335,10 +335,10 @@
                                         </div>
 
                                         <div class="row mt-3" id="divbuildout">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Buildout</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <select id="buildout" class="form-select">
                                                     <option value=""></option>
                                                     <option value="9.5mm Buildout">9.5mm Buildout</option>
@@ -348,10 +348,10 @@
                                         </div>
 
                                         <div class="row" id="divbuildoutposition">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Buildout Position</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <select id="buildoutposition" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Back of Frame">Back of Frame</option>
@@ -361,10 +361,10 @@
                                         </div>
 
                                         <div class="row mt-3" id="divsamesizepanel">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Same Size Panel</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="samesizepanel" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Yes">Yes</option>
@@ -373,24 +373,24 @@
                                         </div>
 
                                         <div class="mb-2 row" id="divgappost">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>GAP / T-Post</label>
                                             </div>
                                             <div class="col-9">
                                                 <div class="row mb-3">
-                                                    <div class="col-4" id="divgap1">
+                                                    <div class="col-12 col-sm-12 col-lg-4" id="divgap1">
                                                         <div class="input-group">
                                                             <input type="number" id="gap1" class="form-control" autocomplete="off" placeholder="... mm" />
                                                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Gap');">?</a>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4" id="divgap2">
+                                                    <div class="col-12 col-sm-12 col-lg-4" id="divgap2">
                                                         <div class="input-group">
                                                             <input type="number" id="gap2" class="form-control" autocomplete="off" placeholder="... mm" />
                                                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Gap');">?</a>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4" id="divgap3">
+                                                    <div class="col-12 col-sm-12 col-lg-4" id="divgap3">
                                                         <div class="input-group">
                                                             <input type="number" id="gap3" class="form-control" autocomplete="off" placeholder="... mm" />
                                                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Gap');">?</a>
@@ -398,13 +398,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <div class="col-4" id="divgap4">
+                                                    <div class="col-12 col-sm-12 col-lg-4" id="divgap4">
                                                         <div class="input-group">
                                                             <input type="number" id="gap4" class="form-control" autocomplete="off" placeholder="... mm" />
                                                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Gap');">?</a>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4" id="divgap5">
+                                                    <div class="col-12 col-sm-12 col-lg-4" id="divgap5">
                                                         <div class="input-group">
                                                             <input type="number" id="gap5" class="form-control" autocomplete="off" placeholder="... mm" />
                                                             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Gap');">?</a>
@@ -417,16 +417,16 @@
                                         <%--DISINI GAP--%>
 
                                         <div class="row mt-3" id="divhorizontaltpost">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Horizontal T-Post</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <input type="number" id="horizontaltpostheight" class="form-control" autocomplete="off" placeholder="Height ...." />
                                                     <span class="input-group-text">mm</span>
                                                 </div>
                                             </div>
-                                            <div class="col-3 form-group" id="divhorizontaltpostrequired">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group" id="divhorizontaltpostrequired">
                                                 <div class="input-group">
                                                     <select class="form-select" id="horizontaltpost">
                                                         <option value=""></option>
@@ -438,10 +438,10 @@
                                         </div>
 
                                         <div class="row mt-3" id="divtiltrodtype">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Tiltrod Type</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <select id="tiltrodtype" class="form-select">
                                                         <option value=""></option>
@@ -454,10 +454,10 @@
                                         </div>
 
                                         <div class="row mb-3" id="divtiltrodsplit">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Split Tiltrod</label>
                                             </div>
-                                            <div class="col-5 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-5 form-group">
                                                 <div class="input-group">
                                                     <select id="tiltrodsplit" class="form-select"></select>
                                                 </div>
@@ -465,17 +465,17 @@
                                         </div>
 
                                         <div class="row mb-3" id="divtiltrodheight">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Split Height</label>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-text">1st</span>
                                                     <input type="number" id="splitheight1" class="form-control" autocomplete="off" placeholder="Height ...." />
                                                     <span class="input-group-text">mm</span>
                                                 </div>
                                             </div>
-                                            <div class="col-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-text">2nd</span>
                                                     <input type="number" id="splitheight2" class="form-control" autocomplete="off" placeholder="Height ...." />
@@ -485,10 +485,10 @@
                                         </div>
 
                                         <div class="row mt-3" id="divreversehinged">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Reverse Hinged</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="reversehinged" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Yes">Yes</option>
@@ -497,7 +497,7 @@
                                         </div>
 
                                         <div class="row" id="divpelmetflat">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Pelmet Flat Packed</label>
                                             </div>
                                             <div class="col-2 form-group">
@@ -509,10 +509,10 @@
                                         </div>
 
                                         <div class="row" id="divextrafascia">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Extra Fascia</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <select id="extrafascia" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Yes">Yes</option>
@@ -521,19 +521,19 @@
                                         </div>
                                         
                                         <div class="row mt-3">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Special Information</label>
                                             </div>
-                                            <div class="col-9 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-9 form-group">
                                                 <textarea class="form-control" id="notes" rows="4" placeholder="Your notes ..." style="resize:none;"></textarea>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divmarkup">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Mark Up</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <input type="number" id="markup" class="form-control" autocomplete="off" placeholder="Mark Up ..." />
                                                     <span class="input-group-text">%</span>
