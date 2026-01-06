@@ -642,7 +642,6 @@ function bindControlType(blindType, tubeType) {
         const controltype = document.getElementById("controltype");
         controltype.innerHTML = "";
 
-        // ❌ Jangan cascade jika parameter belum valid
         if (!blindType || !tubeType) {
             resolve();
             return;
@@ -703,7 +702,6 @@ function bindColourType(blindType, tubeType, controlType) {
         const colourtype = document.getElementById("colourtype");
         colourtype.innerHTML = "";
 
-        // ❌ Jangan lanjut kalau parameter belum lengkap
         if (!blindType || !tubeType || !controlType) {
             resolve();
             return;
@@ -821,7 +819,6 @@ function bindChainRemote(designType, blindType, controlType) {
                 "remote"
             ];
 
-            // Clear all dropdowns
             typeIds.forEach(id => {
                 const select = document.getElementById(id);
                 if (select) select.innerHTML = "";
@@ -986,13 +983,11 @@ function bindFabricType(designType) {
             bindFabricColourF
         ];
 
-        // reset semua fabric type
         typeIds.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.innerHTML = "";
         });
 
-        // jika design kosong → tetap trigger fabric colour
         if (!designType) {
             Promise.all(
                 typeIds.map((id, i) =>
@@ -1112,10 +1107,15 @@ function bindFabricColourById(selectId, fabricType) {
 }
 
 function bindFabricColour(val) { return bindFabricColourById("fabriccolour", val); }
+
 function bindFabricColourB(val) { return bindFabricColourById("fabriccolourb", val); }
+
 function bindFabricColourC(val) { return bindFabricColourById("fabriccolourc", val); }
+
 function bindFabricColourD(val) { return bindFabricColourById("fabriccolourd", val); }
+
 function bindFabricColourE(val) { return bindFabricColourById("fabriccoloure", val); }
+
 function bindFabricColourF(val) { return bindFabricColourById("fabriccolourf", val); }
 
 function bindBottomType(designType) {
@@ -1139,7 +1139,6 @@ function bindBottomType(designType) {
             bindBottomColourF
         ];
 
-        // reset dropdown
         typeIds.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.innerHTML = "";
@@ -1272,10 +1271,15 @@ function bindBottomColourById(selectId, bottomType) {
 }
 
 function bindBottomColour(val) { return bindBottomColourById("bottomcolour", val); }
+
 function bindBottomColourB(val) { return bindBottomColourById("bottomcolourb", val); }
+
 function bindBottomColourC(val) { return bindBottomColourById("bottomcolourc", val); }
+
 function bindBottomColourD(val) { return bindBottomColourById("bottomcolourd", val); }
+
 function bindBottomColourE(val) { return bindBottomColourById("bottomcoloure", val); }
+
 function bindBottomColourF(val) { return bindBottomColourById("bottomcolourf", val); }
 
 function visibleDetail(blindType, tubeType, controlType, colourType) {
@@ -1918,12 +1922,8 @@ function delay(ms) {
 }
 
 function controlForm(status, isEditItem, isCopyItem) {
-    if (isEditItem === undefined) {
-        isEditItem = false;
-    }
-    if (isCopyItem === undefined) {
-        isCopyItem = false;
-    }
+    if (isEditItem === undefined) isEditItem = false;
+    if (isCopyItem === undefined) isCopyItem = false;
 
     document.getElementById("submit").style.display = status ? "none" : "";
 
@@ -1949,17 +1949,46 @@ function controlForm(status, isEditItem, isCopyItem) {
         "printing", "printingb", "printingc", "printingd", "printinge", "printingf", "printingg", "printingh"
     ];
 
+    const installerDisabledIds = [
+        "tubetype",
+        "controltype",
+        "colourtype",
+        "room",
+        "fabrictype", "fabriccolour",
+        "fabrictypeb", "fabriccolourb",
+        "fabrictypec", "fabriccolourc",
+        "fabrictyped", "fabriccolourd",
+        "fabrictypee", "fabriccoloure",
+        "fabrictypef", "fabriccolourf",
+        "chaincolour", "chainstopper",
+        "bottomtype", "bottomcolour",
+        "bracketextension"
+    ];
+
     inputs.forEach(id => {
-        const inputElement = document.getElementById(id);
-        if (inputElement) {
-            if (isCopyItem) {
-                inputElement.disabled = (id === "blindtype");
-            } else if (isEditItem && (id === "qty" || id === "blindtype")) {
-                inputElement.disabled = true;
-            } else {
-                inputElement.disabled = status;
-            }
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (isCopyItem) {
+            el.disabled = (id === "blindtype");
+            return;
         }
+
+        if (isEditItem) {
+            if (id === "qty" || id === "blindtype") {
+                el.disabled = true;
+            } else {
+                el.disabled = false;
+            }
+
+            if (roleAccess === "Installer" && installerDisabledIds.includes(id)) {
+                el.disabled = true;
+            }
+
+            return;
+        }
+
+        el.disabled = status;
     });
 }
 
