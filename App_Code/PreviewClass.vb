@@ -862,11 +862,17 @@ Public Class PreviewClass
                         Dim blindName As String = dt.Rows(i)("BlindName").ToString()
                         Dim blindAlias As String = dt.Rows(i)("BlindAlias").ToString()
 
+                        Dim tubeType As String = dt.Rows(i)("TubeType").ToString()
+
                         Dim tubeName As String = GetItemData("SELECT Name FROM ProductTubes WHERE Id='" & dt.Rows(i)("TubeType").ToString() & "'")
                         Dim tubeAlias As String = GetItemData("SELECT Alias FROM ProductTubes WHERE Id='" & dt.Rows(i)("TubeType").ToString() & "'")
                         Dim controlName As String = GetItemData("SELECT Name FROM ProductControls WHERE Id='" & dt.Rows(i)("ControlType").ToString() & "'")
                         Dim controlAlias As String = GetItemData("SELECT Name FROM ProductControls WHERE Id='" & dt.Rows(i)("ControlType").ToString() & "'")
                         Dim colourName As String = GetItemData("SELECT Name FROM ProductColours WHERE Id='" & dt.Rows(i)("ColourType").ToString() & "'")
+
+                        If tubeType = "Standard" Then
+
+                        End If
 
                         Dim fabricType As String = GetItemData("SELECT Name FROM Fabrics WHERE Id='" & dt.Rows(i)("Fabric").ToString() & "'")
                         Dim fabricColour As String = GetItemData("SELECT Colour FROM FabricColours WHERE Id='" & dt.Rows(i)("FabricColour").ToString() & "'")

@@ -490,7 +490,7 @@
                 Dim subType As String = thisData.Tables(0).Rows(i).Item("SubType").ToString()
                 Dim tassel As String = thisData.Tables(0).Rows(i).Item("Tassel").ToString()
                 Dim venId As String = GetItemData("SELECT VenId FROM ProductKits WHERE ProductId='" & productId & "' AND BlindStatus='Metal'")
-                If String.IsNullOrEmpty(tassel) Then
+                If tassel = "Gold" OrElse tassel = "Antique Brass" Then
                     venId = GetItemData("SELECT VenId FROM ProductKits WHERE ProductId='" & productId & "' AND BlindStatus='Semi Metal'")
                 End If
                 Dim venIdB As String = String.Empty
