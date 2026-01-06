@@ -29,7 +29,8 @@
     <div class="page-content">
         <section class="row mb-3">
             <div class="col-lg-12 d-flex flex-wrap justify-content-end gap-1">
-                <asp:Button runat="server" ID="btnPreview" CssClass="btn btn-primary me-1" Text="Preview"  OnClick="btnPreview_Click" />
+                <asp:Button runat="server" ID="btnPreview" CssClass="btn btn-primary" Text="Preview"  OnClick="btnPreview_Click" />
+                <a class="btn btn-secondary" href="#" runat="server" id="aConvert" data-bs-toggle="modal" data-bs-target="#modalConvert">Unarchive Order</a>
             </div>
         </section>
 
@@ -157,4 +158,56 @@
             </div>
         </section>
     </div>
+
+    <div class="modal fade text-center" id="modalConvert" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title white">Unarchive Order</h5>
+                </div>
+
+                <div class="modal-body text-center py-4">
+                    Hi <b><%: Session("FullName") %></b>,<br />Are you sure you would like to do this?
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancel</a>
+                    <asp:Button runat="server" ID="btnConvert" CssClass="btn btn-info" Text="Confirm" OnClick="btnConvert_Click" OnClientClick="return showWaiting();" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-center" id="modalWaiting" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function showWaiting(hideModal = null) {
+            $("#modalWaiting").modal("show");
+            setTimeout(function () {
+                $("#modalWaiting").modal("hide");
+                if (hideModal) {
+                    $(`#${hideModal}`).modal("hide");
+                }
+            }, 30000);
+
+            return true;
+        }
+
+        ["modalConvert"].forEach(function (id) {
+            document.getElementById(id).addEventListener("hide.bs.modal", function () {
+                document.activeElement.blur();
+                document.body.focus();
+            });
+        });
+    </script>
 </asp:Content>

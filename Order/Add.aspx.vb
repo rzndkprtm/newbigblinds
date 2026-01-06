@@ -158,7 +158,6 @@ Partial Class Order_Add
                 url = String.Format("~/order/detail?orderid={0}", thisId)
                 Response.Redirect(url, False)
             End If
-
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then

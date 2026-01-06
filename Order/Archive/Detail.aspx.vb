@@ -3,6 +3,7 @@ Imports System.IO
 Imports iTextSharp.text
 Imports iTextSharp.text.pdf
 Imports iTextSharp.tool.xml
+Imports System.Data.SqlClient
 
 Partial Class Order_Archive_Detail
     Inherits Page
@@ -15,6 +16,8 @@ Partial Class Order_Archive_Detail
     Dim mailingClass As New MailingClass
 
     Dim headerId As String = String.Empty
+
+    Dim myConn As String = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
 
     Private Property companyGroup As String
         Get
@@ -61,6 +64,174 @@ Partial Class Order_Archive_Detail
         End Try
     End Sub
 
+    Protected Sub btnConvert_Click(sender As Object, e As EventArgs)
+        MessageError(False, String.Empty)
+        Try
+            Dim detailData As DataSet = archiveClass.GetListData("SELECT * FROM Order_Detail WHERE FKOrdID='" & headerId & "' AND Active=1")
+
+            If detailData.Tables(0).Rows.Count = 0 Then
+                MessageError(True, "ERROR")
+                Exit Sub
+            End If
+
+            Dim orderClass As New OrderClass
+
+            Dim thisId As String = orderClass.GetNewOrderHeaderId()
+
+            Dim success As Boolean = False
+            Dim retry As Integer = 0
+            Dim maxRetry As Integer = 10
+            Dim orderId As String = ""
+
+            Do While Not success
+                retry += 1
+                If retry > maxRetry Then
+                    Throw New Exception("FAILED TO GENERATE UNIQUE ORDER ID")
+                End If
+
+                Dim companyAlias As String = orderClass.GetCompanyAliasByCustomer(Session("CustomerId").ToString())
+
+                Dim randomCode As String = OrderClass.GenerateRandomCode()
+                orderId = companyAlias & randomCode
+
+                Try
+                    Using thisConn As New SqlConnection(myConn)
+                        Using myCmd As New SqlCommand("INSERT INTO OrderHeaders (Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, @OrderType, 'Unsubmitted', @CreatedBy, GETDATE(), 0, 1); INSERT INTO OrderQuotes VALUES (@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
+                            myCmd.Parameters.AddWithValue("@Id", thisId)
+                            myCmd.Parameters.AddWithValue("@OrderId", orderId)
+                            myCmd.Parameters.AddWithValue("@CustomerId", Session("CustomerId").ToString())
+                            myCmd.Parameters.AddWithValue("@OrderNumber", lblOrderNumber.Text.Trim())
+                            myCmd.Parameters.AddWithValue("@OrderName", lblOrderName.Text.Trim())
+                            myCmd.Parameters.AddWithValue("@OrderNote", String.Empty)
+                            myCmd.Parameters.AddWithValue("@OrderType", "Regular")
+                            myCmd.Parameters.AddWithValue("@CreatedBy", Session("LoginId").ToString())
+
+                            thisConn.Open()
+                            myCmd.ExecuteNonQuery()
+                        End Using
+                    End Using
+
+                    success = True
+
+                Catch exSql As SqlException
+                    If exSql.Number = 2601 OrElse exSql.Number = 2627 Then
+                        success = False
+                    Else
+                        Throw
+                    End If
+                End Try
+            Loop
+
+            Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId").ToString(), "Order Created"}
+            orderClass.Logs(dataLog)
+
+            For i As Integer = 0 To detailData.Tables(0).Rows.Count - 1
+                Dim room As String = detailData.Tables(0).Rows(i).Item("Room").ToString()
+                Dim mounting As String = detailData.Tables(0).Rows(i).Item("Mounting").ToString()
+                Dim blindType As String = detailData.Tables(0).Rows(i).Item("BlindType").ToString()
+                Dim colour As String = detailData.Tables(0).Rows(i).Item("Colour").ToString()
+                Dim subType As String = detailData.Tables(0).Rows(i).Item("SubType").ToString()
+                Dim width As String = detailData.Tables(0).Rows(i).Item("Width").ToString()
+                Dim drop As String = detailData.Tables(0).Rows(i).Item("Drop").ToString()
+                Dim controlPosition As String = detailData.Tables(0).Rows(i).Item("ControlPosition").ToString()
+                Dim tilterPosition As String = detailData.Tables(0).Rows(i).Item("TilterPosition").ToString()
+
+                Dim supply As String = detailData.Tables(0).Rows(i).Item("Supply").ToString()
+                Dim notes As String = detailData.Tables(0).Rows(i).Item("Notes").ToString()
+                Dim markUp As String = detailData.Tables(0).Rows(i).Item("MarkUp").ToString()
+
+                If blindType = "Ven" Then
+                    Dim controlLengthValue As String = detailData.Tables(0).Rows(i).Item("PullCordLength").ToString()
+                    Dim wandLengthValue As String = detailData.Tables(0).Rows(i).Item("WandLength").ToString()
+
+                    Dim designId = "1"
+                    Dim blindId = "2"
+                    Dim colourId As String = orderClass.GetItemData("SELECT Id FROM ProductColours WHERE Name='" & colour & "'")
+
+                    Dim productId As String = orderClass.GetItemData("SELECT Id FROM Products WHERE DesignId='" & designId & "' AND BlindId = '" & blindId & "' AND ColourType = '" & colourId & "'")
+
+                    Dim linearmetre As Decimal = width / 1000
+                    Dim linearmetreB As Decimal = 0D
+                    Dim squaremetre As Decimal = width * drop / 1000000
+                    Dim squaremetreB As Decimal = 0D
+
+                    Dim totalItems As Integer = 1
+
+                    If subType = "2 on 1 Aluminium Left-Left" Then
+
+                    End If
+
+                    Dim priceProductGroup As String = orderClass.GetPriceProductGroupId("Aluminium 25mm x 0.21mm", designId)
+                    Dim priceProductGroupB As String = String.Empty
+
+                    If subType.Contains("2 on 1") Then priceProductGroupB = priceProductGroup
+
+                    Dim itemId As String = orderClass.GetNewOrderItemId()
+
+                    Using thisConn As SqlConnection = New SqlConnection(myConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderDetails (Id, HeaderId, ProductId, PriceProductGroupId, PriceProductGroupIdB, SubType, Qty, Room, Mounting, ControlPosition, ControlPositionB, TilterPosition, TilterPositionB, Width, WidthB, [Drop], DropB, Supply, ControlLength, ControlLengthValue, ControlLengthB, ControlLengthValueB, WandLength, WandLengthValue, WandLengthB, WandLengthValueB, Notes, LinearMetre, LinearMetreB, SquareMetre, SquareMetreB, TotalItems, MarkUp, Active) VALUES (@Id, @HeaderId, @ProductId, @PriceProductGroupId, @PriceProductGroupIdB, @SubType, 1, @Room, @Mounting, @ControlPosition, @ControlPositionB, @TilterPosition, @TilterPositionB, @Width, @WidthB, @Drop, @DropB, @Supply, @ControlLength, @ControlLengthValue, @ControlLengthB, @ControlLengthValueB, @WandLength, @WandLengthValue, @WandLengthB, @WandLengthValueB, @Notes, @LinearMetre, @LinearMetreB, @SquareMetre, @SquareMetreB, @TotalItems, @MarkUp, 1)", thisConn)
+                            myCmd.Parameters.AddWithValue("@Id", itemId)
+                            myCmd.Parameters.AddWithValue("@HeaderId", thisId)
+                            myCmd.Parameters.AddWithValue("@ProductId", productId)
+                            myCmd.Parameters.AddWithValue("@PriceProductGroupId", If(String.IsNullOrEmpty(priceProductGroup), CType(DBNull.Value, Object), priceProductGroup))
+                            myCmd.Parameters.AddWithValue("@PriceProductGroupIdB", If(String.IsNullOrEmpty(priceProductGroupB), CType(DBNull.Value, Object), priceProductGroupB))
+                            myCmd.Parameters.AddWithValue("@Room", room)
+                            myCmd.Parameters.AddWithValue("@Mounting", mounting)
+                            myCmd.Parameters.AddWithValue("@SubType", subType)
+                            myCmd.Parameters.AddWithValue("@ControlPosition", controlPosition)
+                            myCmd.Parameters.AddWithValue("@TilterPosition", tilterPosition)
+                            myCmd.Parameters.AddWithValue("@Width", width)
+                            myCmd.Parameters.AddWithValue("@Drop", drop)
+                            myCmd.Parameters.AddWithValue("@ControlLength", "Custom")
+                            myCmd.Parameters.AddWithValue("@ControlLengthValue", controlLengthValue)
+                            myCmd.Parameters.AddWithValue("@WandLength", "Custom")
+                            myCmd.Parameters.AddWithValue("@WandLengthValue", wandLengthValue)
+                            myCmd.Parameters.AddWithValue("@ControlPositionB", "")
+                            myCmd.Parameters.AddWithValue("@TilterPositionB", "")
+                            myCmd.Parameters.AddWithValue("@Widthb", 0)
+                            myCmd.Parameters.AddWithValue("@DropB", 0)
+                            myCmd.Parameters.AddWithValue("@ControlLengthB", "")
+                            myCmd.Parameters.AddWithValue("@ControlLengthValueB", 0)
+                            myCmd.Parameters.AddWithValue("@WandLengthB", "")
+                            myCmd.Parameters.AddWithValue("@WandLengthValueB", 0)
+                            myCmd.Parameters.AddWithValue("@LinearMetre", linearmetre)
+                            myCmd.Parameters.AddWithValue("@LinearMetreB", linearmetreb)
+                            myCmd.Parameters.AddWithValue("@SquareMetre", squaremetre)
+                            myCmd.Parameters.AddWithValue("@SquareMetreB", squaremetreb)
+                            myCmd.Parameters.AddWithValue("@Supply", supply)
+                            myCmd.Parameters.AddWithValue("@TotalItems", totalItems)
+                            myCmd.Parameters.AddWithValue("@Notes", notes)
+                            myCmd.Parameters.AddWithValue("@MarkUp", markUp)
+
+                            thisConn.Open()
+                            myCmd.ExecuteNonQuery()
+                        End Using
+                    End Using
+
+                    orderClass.ResetPriceDetail(headerId, itemId)
+                    orderClass.CalculatePrice(headerId, itemId)
+                    orderClass.FinalCostItem(headerId, itemId)
+
+                    dataLog = {"OrderDetails", itemId, Session("LoginId"), "Order Item Added"}
+                    orderClass.Logs(dataLog)
+                End If
+            Next
+
+            url = String.Format("~/order/detail?orderid={0}", thisId)
+            Response.Redirect(url, False)
+        Catch ex As Exception
+            MessageError(True, ex.ToString())
+            If Not Session("RoleName") = "Developer" Then
+                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
+                If Session("RoleName") = "Customer" Then
+                    MessageError(True, "PLEASE CONTACT YOUR CUSTOMER SERVICE !")
+                End If
+                dataMailing = {Session("LoginId").ToString(), Session("CompanyId").ToString(), Page.Title, "BindDataOrder", ex.ToString()}
+                mailingClass.WebError(dataMailing)
+            End If
+        End Try
+    End Sub
+
     Protected Sub BindDataOrder(headerId As String)
         Try
             Dim thisQuery As String = "SELECT Order_Header.*, Stores.Name AS CustomerName FROM Order_Header LEFT JOIN Users ON Order_Header.UserLogin=Users.UserName LEFT JOIN Stores ON Users.DebtorCode=Stores.Id WHERE Order_Header.OrdID='" & headerId & "'"
@@ -75,6 +246,8 @@ Partial Class Order_Archive_Detail
             lblOrderNumber.Text = headerData.Tables(0).Rows(0).Item("StoreOrderNo").ToString()
             lblOrderName.Text = headerData.Tables(0).Rows(0).Item("StoreCustomer").ToString()
 
+            Dim status As String = headerData.Tables(0).Rows(0).Item("Status").ToString()
+
             lblCreatedBy.Text = headerData.Tables(0).Rows(0).Item("UserLogin").ToString()
             lblCreatedDate.Text = "-"
             If Not String.IsNullOrEmpty(headerData.Tables(0).Rows(0).Item("CreatedDate").ToString()) Then
@@ -88,6 +261,11 @@ Partial Class Order_Archive_Detail
             If Not String.IsNullOrEmpty(headerData.Tables(0).Rows(0).Item("SubmittedDate").ToString()) Then
                 lblSubmittedDate.Text = Convert.ToDateTime(headerData.Tables(0).Rows(0).Item("SubmittedDate")).ToString("dd MMM yyyy")
             End If
+
+            aConvert.Visible = False
+            'If Session("RoleName") = "Customer" AndAlso status = "Draft" Then
+            '    aConvert.Visible = True
+            'End If
 
             BindDataItem(headerId)
         Catch ex As Exception
