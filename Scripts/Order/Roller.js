@@ -2167,6 +2167,8 @@ async function bindItemOrder(itemId) {
             ControlType: controltype,
             ColourType: colourtype,
 
+            BlindName: blindname,
+
             FabricType: fabrictype,
             FabricTypeB: fabrictypeb,
             FabricTypeC: fabrictypec,
@@ -2193,70 +2195,172 @@ async function bindItemOrder(itemId) {
             ControlLengthC: controllengthc,
             ControlLengthD: controllengthd,
             ControlLengthE: controllengthe,
-            ControlLengthF: controllengthf
+            ControlLengthF: controllengthf,
+
+            TotalItems: totalitems
         } = itemData;
 
-        /* ========================
-           STEP 1: MASTER CHAIN
-        ========================= */
         await bindBlindType(designId);
         await bindTubeType(blindtype);
         await bindMounting(blindtype);
         await bindControlType(blindtype, tubetype);
         await bindColourType(blindtype, tubetype, controltype);
 
-        /* ========================
-           STEP 2: PARALLEL GROUP
-        ========================= */
         await Promise.all([
             bindFabricType(designId),
             bindBottomType(designId),
             bindChainRemote(designId, blindtype, controltype)
         ]);
 
-        /* ========================
-           STEP 3: DETAIL BIND
-        ========================= */
         await Promise.all([
             bindFabricColour(fabrictype),
-            bindFabricColourB(fabrictypeb),
-            bindFabricColourC(fabrictypec),
-            bindFabricColourD(fabrictyped),
-            bindFabricColourE(fabrictypee),
-            bindFabricColourF(fabrictypef),
-
             bindChainStopper(chaincolour),
-            bindChainStopperB(chaincolourb),
-            bindChainStopperC(chaincolourc),
-            bindChainStopperD(chaincolourd),
-            bindChainStopperE(chaincoloure),
-            bindChainStopperF(chaincolourf),
-
-            bindBottomColour(bottomtype),
-            bindBottomColourB(bottomtypeb),
-            bindBottomColourC(bottomtypec),
-            bindBottomColourD(bottomtyped),
-            bindBottomColourE(bottomtypee),
-            bindBottomColourF(bottomtypef)
+            bindBottomColour(bottomtype)
         ]);
 
-        /* ========================
-           STEP 4: VISIBILITY
-        ========================= */
+        if (blindname === "Dual Blinds") {
+            await Promise.all([
+                bindFabricColourB(fabrictypeb)
+            ]);
+        }
+
+        if (blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent") {
+            await Promise.all([
+                bindFabricColourC(fabrictypec),
+            ]);
+        }
+
+        if (blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await Promise.all([
+                bindFabricColourD(fabrictyped),
+            ]);
+        }
+
+        if (blindname === "Dual Blinds" || blindname === "Link 2 Blinds Independent" || blindname === "DB Link 2 Blinds Independent") {
+            await Promise.all([
+                bindChainStopperB(chaincolourb)
+            ]);
+        }
+
+        if (blindname === "Link 3 Blinds Independent with Dependent" || blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await Promise.all([
+                bindChainStopperC(chaincolourc),
+            ]);
+        }
+
+        if (blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await Promise.all([
+                bindChainStopperD(chaincolourd),
+            ]);
+        }
+
+        if (blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await Promise.all([
+                bindChainStopperF(chaincolourf),
+            ]);
+        }
+
+        if (totalitems === "2" || totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                bindBottomColourB(bottomtypeb)
+            ]);
+        }
+
+        if (totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                bindBottomColourC(bottomtypec),
+            ]);
+        }
+
+        if (totalitems === "4" || totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                bindBottomColourD(bottomtyped),
+            ]);
+        }
+
+        if (totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                bindBottomColourE(bottomtypee),
+            ]);
+        }
+
+        if (totalitems === "6") {
+            await Promise.all([
+                bindBottomColourF(bottomtypef)
+            ]);
+        }
+
         await Promise.all([
             visibleDetail(blindtype, tubetype, controltype, colourtype),
 
-            ...[1, 2, 3, 4, 5, 6].flatMap(i => [
-                visibleBottomColour(i, itemData[`BottomType${i === 1 ? "" : String.fromCharCode(64 + i)}`]),
-                visibleFlatBottom(itemData[`BottomType${i === 1 ? "" : String.fromCharCode(64 + i)}`], i),
-                visibleChainStopperLength(controltype, itemData[`ChainId${i === 1 ? "" : String.fromCharCode(64 + i)}`], i),
-                visibleCustomChainLength(
-                    itemData[`ChainId${i === 1 ? "" : String.fromCharCode(64 + i)}`],
-                    itemData[`ControlLength${i === 1 ? "" : String.fromCharCode(64 + i)}`],
-                    i
-                )
-            ])
+            visibleBottomColour(1, bottomtype),
+            visibleFlatBottom(bottomtype, 1),
+            visibleChainStopperLength(controltype, chaincolour, 1),
+            visibleCustomChainLength(chaincolour, controllength, 1)
         ]);
+
+        if (blindname === "Dual Blinds" || blindname === "Link 2 Blinds Independent" || blindname === "DB Link 2 Blinds Independent") {
+            await Promise.all([
+                visibleChainStopperLength(controltype, chaincolourb, 2),
+                visibleCustomChainLength(chaincolourb, controllengthb, 2),
+            ]);
+        }
+
+        if (blindname === "Link 3 Blinds Independent with Dependent" || blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await Promise.all([
+                visibleChainStopperLength(controltype, chaincolourc, 3),
+                visibleCustomChainLength(chaincolourc, controllengthc, 3),
+            ]);
+        }
+
+        if (blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await Promise.all([
+                visibleChainStopperLength(controltype, chaincolourd, 4),
+                visibleCustomChainLength(chaincolourd, controllengthd, 4)
+            ]);            
+        }
+
+        if (blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await Promise.all([
+                visibleChainStopperLength(controltype, chaincolourf, 6),
+                visibleCustomChainLength(chaincolourf, controllengthf, 6)
+            ]);
+        }
+
+        if (totalitems === "2" || totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                visibleBottomColour(2, bottomtypeb),
+                visibleFlatBottom(bottomtypeb, 2)
+            ]);
+        }
+
+        if (totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                visibleBottomColour(3, bottomtypec),
+                visibleFlatBottom(bottomtypec, 3)
+            ]);
+        }
+
+        if (totalitems === "4" || totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                visibleBottomColour(4, bottomtyped),
+                visibleFlatBottom(bottomtyped, 4)
+            ]);
+        }
+
+        if (totalitems === "5" || totalitems === "6") {
+            await Promise.all([
+                visibleBottomColour(5, bottomtypee),
+                visibleFlatBottom(bottomtypee, 5)
+            ]);
+        }
+
+        if (totalitems === "6") {
+            await Promise.all([
+                visibleBottomColour(6, bottomtypef),
+                visibleFlatBottom(bottomtypef, 6)
+            ]);
+        }
 
         setFormValues(itemData);
 

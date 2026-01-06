@@ -8310,10 +8310,14 @@ Partial Class Order_Method
                 Dim tubeType As String = orderCfg.GetTubeId(productId)
                 Dim controlType As String = orderCfg.GetControlId(productId)
 
+                Dim blindName As String = orderCfg.GetBlindName(blindId)
+
                 data("BlindType") = blindId
                 data("TubeType") = tubeType
                 data("ControlType") = controlType
                 data("ColourType") = productId
+
+                data("BlindName") = blindName
 
                 data("SubType") = row("SubType")
 
@@ -8560,6 +8564,7 @@ Partial Class Order_Method
                 data("SpringQty") = row("SpringQty")
                 data("TopPlasticQty") = row("TopPlasticQty")
 
+                data("TotalItems") = row("TotalItems")
                 data("Notes") = row("Notes")
                 data("MarkUp") = row("MarkUp")
 
