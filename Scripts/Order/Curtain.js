@@ -1172,19 +1172,18 @@ async function checkSession() {
     ]);
 
     if (itemAction === "create") {
-        visibleDetail("", "", "", "");
+        bindComponentForm("", "");
         controlForm(false);
-        await Promise.all([
-            bindBlindType(designId),
-            bindBottomType(designId)
-        ]);
+        await bindBlindType(designId);
+        await bindFabricType(designId);
+        await bindTrackType("");
     } else if (["edit", "view", "copy"].includes(itemAction)) {
+        await bindItemOrder(itemId);
         controlForm(
             itemAction === "view",
             itemAction === "edit",
             itemAction === "copy"
         );
-        await bindItemOrder(itemId);
     }
 }
 
