@@ -871,6 +871,10 @@ Partial Class Order_Method
             If String.IsNullOrEmpty(data.stackposition) Then Return "STACK POSITION IS REQUIRED !"
         End If
 
+        If blindName = "Single Curtain & Track" OrElse blindName = "Double Curtain & Track" OrElse blindName = "Track Only" OrElse blindName = "Curtain Only" Then
+            If String.IsNullOrEmpty(data.stackposition) Then Return "STACK POSITION IS REQUIRED !"
+        End If
+
         If String.IsNullOrEmpty(data.width) Then Return "WIDTH IS REQUIRED !"
         If Not Integer.TryParse(data.width, width) OrElse width <= 0 Then Return "PLEASE CHECK YOUR WIDTH ORDER !"
 

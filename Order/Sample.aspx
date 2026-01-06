@@ -48,19 +48,19 @@
                             <div class="form form-horizontal">
                                 <div class="form-body">
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-12 col-sm-12 col-lg-3">
                                             <label>Sample Type</label>
                                         </div>
-                                        <div class="col-3 form-group">
+                                        <div class="col-12 col-sm-12 col-lg-3 form-group">
                                             <select id="blindtype" class="form-select"></select>
                                         </div>
                                     </div>
 
                                     <div class="row" style="display:none;">
-                                        <div class="col-3">
+                                        <div class="col-12 col-sm-12 col-lg-3">
                                             <label>Sample Type</label>
                                         </div>
-                                        <div class="col-3 form-group">
+                                        <div class="col-12 col-sm-12 col-lg-3 form-group">
                                             <select id="colourtype" class="form-select"></select>
                                         </div>
                                     </div>
@@ -69,46 +69,46 @@
                                         <hr />
 
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Quantity</label>
                                             </div>
-                                            <div class="col-2 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
                                                 <input type="number" id="qty" class="form-control" autocomplete="off" placeholder="Quantity" value="1" />
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Fabric Type</label>
                                             </div>
-                                            <div class="col-5 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-5 form-group">
                                                 <select id="fabrictype" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Fabric Colour</label>
                                             </div>
-                                            <div class="col-5 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-5 form-group">
                                                 <select id="fabriccolour" class="form-select"></select>
                                             </div>
                                         </div>
 
                                         <div class="row mt-3">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Special Information</label>
                                             </div>
-                                            <div class="col-9 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-9 form-group">
                                                 <textarea class="form-control" id="notes" rows="4" placeholder="Your notes ..." style="resize:none;"></textarea>
                                             </div>
                                         </div>
 
                                         <div class="row" id="divmarkup">
-                                            <div class="col-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Mark Up</label>
                                             </div>
-                                            <div class="col-3 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <div class="input-group">
                                                     <input type="number" id="markup" class="form-control" autocomplete="off" placeholder="Mark Up ..." />
                                                     <span class="input-group-text">%</span>
