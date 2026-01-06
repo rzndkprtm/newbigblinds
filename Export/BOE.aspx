@@ -233,6 +233,7 @@
                 Dim boeFabricIdB As String = GetItemData("SELECT BoeId FROM FabricColours WHERE Id='" & webFabricIdB & "'")
 
                 If String.IsNullOrEmpty(kitId) Then Continue For
+                If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
                 writer.WriteStartElement("OrderDetails")
                 writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
@@ -262,14 +263,15 @@
                 Dim kitId As String = GetItemData("SELECT KitId FROM ProductKits WHERE ProductId='" & productId & "'")
                 Dim kitIdB As String = String.Empty
 
-                If String.IsNullOrEmpty(kitId) Then Continue For
-
                 If blindName = "Double Curtain & Track" Then
                     kitIdB = kitId
                 End If
 
                 Dim webFabricId As String = thisData.Tables(0).Rows(i).Item("FabricColourId").ToString()
                 Dim boeFabricId As String = GetItemData("SELECT BoeId FROM FabricColours WHERE Id='" & webFabricId & "'")
+
+                If String.IsNullOrEmpty(kitId) Then Continue For
+                If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
                 writer.WriteStartElement("OrderDetails")
                 writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
@@ -310,6 +312,7 @@
                 End If
 
                 If String.IsNullOrEmpty(kitId) Then Continue For
+                If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
                 writer.WriteStartElement("OrderDetails")
                 writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
@@ -429,6 +432,7 @@
                 End If
 
                 If String.IsNullOrEmpty(kitId) Then Continue For
+                If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
                 writer.WriteStartElement("OrderDetails")
                 writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
@@ -612,6 +616,7 @@
                 End If
 
                 If String.IsNullOrEmpty(kitId) Then Continue For
+                If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
                 writer.WriteStartElement("OrderDetails")
                 writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
@@ -694,6 +699,7 @@
                     End If
 
                     If String.IsNullOrEmpty(kitId) Then Continue For
+                    If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
                     writer.WriteStartElement("OrderDetails")
                     writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
@@ -1107,6 +1113,7 @@
                 Dim boeFabricId As String = GetItemData("SELECT BoeId FROM FabricColours WHERE Id='" & webFabricId & "'")
 
                 If String.IsNullOrEmpty(kitId) Then Continue For
+                If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
                 writer.WriteStartElement("OrderDetails")
                 writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
