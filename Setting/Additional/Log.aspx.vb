@@ -78,7 +78,6 @@ Partial Class Setting_Additional_Log
     End Sub
 
 
-
     Protected Function GetDataName(type As String, dataId As String, desc As String) As String
         Try
             If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(dataId) Then
@@ -98,6 +97,7 @@ Partial Class Setting_Additional_Log
                 Dim thisDes As String = String.Format("{0} -> {1}", dataName, desc)
                 Return thisDes
             End If
+
             Return String.Empty
         Catch ex As Exception
             Return "Error"
