@@ -537,7 +537,7 @@
                 writer.WriteAttributeString("ControlColour", thisData.Tables(0).Rows(i).Item("Tassel").ToString())
                 writer.WriteAttributeString("ValanceType", thisData.Tables(0).Rows(i).Item("ValanceType").ToString())
                 writer.WriteAttributeString("ValanceSize", thisData.Tables(0).Rows(i).Item("ValanceSizeValue").ToString())
-                writer.WriteAttributeString("ValancePosition", thisData.Tables(0).Rows(i).Item("ReturnPosition").ToString())
+                writer.WriteAttributeString("ValancePosition", valancePosition)
                 writer.WriteAttributeString("ValanceReturnSize", thisData.Tables(0).Rows(i).Item("ReturnLengthValue").ToString())
                 writer.WriteAttributeString("Supply", thisData.Tables(0).Rows(i).Item("Supply").ToString())
                 writer.WriteAttributeString("WandLength", thisData.Tables(0).Rows(i).Item("WandLengthValue").ToString())
