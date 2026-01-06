@@ -112,6 +112,7 @@
                                                 <select id="heading" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Double Pinch">Double Pinch</option>
+                                                    <option value="Triple Pinch">Triple Pinch</option>
                                                     <option value="Inverted Box">Inverted Box</option>
                                                     <option value="Knife">Knife</option>
                                                     <option value="S-Wave">S-Wave</option>

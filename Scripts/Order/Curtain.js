@@ -871,7 +871,7 @@ function bindComponentForm(blindType, colourType) {
                 );
             } else if (blindName === "Curtain Only") {
                 divShow.push(
-                    "divmouting", "divheading", "divfabric", "divwidth", "divdrop", "divreturnlength", "divbottomhem", "divtieback"
+                    "divmouting", "divheading", "divfabric", "divwidth", "divdrop", "divstackposition", "divreturnlength", "divbottomhem", "divtieback"
                 );
             } else if (blindName === "Track Only") {
                 divShow.push(
