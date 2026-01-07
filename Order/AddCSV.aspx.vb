@@ -104,6 +104,11 @@ Partial Class Order_AddCSV
             Dim orderName As String = worksheet.Cells(2, 2).Text
             Dim orderNote As String = worksheet.Cells(2, 5).Text
 
+            If orderNumber = orderClass.IsOrderExist(ddlCustomer.SelectedValue, orderNumber.Trim()) Then
+                MessageError(True, "ORDER NUMBER ALREADY EXISTS !")
+                Exit Sub
+            End If
+
             Dim success As Boolean = False
             Dim retry As Integer = 0
             Dim maxRetry As Integer = 10

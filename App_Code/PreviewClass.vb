@@ -1199,7 +1199,7 @@ Public Class PreviewClass
 
             ' START VERTICAL
             Try
-                Dim verticalData As DataSet = GetListData("SELECT OrderDetails.*, Blinds.Name AS BlindName, ProductTubes.Name AS TubeName, ProductControls.Name AS ControlName, ProductColours.Name AS ColourName, Fabrics.Name AS FabricName, FabricColours.Name AS FabricColour, Chains.Name AS ChainName FROM OrderDetails LEFT JOIN Products ON OrderDetails.ProductId=Products.Id LEFT JOIN Designs ON Products.DesignId=Designs.Id LEFT JOIN Blinds ON Products.BlindId=Blinds.Id LEFT JOIN ProductTubes ON Products.TubeType=ProductTubes.Id LEFT JOIN ProductControls ON Products.ControlType=ProductControls.Id LEFT JOIN ProductColours ON Products.ColourType=ProductColours.Id LEFT JOIN Fabrics ON OrderDetails.FabricId=Fabrics.Id LEFT JOIN FabricColours ON OrderDetails.FabricColourId=FabricColours.Id LEFT JOIN Chains ON OrderDetails.ChainId=Chains.Id WHERE OrderDetails.HeaderId='" & headerId & "' AND Designs.Name='Vertical' AND OrderDetails.Active=1 ORDER BY OrderDetails.Id ASC")
+                Dim verticalData As DataSet = GetListData("SELECT OrderDetails.*, Blinds.Name AS BlindName, ProductTubes.Name AS TubeName, ProductControls.Name AS ControlName, ProductColours.Name AS ColourName, Fabrics.Name AS FabricName, FabricColours.Colour AS FabricColour, Chains.Name AS ChainName FROM OrderDetails LEFT JOIN Products ON OrderDetails.ProductId=Products.Id LEFT JOIN Designs ON Products.DesignId=Designs.Id LEFT JOIN Blinds ON Products.BlindId=Blinds.Id LEFT JOIN ProductTubes ON Products.TubeType=ProductTubes.Id LEFT JOIN ProductControls ON Products.ControlType=ProductControls.Id LEFT JOIN ProductColours ON Products.ColourType=ProductColours.Id LEFT JOIN Fabrics ON OrderDetails.FabricId=Fabrics.Id LEFT JOIN FabricColours ON OrderDetails.FabricColourId=FabricColours.Id LEFT JOIN Chains ON OrderDetails.ChainId=Chains.Id WHERE OrderDetails.HeaderId='" & headerId & "' AND Designs.Name='Vertical' AND OrderDetails.Active=1 ORDER BY OrderDetails.Id ASC")
 
                 If Not verticalData.Tables(0).Rows.Count = 0 Then
                     pageEvent.PageTitle = "Vertical"
@@ -1215,12 +1215,9 @@ Public Class PreviewClass
 
                         Dim controlName As String = dt.Rows(i)("ControlName").ToString()
                         Dim controlColour As String = String.Empty
-                        If controlName = "Chain" Then
-                            controlColour = dt.Rows(i)("ChainName").ToString()
-                        End If
-                        If controlName = "Wand" Then
-                            controlColour = dt.Rows(i)("WandColour").ToString()
-                        End If
+
+                        If controlName = "Chain" Then controlColour = dt.Rows(i)("ChainName").ToString()
+                        If controlName = "Wand" Then controlColour = dt.Rows(i)("WandColour").ToString()
 
                         Dim controlLength As String = dt.Rows(i)("ControlLength").ToString()
                         Dim controlLengthValue As String = dt.Rows(i)("ControlLengthValue").ToString()
@@ -1241,10 +1238,10 @@ Public Class PreviewClass
                         items(8, i) = dt.Rows(i)("FabricColour").ToString()
                         items(9, i) = dt.Rows(i)("Width").ToString()
                         items(10, i) = If(dt.Rows(i)("Drop").ToString() <> "" AndAlso dt.Rows(i)("Drop").ToString() <> "0", dt.Rows(i)("Drop").ToString(), "")
-                        items(11, i) = dt.Rows(i)("ColourName").ToString()
-                        items(12, i) = dt.Rows(i)("StackPosition").ToString()
-                        items(13, i) = dt.Rows(i)("ControlPosition").ToString()
-                        items(14, i) = controlName
+                        items(11, i) = dt.Rows(i)("StackPosition").ToString()
+                        items(12, i) = dt.Rows(i)("ControlPosition").ToString()
+                        items(13, i) = controlName
+                        items(14, i) = dt.Rows(i)("ColourName").ToString()
                         items(15, i) = controlColour
                         items(16, i) = controlLengthText
                         items(17, i) = dt.Rows(i)("BottomJoining").ToString()
@@ -1261,7 +1258,7 @@ Public Class PreviewClass
                         Dim fontHeader As New Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD)
                         Dim fontContent As New Font(Font.FontFamily.TIMES_ROMAN, 8)
 
-                        Dim headers As String() = {"", "Location", "Mounting", "Vertical Type", "Blade Type", "Blade Qty", "Fabric Insert", "Fabric Type", "Fabric Colour", "Width (mm)", "Drop (mm)", "Track Colour", "Stack Position", "Control Position", "Control Type", "Control Colour", "Control Length", "Bottom Joining", "Extension Bracket", "Sloping", "Notes"}
+                        Dim headers As String() = {"", "Location", "Mounting", "Vertical Type", "Blade Type", "Blade Qty", "Fabric Insert", "Fabric Type", "Fabric Colour", "Width (mm)", "Drop (mm)", "Stack Position", "Control Position", "Control Type", "Track Colour", "Control Colour", "Control Length", "Bottom Joining", "Extension Bracket", "Sloping", "Notes"}
 
                         For row As Integer = 0 To headers.Length - 1
                             Dim cellHeader As New PdfPCell(New Phrase(headers(row), fontHeader))
@@ -1298,7 +1295,7 @@ Public Class PreviewClass
 
             ' START SAPHORA DRAPE
             Try
-                Dim saphoraData As DataSet = GetListData("SELECT OrderDetails.*, Blinds.Name AS BlindName, ProductTubes.Name AS TubeName, ProductControls.Name AS ControlName, ProductColours.Name AS ColourName, Fabrics.Name AS FabricName, FabricColours.Name AS FabricColour, Chains.Name AS ChainName FROM OrderDetails LEFT JOIN Products ON OrderDetails.ProductId=Products.Id LEFT JOIN Designs ON Products.DesignId=Designs.Id LEFT JOIN Blinds ON Products.BlindId=Blinds.Id LEFT JOIN ProductTubes ON Products.TubeType=ProductTubes.Id LEFT JOIN ProductControls ON Products.ControlType=ProductControls.Id LEFT JOIN ProductColours ON Products.ColourType=ProductColours.Id LEFT JOIN Fabrics ON OrderDetails.FabricId=Fabrics.Id LEFT JOIN FabricColours ON OrderDetails.FabricColourId=FabricColours.Id LEFT JOIN Chains ON OrderDetails.ChainId=Chains.Id WHERE OrderDetails.HeaderId='" & headerId & "' AND Designs.Name='Saphora Drape' AND OrderDetails.Active=1 ORDER BY OrderDetails.Id ASC")
+                Dim saphoraData As DataSet = GetListData("SELECT OrderDetails.*, Blinds.Name AS BlindName, ProductTubes.Name AS TubeName, ProductControls.Name AS ControlName, ProductColours.Name AS ColourName, Fabrics.Name AS FabricName, FabricColours.Colour AS FabricColour, Chains.Name AS ChainName FROM OrderDetails LEFT JOIN Products ON OrderDetails.ProductId=Products.Id LEFT JOIN Designs ON Products.DesignId=Designs.Id LEFT JOIN Blinds ON Products.BlindId=Blinds.Id LEFT JOIN ProductTubes ON Products.TubeType=ProductTubes.Id LEFT JOIN ProductControls ON Products.ControlType=ProductControls.Id LEFT JOIN ProductColours ON Products.ColourType=ProductColours.Id LEFT JOIN Fabrics ON OrderDetails.FabricId=Fabrics.Id LEFT JOIN FabricColours ON OrderDetails.FabricColourId=FabricColours.Id LEFT JOIN Chains ON OrderDetails.ChainId=Chains.Id WHERE OrderDetails.HeaderId='" & headerId & "' AND Designs.Name='Saphora Drape' AND OrderDetails.Active=1 ORDER BY OrderDetails.Id ASC")
 
                 If Not saphoraData.Tables(0).Rows.Count = 0 Then
                     pageEvent.PageTitle = "Saphora"
