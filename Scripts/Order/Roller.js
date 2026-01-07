@@ -1327,8 +1327,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
             getTubeName(tubeType),
             getControlName(controlType),
             getCompanyDetailName(companyDetail)
-        ]).then(([blindName, tubeName, controlName,
-        ]) => {
+        ]).then(([blindName, tubeName, controlName, companyDetail]) => {
             const divShow = [];
 
             const textdbfront = document.getElementById("textdbfront");
