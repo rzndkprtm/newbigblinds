@@ -128,10 +128,10 @@
                     <div class="card-content">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8 col-sm-8 col-lg-6 mb-2">
+                                <div class="col-12 col-sm-12 col-lg-6">
                                     <h4 class="card-title">List Hardware / Ven Kit</h4>
                                 </div>
-                                <div class="col-4 col-sm-4 col-lg-6 mb-2 d-flex justify-content-end">
+                                <div class="col-12 col-sm-12 col-lg-6 d-flex justify-content-end">
                                     <asp:Button runat="server" ID="btnAddKit" CssClass="btn btn-primary btn-sm" Text="Add New" OnClick="btnAddKit_Click" />
                                 </div>
                             </div>
