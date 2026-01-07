@@ -703,6 +703,7 @@ Partial Class Order_AddCSV
 
                         Dim fabricIdB As String = String.Empty
                         Dim fabricColourIdB As String = String.Empty
+
                         If blindType = "Day & Night" Then
                             If String.IsNullOrEmpty(fabricTypeB) Then
                                 MessageError(True, "FABRIC TYPE IS REQUIRED !")
@@ -1052,13 +1053,14 @@ Partial Class Order_AddCSV
                         Dim wandColour As String = (sheetDetail.Cells(row, 18).Text & "").Trim()
                         Dim controlLengthText As String = (sheetDetail.Cells(row, 19).Text & "").Trim()
                         Dim bottomJoining As String = (sheetDetail.Cells(row, 20).Text & "").Trim()
-                        Dim bracketExt As String = (sheetDetail.Cells(row, 21).Text & "").Trim()
+                        Dim bracketExtension As String = (sheetDetail.Cells(row, 21).Text & "").Trim()
                         Dim notes As String = (sheetDetail.Cells(row, 22).Text & "").Trim()
 
 
                         Dim chainId As String = String.Empty
                         Dim controlLength As String = String.Empty
-
+                        Dim controlLengthValue As Integer = 0
+                        Dim wandLengthValue As Integer = 0
 
                         If String.IsNullOrEmpty(designId) Then
                             MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
@@ -1091,6 +1093,12 @@ Partial Class Order_AddCSV
                         Dim colourId As String = orderClass.GetItemData("SELECT Id FROM ProductColours WHERE Name='" & colourType & "'")
                         If String.IsNullOrEmpty(colourType) Then
                             MessageError(True, "PLEASE CHECK YOUR HEADRAIL COLOUR !")
+                            Exit For
+                        End If
+
+                        Dim productId As String = orderClass.GetItemData("SELECT Id FROM Products CROSS APPLY STRING_SPLIT(CompanyDetailId, ',') AS companyArray WHERE DesignId='" & designId & "' AND BlindId='" & blindId & "' AND companyArray.VALUE='" & companyDetailId & "' AND TubeType='" & tubeId & "' AND ControlType='" & controlId & "' AND ColourType='" & colourId & "' AND Active=1")
+                        If String.IsNullOrEmpty(productId) Then
+                            MessageError(True, "PLEASE CHECK YOUR PRODUCT DATA !")
                             Exit For
                         End If
 
@@ -1176,12 +1184,34 @@ Partial Class Order_AddCSV
                             Exit For
                         End If
 
+                        If blindType = "Complete Set" Then
+                            controlLength = "Standard"
+                            If controlType = "Wand" Then
+                                wandLengthValue = Math.Ceiling(drop * 2 / 3)
+                                If wandLengthValue > 1000 Then wandLengthValue = 1000
+                            End If
+                            If controlType = "Chain" Then
+                                controlLengthValue = Math.Ceiling(drop * 2 / 3)
+                                If controlLengthValue > 1000 Then controlLengthValue = 1000
+                            End If
+
+                            If Not String.IsNullOrEmpty(controlLengthText) AndAlso Not controlLengthText.ToLower().Contains("standard") AndAlso Not controlLengthText.ToLower().Contains("std") Then
+                                wandLengthValue = "Custom"
+                                controlLengthText = controlLengthText.Replace("mm", "")
+
+                                If Not Integer.TryParse(controlLengthText, wandLengthValue) OrElse wandLengthValue < 0 Then
+                                    MessageError(True, "PLEASE CHECK YOUR CORD LENGTH !")
+                                    Exit For
+                                End If
+                            End If
+                        End If
+
                         If String.IsNullOrEmpty(bottomJoining) Then
                             MessageError(True, "BOTTOM JOINING IS REQUIRED !")
                             Exit For
                         End If
 
-                        If String.IsNullOrEmpty(bracketExt) Then
+                        If String.IsNullOrEmpty(bracketExtension) Then
                             MessageError(True, "BRACKET EXTENSION IS REQUIRED !")
                             Exit For
                         End If
@@ -1192,35 +1222,52 @@ Partial Class Order_AddCSV
                             Dim groupName As String = String.Format("Vertical - {0} - {1}", blindType, tubeName)
                             Dim priceProductGroup As String = orderClass.GetPriceProductGroupId(groupName, designId)
 
+                            Dim linearMetre As Decimal = 0D
+                            Dim squareMetre As Decimal = 0D
+
+                            If blindType = "Complete Set" Then
+                                linearMetre = width / 1000
+                                squareMetre = width * drop / 1000000
+                            End If
+
+                            If controlType = "Wand" Then
+                                If stackPosition = "Left" Then controlPosition = "Right"
+                                If stackPosition = "Right" Then controlPosition = "Left"
+                                If stackPosition = "Centre" Then controlPosition = "Right and Left"
+                                If stackPosition = "Split" Then controlPosition = "Middle"
+                            End If
+
+                            If bottomJoining = "Sewn" Then bottomJoining = "Sewn In"
+
                             Dim itemId As String = orderClass.GetNewOrderItemId()
 
                             Using thisConn As SqlConnection = New SqlConnection(myConn)
                                 Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderDetails(Id, HeaderId, ProductId, FabricId, FabricColourId, ChainId, PriceProductGroupId, Qty, QtyBlade, Room, Mounting, Width, [Drop], StackPosition, ControlPosition, ControlLength, ControlLengthValue, WandColour, WandLengthValue, FabricInsert, BottomJoining, BracketExtension, Sloping, LinearMetre, SquareMetre, TotalItems, Notes, MarkUp, Active) VALUES(@Id, @HeaderId, @ProductId, @FabricId, @FabricColourId, @ChainId, @PriceProductGroupId, @Qty, @QtyBlade, @Room, @Mounting, @Width, @Drop, @StackPosition, @ControlPosition, @ControlLength, @ControlLengthValue, @WandColour, @WandLengthValue, @FabricInsert, @BottomJoining, @BracketExtension, @Sloping, @LinearMetre, @SquareMetre, 1, @Notes, @MarkUp, 1)", thisConn)
                                     myCmd.Parameters.AddWithValue("@Id", itemId)
                                     myCmd.Parameters.AddWithValue("@HeaderId", headerId)
-                                    myCmd.Parameters.AddWithValue("@ProductId", String.Empty)
-                                    myCmd.Parameters.AddWithValue("@FabricId", If(String.IsNullOrEmpty(fabricType), CType(DBNull.Value, Object), fabricType))
-                                    myCmd.Parameters.AddWithValue("@FabricColourId", If(String.IsNullOrEmpty(fabricColour), CType(DBNull.Value, Object), fabricColour))
+                                    myCmd.Parameters.AddWithValue("@ProductId", productId)
+                                    myCmd.Parameters.AddWithValue("@FabricId", If(String.IsNullOrEmpty(fabricId), CType(DBNull.Value, Object), fabricId))
+                                    myCmd.Parameters.AddWithValue("@FabricColourId", If(String.IsNullOrEmpty(fabricColourId), CType(DBNull.Value, Object), fabricColourId))
                                     myCmd.Parameters.AddWithValue("@ChainId", If(String.IsNullOrEmpty(chainId), CType(DBNull.Value, Object), chainId))
                                     myCmd.Parameters.AddWithValue("@PriceProductGroupId", If(String.IsNullOrEmpty(priceProductGroup), CType(DBNull.Value, Object), priceProductGroup))
                                     myCmd.Parameters.AddWithValue("@Qty", "1")
                                     myCmd.Parameters.AddWithValue("@QtyBlade", qtyBlade)
                                     myCmd.Parameters.AddWithValue("@Room", room)
-                                    myCmd.Parameters.AddWithValue("@Mounting", mounting)
+                                    myCmd.Parameters.AddWithValue("@Mounting", sizeType & " " & mounting)
                                     myCmd.Parameters.AddWithValue("@Width", width)
                                     myCmd.Parameters.AddWithValue("@Drop", drop)
                                     myCmd.Parameters.AddWithValue("@FabricInsert", fabricInsert)
                                     myCmd.Parameters.AddWithValue("@StackPosition", stackPosition)
                                     myCmd.Parameters.AddWithValue("@ControlPosition", controlPosition)
                                     myCmd.Parameters.AddWithValue("@ControlLength", controllength)
-                                    myCmd.Parameters.AddWithValue("@ControlLengthValue", controllength)
+                                    myCmd.Parameters.AddWithValue("@ControlLengthValue", controlLengthValue)
                                     myCmd.Parameters.AddWithValue("@WandColour", wandColour)
-                                    'myCmd.Parameters.AddWithValue("@WandLengthValue", wandlength)
-                                    'myCmd.Parameters.AddWithValue("@BottomJoining", bottomJoining)
-                                    'myCmd.Parameters.AddWithValue("@BracketExtension", bracketextension)
-                                    'myCmd.Parameters.AddWithValue("@Sloping", String.Empty)
-                                    'myCmd.Parameters.AddWithValue("@LinearMetre", linearMetre)
-                                    'myCmd.Parameters.AddWithValue("@SquareMetre", squareMetre)
+                                    myCmd.Parameters.AddWithValue("@WandLengthValue", wandLengthValue)
+                                    myCmd.Parameters.AddWithValue("@BottomJoining", bottomJoining)
+                                    myCmd.Parameters.AddWithValue("@BracketExtension", bracketextension)
+                                    myCmd.Parameters.AddWithValue("@Sloping", String.Empty)
+                                    myCmd.Parameters.AddWithValue("@LinearMetre", linearMetre)
+                                    myCmd.Parameters.AddWithValue("@SquareMetre", squareMetre)
                                     myCmd.Parameters.AddWithValue("@Notes", notes)
                                     myCmd.Parameters.AddWithValue("@MarkUp", "0")
 

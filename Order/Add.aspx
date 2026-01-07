@@ -83,7 +83,7 @@
                                             <label>Order Note</label>
                                         </div>
                                         <div class="col-12 col-sm-12 col-lg-9 form-group">
-                                            <asp:TextBox runat="server" TextMode="MultiLine" ID="txtOrderNote" Height="100px" CssClass="form-control" placeholder="Order Note ...." autocomplete="off" style="resize: none"></asp:TextBox>
+                                            <asp:TextBox runat="server" TextMode="MultiLine" ID="txtOrderNote" Height="130px" CssClass="form-control" placeholder="Order Note ...." autocomplete="off" style="resize: none"></asp:TextBox>
                                         </div>
                                     </div>
 

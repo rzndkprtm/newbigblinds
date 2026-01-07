@@ -185,10 +185,10 @@
                                             <div class="col-12 col-sm-12 col-lg-4 form-group">
                                                 <select id="stackposition" class="form-select">
                                                     <option value=""></option>
-                                                    <option value="Stack Left">Stack Left</option>
-                                                    <option value="Stack Right">Stack Right</option>
-                                                    <option value="Stack Centre">Stack Centre</option>
-                                                    <option value="Stack Split">Stack Split</option>
+                                                    <option value="Left">Left</option>
+                                                    <option value="Right">Right</option>
+                                                    <option value="Centre">Centre</option>
+                                                    <option value="Split">Split</option>
                                                 </select>
                                             </div>
                                         </div>

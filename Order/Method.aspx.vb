@@ -2915,10 +2915,10 @@ Partial Class Order_Method
                 data.chaincolour = String.Empty
                 wandlength = controllength
 
-                If data.stackposition = "Stack Left" Then data.controlposition = "Right"
-                If data.stackposition = "Stack Right" Then data.controlposition = "Left"
-                If data.stackposition = "Stack Centre" Then data.controlposition = "Right and Left"
-                If data.stackposition = "Stack Split" Then data.controlposition = "Middle"
+                If data.stackposition = "Left" Then data.controlposition = "Right"
+                If data.stackposition = "Right" Then data.controlposition = "Left"
+                If data.stackposition = "Centre" Then data.controlposition = "Right and Left"
+                If data.stackposition = "Split" Then data.controlposition = "Middle"
             End If
         End If
 
