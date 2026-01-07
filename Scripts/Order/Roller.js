@@ -1353,7 +1353,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
             const textsixth = document.getElementById("textsixth");
 
             if (blindName === "Single Blind") {
-                divShow.push("divfabric", "divroll", "divcontrolposition", "divbottomtype", "divsize", "divtoptrack");
+                divShow.push("divfabric", "divroll", "divcontrolposition", "divbottomtype", "divsize");
                 if (companyDetailName === "ACCENT") {
                     divShow.push("divtoptrack");
                 }                
@@ -1581,7 +1581,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
                 }
             }
 
-            if (["Alpha 1Nm WF", "Alpha 2Nm WF", "Alpha 3Nm WF", "Alpha 5Nm HW", "Altus", "Mercure", "Sonesse 30 WF", "LSN40"].includes(controlName)) {
+            if (["Alpha 1Nm WF", "Alpha 2Nm WF", "Alpha 3Nm WF", "Alpha 5Nm HW", "Altus", "Mercure", "Sonesse 30 WF", "LSN40", "Basics Wand", "E6", "M6", "Zero Q 1.1", "Zero Q 2.0"].includes(controlName)) {
                 divShow.push("divremote");
             }
             if (["Alpha 1Nm WF", "Alpha 2Nm WF", "Alpha 3Nm WF", "Alpha 5Nm HW", "Sonesse 30 WF"].includes(controlName)) {
