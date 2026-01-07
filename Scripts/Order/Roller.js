@@ -2217,9 +2217,7 @@ async function bindItemOrder(itemId) {
             ControlLengthB: controllengthb,
             ControlLengthC: controllengthc,
             ControlLengthD: controllengthd,
-            ControlLengthF: controllengthf,
-
-            TotalItems: totalitems
+            ControlLengthF: controllengthf
         } = itemData;
 
         await bindBlindType(designId);
@@ -2282,32 +2280,21 @@ async function bindItemOrder(itemId) {
             ]);
         }
 
-        if (totalitems === "2" || totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
-            await Promise.all([
-                bindBottomColourB(bottomtypeb)
-            ]);
+        if (blindname === "Dual Blinds" || blindname === "Link 2 Blinds Dependent" || blindname === "Link 2 Blinds Independent" || blindname === "Link 3 Blinds Dependent" || blindname === "Link 3 Blinds Independent with Dependent" || blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await bindBottomColourB(bottomtypeb);
         }
 
-        if (totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
-            await Promise.all([
-                bindBottomColourC(bottomtypec),
-            ]);
+        if (blindname === "Link 3 Blinds Dependent" || blindname === "Link 3 Blinds Independent with Dependent" || blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await bindBottomColourC(bottomtypec);
         }
 
-        if (totalitems === "4" || totalitems === "5" || totalitems === "6") {
-            await Promise.all([
-                bindBottomColourD(bottomtyped),
-            ]);
+        if (blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
+            await bindBottomColourD(bottomtyped);
         }
 
-        if (totalitems === "5" || totalitems === "6") {
+        if (blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
             await Promise.all([
                 bindBottomColourE(bottomtypee),
-            ]);
-        }
-
-        if (totalitems === "6") {
-            await Promise.all([
                 bindBottomColourF(bottomtypef)
             ]);
         }
@@ -2349,36 +2336,31 @@ async function bindItemOrder(itemId) {
             ]);
         }
 
-        if (totalitems === "2" || totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
+        if (blindname === "Dual Blinds" || blindname === "Link 2 Blinds Dependent" || blindname === "Link 2 Blinds Independent" || blindname === "Link 3 Blinds Dependent" || blindname === "Link 3 Blinds Independent with Dependent" || blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
             await Promise.all([
                 visibleBottomColour(2, bottomtypeb),
                 visibleFlatBottom(bottomtypeb, 2)
             ]);
         }
 
-        if (totalitems === "3" || totalitems === "4" || totalitems === "5" || totalitems === "6") {
+        if (blindname === "Link 3 Blinds Dependent" || blindname === "Link 3 Blinds Independent with Dependent" || blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
             await Promise.all([
                 visibleBottomColour(3, bottomtypec),
                 visibleFlatBottom(bottomtypec, 3)
             ]);
         }
 
-        if (totalitems === "4" || totalitems === "5" || totalitems === "6") {
+        if (blindname === "DB Link 2 Blinds Dependent" || blindname === "DB Link 2 Blinds Independent" || blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
             await Promise.all([
                 visibleBottomColour(4, bottomtyped),
                 visibleFlatBottom(bottomtyped, 4)
             ]);
         }
 
-        if (totalitems === "5" || totalitems === "6") {
+        if (blindname === "DB Link 3 Blinds Dependent" || blindname === "DB Link 3 Blinds Independent with Dependent") {
             await Promise.all([
                 visibleBottomColour(5, bottomtypee),
-                visibleFlatBottom(bottomtypee, 5)
-            ]);
-        }
-
-        if (totalitems === "6") {
-            await Promise.all([
+                visibleFlatBottom(bottomtypee, 5),
                 visibleBottomColour(6, bottomtypef),
                 visibleFlatBottom(bottomtypef, 6)
             ]);
