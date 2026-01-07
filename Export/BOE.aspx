@@ -263,9 +263,7 @@
                 Dim kitId As String = GetItemData("SELECT KitId FROM ProductKits WHERE ProductId='" & productId & "'")
                 Dim kitIdB As String = String.Empty
 
-                If blindName = "Double Curtain & Track" Then
-                    kitIdB = kitId
-                End If
+                If blindName = "Double Curtain & Track" Then kitIdB = kitId
 
                 Dim webFabricId As String = thisData.Tables(0).Rows(i).Item("FabricColourId").ToString()
                 Dim boeFabricId As String = GetItemData("SELECT BoeId FROM FabricColours WHERE Id='" & webFabricId & "'")
@@ -493,9 +491,9 @@
             If designName = "Venetian Blind" Then
                 Dim subType As String = thisData.Tables(0).Rows(i).Item("SubType").ToString()
                 Dim tassel As String = thisData.Tables(0).Rows(i).Item("Tassel").ToString()
-                Dim venId As String = GetItemData("SELECT VenId FROM ProductKits WHERE ProductId='" & productId & "' AND BlindStatus='Metal'")
+                Dim venId As String = GetItemData("SELECT VenId FROM ProductKits WHERE ProductId='" & productId & "' AND BlindStatus='Semi Metal'")
                 If tassel = "Gold" OrElse tassel = "Antique Brass" Then
-                    venId = GetItemData("SELECT VenId FROM ProductKits WHERE ProductId='" & productId & "' AND BlindStatus='Semi Metal'")
+                    venId = GetItemData("SELECT VenId FROM ProductKits WHERE ProductId='" & productId & "' AND BlindStatus='Metal'")
                 End If
                 Dim venIdB As String = String.Empty
                 Dim venIdC As String = String.Empty
