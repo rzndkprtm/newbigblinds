@@ -1353,13 +1353,11 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
             const textsixth = document.getElementById("textsixth");
 
             if (blindName === "Single Blind") {
-                divShow.push("divfabric", "divroll", "divcontrolposition", "divbottomtype", "divsize");
-                if (companyDetail === "ACCENT") {
-                    divShow.push("divtoptrack");
-                }
-                if (["Gear Reduction 38mm", "Gear Reduction 45mm", "Gear Reduction 49mm"].includes(tubeName)) {
-                    divShow.push("divbracketextension");
-                }
+                divShow.push("divfabric", "divroll", "divcontrolposition", "divbottomtype", "divsize", "divtoptrack");
+                
+                //if (["Gear Reduction 38mm", "Gear Reduction 45mm", "Gear Reduction 49mm"].includes(tubeName)) {
+                //    divShow.push("divbracketextension");
+                //}
             }
             else if (blindName === "Wire Guide") {
                 divShow.push("divfabric", "divcontrolposition", "divbottomtype", "divsize");
