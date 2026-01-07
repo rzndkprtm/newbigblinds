@@ -98,25 +98,51 @@ Partial Class Order_AddCSV
             Dim companyDetailId As String = orderClass.GetCompanyDetailIdByCustomer(ddlCustomer.SelectedValue)
 
             Dim headerId As String = orderClass.GetNewOrderHeaderId
-            Dim orderId As String = String.Format("{0}-{1}", companyAlias, headerId)
+
             Dim orderNumber As String = worksheet.Cells(2, 1).Text
             Dim orderName As String = worksheet.Cells(2, 2).Text
             Dim orderNote As String = worksheet.Cells(2, 5).Text
 
-            Using thisConn As New SqlConnection(myConn)
-                Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderHeaders(Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, 'Regular', 'Unsubmitted', @CreatedBy, GETDATE(), 0, 1); INSERT INTO OrderQuotes VALUES(@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", headerId)
-                    myCmd.Parameters.AddWithValue("@OrderId", orderId)
-                    myCmd.Parameters.AddWithValue("@CustomerId", ddlCustomer.SelectedValue)
-                    myCmd.Parameters.AddWithValue("@OrderNumber", orderNumber)
-                    myCmd.Parameters.AddWithValue("@OrderName", orderName)
-                    myCmd.Parameters.AddWithValue("@OrderNote", orderNote)
-                    myCmd.Parameters.AddWithValue("@CreatedBy", Session("LoginId").ToString())
+            Dim success As Boolean = False
+            Dim retry As Integer = 0
+            Dim maxRetry As Integer = 10
+            Dim orderId As String = ""
 
-                    thisConn.Open()
-                    myCmd.ExecuteNonQuery()
-                End Using
-            End Using
+            Do While Not success
+                retry += 1
+                If retry > maxRetry Then
+                    Throw New Exception("FAILED TO GENERATE UNIQUE ORDER ID")
+                End If
+
+                Dim randomCode As String = orderClass.GenerateRandomCode()
+                orderId = companyAlias & randomCode
+
+                Try
+                    Using thisConn As New SqlConnection(myConn)
+                        Using myCmd As New SqlCommand("INSERT INTO OrderHeaders (Id, OrderId, CustomerId, OrderNumber, OrderName, OrderNote, OrderType, Status, CreatedBy, CreatedDate, DownloadBOE, Active) VALUES (@Id, @OrderId, @CustomerId, @OrderNumber, @OrderName, @OrderNote, 'Regular', 'Unsubmitted', @CreatedBy, GETDATE(), 0, 1); INSERT INTO OrderQuotes VALUES (@Id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
+                            myCmd.Parameters.AddWithValue("@Id", headerId)
+                            myCmd.Parameters.AddWithValue("@OrderId", orderId)
+                            myCmd.Parameters.AddWithValue("@CustomerId", ddlCustomer.SelectedValue)
+                            myCmd.Parameters.AddWithValue("@OrderNumber", orderNumber)
+                            myCmd.Parameters.AddWithValue("@OrderName", orderName)
+                            myCmd.Parameters.AddWithValue("@OrderNote", orderNote)
+                            myCmd.Parameters.AddWithValue("@CreatedBy", Session("LoginId").ToString())
+
+                            thisConn.Open()
+                            myCmd.ExecuteNonQuery()
+                        End Using
+                    End Using
+
+                    success = True
+
+                Catch exSql As SqlException
+                    If exSql.Number = 2601 OrElse exSql.Number = 2627 Then
+                        success = False
+                    Else
+                        Throw
+                    End If
+                End Try
+            Loop
 
             Dim dataLog As Object() = {"OrderHeaders", headerId, Session("LoginId").ToString(), "Order Created | CSV"}
             orderClass.Logs(dataLog)
@@ -320,7 +346,7 @@ Partial Class Order_AddCSV
                             End If
                         End If
 
-                        If blindLower = "basswood" OrElse blindLower = "ultraslat" Then
+                        If blindLower.Contains("basswood") OrElse blindLower.Contains("ultraslat") Then
                             designId = orderClass.GetItemData("SELECT Id FROM Designs WHERE Name='Venetian Blind'")
 
                             Dim blindName As String = Regex.Replace(blindType, "\bVenetian\b", "", RegexOptions.IgnoreCase).Trim()
@@ -528,6 +554,7 @@ Partial Class Order_AddCSV
                             End If
 
                             If msgError.InnerText = "" Then
+                                If returnPosition = "None" Then returnPosition = String.Empty
                                 Dim customName As String = blindName
                                 If blindName = "Ultraslat 50mm" Then customName = "Econo 50mm"
                                 If blindName = "Ultraslat 63mm" Then customName = "Econo 63mm"
@@ -1443,7 +1470,7 @@ Partial Class Order_AddCSV
                             End If
                         End If
 
-                        If controlType = "Motorized" Then
+                        If controlType = "Motorized" OrElse controlType = "Motorised" Then
                             controlType = motorType
                             chainName = "No Remote"
                         End If

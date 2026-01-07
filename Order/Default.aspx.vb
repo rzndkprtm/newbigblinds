@@ -977,7 +977,11 @@ Partial Class Order_Default
     End Function
 
     Protected Function VisibleShipmentOrder(status As String, active As Boolean) As Boolean
-        If active = True AndAlso status = "In Production" AndAlso Session("RoleName") = "Developer" Then Return True
+        If active = True AndAlso status = "In Production" Then
+            If Session("RoleName") = "Developer" OrElse Session("RoleName") = "IT" OrElse Session("RoleName") = "Factory Office" Then
+                Return True
+            End If
+        End If
         Return False
     End Function
 
