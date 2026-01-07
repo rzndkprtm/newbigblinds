@@ -1355,7 +1355,7 @@ function visibleDetail(blindType, tubeType, controlType, colourType) {
 
             if (blindName === "Single Blind") {
                 divShow.push("divfabric", "divroll", "divcontrolposition", "divbottomtype", "divsize");
-                if (company === "1" || company === "3") {
+                if (companyDetail === "ACCENT") {
                     divShow.push("divtoptrack");
                 }
                 if (["Gear Reduction 38mm", "Gear Reduction 45mm", "Gear Reduction 49mm"].includes(tubeName)) {

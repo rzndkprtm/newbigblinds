@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
+Imports System.Windows
 Imports OfficeOpenXml
 
 Partial Class Order_AddCSV
@@ -1054,6 +1055,11 @@ Partial Class Order_AddCSV
                         Dim bracketExt As String = (sheetDetail.Cells(row, 21).Text & "").Trim()
                         Dim notes As String = (sheetDetail.Cells(row, 22).Text & "").Trim()
 
+
+                        Dim chainId As String = String.Empty
+                        Dim controlLength As String = String.Empty
+
+
                         If String.IsNullOrEmpty(designId) Then
                             MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
                             Exit For
@@ -1170,19 +1176,6 @@ Partial Class Order_AddCSV
                             Exit For
                         End If
 
-                        'Dim controlLength As String = "Standard"
-                        'Dim controlLengthValue As Integer = Math.Ceiling(drop * 2 / 3)
-                        'If wandLengthValue > 1000 Then wandLengthValue = 1000
-
-                        'If Not String.IsNullOrEmpty(wandLengthText) AndAlso Not wandLengthText.ToLower().Contains("standard") AndAlso Not wandLengthText.ToLower().Contains("std") Then
-                        '    wandLength = "Custom"
-                        '    wandLengthText = wandLengthText.Replace("mm", "")
-                        '    If Not Integer.TryParse(wandLengthText, wandLengthValue) OrElse wandLengthValue < 0 OrElse wandLengthValue > 1000 Then
-                        '        MessageError(True, "PLEASE CHECK YOUR CORD LENGTH & MAXIMUM IS 1000MM !")
-                        '        Exit For
-                        '    End If
-                        'End If
-
                         If String.IsNullOrEmpty(bottomJoining) Then
                             MessageError(True, "BOTTOM JOINING IS REQUIRED !")
                             Exit For
@@ -1193,7 +1186,58 @@ Partial Class Order_AddCSV
                             Exit For
                         End If
 
-                        Dim totalItems As Integer = 1
+                        If msgError.InnerText = "" Then
+                            Dim totalItems As Integer = 1
+
+                            Dim groupName As String = String.Format("Vertical - {0} - {1}", blindType, tubeName)
+                            Dim priceProductGroup As String = orderClass.GetPriceProductGroupId(groupName, designId)
+
+                            Dim itemId As String = orderClass.GetNewOrderItemId()
+
+                            Using thisConn As SqlConnection = New SqlConnection(myConn)
+                                Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderDetails(Id, HeaderId, ProductId, FabricId, FabricColourId, ChainId, PriceProductGroupId, Qty, QtyBlade, Room, Mounting, Width, [Drop], StackPosition, ControlPosition, ControlLength, ControlLengthValue, WandColour, WandLengthValue, FabricInsert, BottomJoining, BracketExtension, Sloping, LinearMetre, SquareMetre, TotalItems, Notes, MarkUp, Active) VALUES(@Id, @HeaderId, @ProductId, @FabricId, @FabricColourId, @ChainId, @PriceProductGroupId, @Qty, @QtyBlade, @Room, @Mounting, @Width, @Drop, @StackPosition, @ControlPosition, @ControlLength, @ControlLengthValue, @WandColour, @WandLengthValue, @FabricInsert, @BottomJoining, @BracketExtension, @Sloping, @LinearMetre, @SquareMetre, 1, @Notes, @MarkUp, 1)", thisConn)
+                                    myCmd.Parameters.AddWithValue("@Id", itemId)
+                                    myCmd.Parameters.AddWithValue("@HeaderId", headerId)
+                                    myCmd.Parameters.AddWithValue("@ProductId", String.Empty)
+                                    myCmd.Parameters.AddWithValue("@FabricId", If(String.IsNullOrEmpty(fabricType), CType(DBNull.Value, Object), fabricType))
+                                    myCmd.Parameters.AddWithValue("@FabricColourId", If(String.IsNullOrEmpty(fabricColour), CType(DBNull.Value, Object), fabricColour))
+                                    myCmd.Parameters.AddWithValue("@ChainId", If(String.IsNullOrEmpty(chainId), CType(DBNull.Value, Object), chainId))
+                                    myCmd.Parameters.AddWithValue("@PriceProductGroupId", If(String.IsNullOrEmpty(priceProductGroup), CType(DBNull.Value, Object), priceProductGroup))
+                                    myCmd.Parameters.AddWithValue("@Qty", "1")
+                                    myCmd.Parameters.AddWithValue("@QtyBlade", qtyBlade)
+                                    myCmd.Parameters.AddWithValue("@Room", room)
+                                    myCmd.Parameters.AddWithValue("@Mounting", mounting)
+                                    myCmd.Parameters.AddWithValue("@Width", width)
+                                    myCmd.Parameters.AddWithValue("@Drop", drop)
+                                    myCmd.Parameters.AddWithValue("@FabricInsert", fabricInsert)
+                                    myCmd.Parameters.AddWithValue("@StackPosition", stackPosition)
+                                    myCmd.Parameters.AddWithValue("@ControlPosition", controlPosition)
+                                    myCmd.Parameters.AddWithValue("@ControlLength", controllength)
+                                    myCmd.Parameters.AddWithValue("@ControlLengthValue", controllength)
+                                    myCmd.Parameters.AddWithValue("@WandColour", wandColour)
+                                    'myCmd.Parameters.AddWithValue("@WandLengthValue", wandlength)
+                                    'myCmd.Parameters.AddWithValue("@BottomJoining", bottomJoining)
+                                    'myCmd.Parameters.AddWithValue("@BracketExtension", bracketextension)
+                                    'myCmd.Parameters.AddWithValue("@Sloping", String.Empty)
+                                    'myCmd.Parameters.AddWithValue("@LinearMetre", linearMetre)
+                                    'myCmd.Parameters.AddWithValue("@SquareMetre", squareMetre)
+                                    myCmd.Parameters.AddWithValue("@Notes", notes)
+                                    myCmd.Parameters.AddWithValue("@MarkUp", "0")
+
+                                    thisConn.Open()
+                                    myCmd.ExecuteNonQuery()
+                                End Using
+                            End Using
+
+                            orderClass.ResetPriceDetail(headerId, itemId)
+                            orderClass.CalculatePrice(headerId, itemId)
+                            orderClass.FinalCostItem(headerId, itemId)
+
+                            dataLog = {"OrderDetails", itemId, Session("LoginId").ToString(), "Order Item Added"}
+                            orderClass.Logs(dataLog)
+                        End If
+
+
                     End If
 
                     If designType = "Roller" Then
