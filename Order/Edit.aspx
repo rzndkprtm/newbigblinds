@@ -80,7 +80,7 @@
 
                                     <div class="row mb-3">
                                         <div class="col-12 col-sm-12 col-lg-3">
-                                            <label>Customer Name</label>
+                                            <label>Order Name</label>
                                         </div>
                                         <div class="col-12 col-sm-12 col-lg-9 form-group">
                                             <asp:TextBox runat="server" ID="txtOrderName" CssClass="form-control" placeholder="Customer Name ...." autocomplete="off"></asp:TextBox>
