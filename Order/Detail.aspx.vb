@@ -1431,6 +1431,12 @@ Partial Class Order_Detail
                         itemAction = "edit"
                     End If
 
+                    If lblOrderStatus.Text = "New Order" OrElse lblOrderStatus.Text = "In Production" OrElse lblOrderStatus.Text = "On Hold" Then
+                        If Session("RoleName") = "Developer" Then
+                            itemAction = "edit"
+                        End If
+                    End If
+
                     Dim queryString As String = String.Format("do={0}&orderid={1}&itemid={2}&dtype={3}&uid={4}", itemAction, headerId, dataId, designId, Session("LoginId").ToString())
 
                     Dim contextId As String = InsertContext(queryString)
