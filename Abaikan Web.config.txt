@@ -1,15 +1,3 @@
 git update-index --assume-unchanged Web.config
 
 +62 882-1274-2812
-
-<!--PC KANTOR-->
-		<add connectionString="Server=.\SQLEXPRESS;Database=bigblindsorder;Uid=big;Password=230296" name="DefaultConnection" providerName="System.Data.SqlClient" />
-		<add connectionString="Server=.\SQLEXPRESS;Database=db4700_weborder;Uid=big;Password=230296" name="ArchiveConnection" providerName="System.Data.SqlClient" />
-
-		<!--LAPTOP-->
-		<!--<add connectionString="Server=.\;Database=bigblindsorder;Uid=rap;Password=230296;" name="DefaultConnection" providerName="System.Data.SqlClient" />
-		<add connectionString="Server=.\;Database=db4700_weborder;Uid=rap;Password=230296;" name="ArchiveConnection" providerName="System.Data.SqlClient" />-->
-
-		<!--<add connectionString="Server=.\MSSQLSERVER2019;Database=bigblindsorder;Uid=bigblindsorder;Password=8?l8eQaojKG!fc7q;" providerName="System.Data.SqlClient" name="DefaultConnection" />
-		<add connectionString="Server=.\MSSQLSERVER2019;Database=db4700_weborder;Uid=db4700_weborder;Password=Y66iV2yQoJE6*;" providerName="System.Data.SqlClient" name="ArchiveConnection" />
-		<add connectionString="Server=202.74.70.124\MSSQLSERVER2019;Database=bigorder;Uid=bigorder;Password=4r7^o93nI;" providerName="System.Data.SqlClient" name="ArchiveConnectionShutter" />-->
