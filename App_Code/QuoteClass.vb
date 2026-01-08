@@ -570,10 +570,8 @@ Public Class QuoteClass
             If quoteData.Tables(0).Rows.Count > 0 Then
                 Dim row = quoteData.Tables(0).Rows(0)
 
-                Dim unitNumber As String = row("UnitNumber").ToString().Trim()
-                Dim street As String = row("Street").ToString().Trim()
+                Dim address As String = row("Address").ToString().Trim()
                 Dim suburb As String = row("Suburb").ToString().Trim()
-                Dim city As String = row("City").ToString().Trim()
                 Dim state As String = row("State").ToString().Trim()
                 Dim postCode As String = row("PostCode").ToString().Trim()
                 Dim country As String = row("Country").ToString().Trim()
@@ -583,19 +581,17 @@ Public Class QuoteClass
                 quoteFrom_Email = row("Email").ToString()
                 quoteFrom_Phone = row("Phone").ToString()
 
-                If Not String.IsNullOrWhiteSpace(unitNumber & street & suburb & city & state & postCode & country) Then
+                If Not String.IsNullOrWhiteSpace(address & suburb & state & postCode & country) Then
                     Dim lines As New List(Of String)
 
                     Dim addressLine As String = String.Empty
-                    If Not String.IsNullOrEmpty(unitNumber) Then addressLine = unitNumber
-                    If Not String.IsNullOrEmpty(street) Then addressLine &= If(Not String.IsNullOrEmpty(addressLine), " ", "") & street
+                    If Not String.IsNullOrEmpty(address) Then addressLine &= If(Not String.IsNullOrEmpty(addressLine), " ", "") & address
 
                     If Not String.IsNullOrEmpty(addressLine) Then lines.Add(addressLine)
 
                     Dim areaParts As New List(Of String)
 
                     If Not String.IsNullOrEmpty(suburb) Then areaParts.Add(suburb)
-                    If companyId = "3" AndAlso city <> "" Then areaParts.Add(city)
                     If Not String.IsNullOrEmpty(state) Then areaParts.Add(state)
                     If Not String.IsNullOrEmpty(postCode) Then areaParts.Add(postCode)
 

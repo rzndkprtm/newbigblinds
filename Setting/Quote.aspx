@@ -121,7 +121,7 @@
 
                 <div class="modal-footer">
                     <a href="#" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancel</a>
-                    <asp:Button runat="server" ID="btnLogo" CssClass="btn btn-primary ml-1" Text="Submit" OnClick="btnLogo_Click" />
+                    <asp:Button runat="server" ID="btnLogo" CssClass="btn btn-primary" Text="Submit" OnClick="btnLogo_Click" />
                 </div>
             </div>
         </div>
@@ -144,25 +144,13 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-12 form-group">
-                            <label class="form-label">Unit Number</label>
-                            <asp:TextBox runat="server" ID="txtUnitNumber" CssClass="form-control" placeholder="Unit Number ..." autocomplete="off"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-6 form-group">
-                            <label class="form-label">Street</label>
-                            <asp:TextBox runat="server" ID="txtStreet" CssClass="form-control" placeholder="Street ..." autocomplete="off"></asp:TextBox>
+                            <label class="form-label">Address</label>
+                            <asp:TextBox runat="server" ID="txtAddress" CssClass="form-control" placeholder="Address ..." autocomplete="off"></asp:TextBox>
                         </div>
                         <div class="col-6 form-group">
                             <label class="form-label">Suburb</label>
                             <asp:TextBox runat="server" ID="txtSuburb" CssClass="form-control" placeholder="Suburb ..." autocomplete="off"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="row" runat="server" id="divCity">
-                        <div class="col-12 form-group">
-                            <label class="form-label">City</label>
-                            <asp:TextBox runat="server" ID="txtCity" CssClass="form-control" placeholder="City ..." autocomplete="off"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row">
@@ -189,7 +177,7 @@
 
                 <div class="modal-footer">
                     <a href="#" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancel</a>
-                    <asp:Button runat="server" ID="btnAddress" CssClass="btn btn-primary ml-1" Text="Submit" OnClick="btnAddress_Click" />
+                    <asp:Button runat="server" ID="btnAddress" CssClass="btn btn-primary" Text="Submit" OnClick="btnAddress_Click" />
                 </div>
             </div>
         </div>
@@ -228,7 +216,7 @@
 
                 <div class="modal-footer">
                     <a href="#" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancel</a>
-                    <asp:Button runat="server" ID="btnContact" CssClass="btn btn-primary ml-1" Text="Submit" OnClick="btnContact_Click" />
+                    <asp:Button runat="server" ID="btnContact" CssClass="btn btn-primary" Text="Submit" OnClick="btnContact_Click" />
                 </div>
             </div>
         </div>
@@ -260,7 +248,7 @@
 
                 <div class="modal-footer">
                     <a href="#" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancel</a>
-                    <asp:Button runat="server" ID="btnTerms" CssClass="btn btn-primary ml-1" Text="Submit" OnClick="btnTerms_Click" />
+                    <asp:Button runat="server" ID="btnTerms" CssClass="btn btn-primary" Text="Submit" OnClick="btnTerms_Click" />
                 </div>
             </div>
         </div>

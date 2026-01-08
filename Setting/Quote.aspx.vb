@@ -66,10 +66,8 @@ Partial Class Setting_Quote
         Try
             Dim myData As DataSet = settingClass.GetListData("SELECT * FROM CustomerQuotes WHERE Id='" & customerId & "'")
 
-            txtUnitNumber.Text = myData.Tables(0).Rows(0).Item("UnitNumber").ToString
-            txtStreet.Text = myData.Tables(0).Rows(0).Item("Street").ToString
+            txtAddress.Text = myData.Tables(0).Rows(0).Item("Address").ToString
             txtSuburb.Text = myData.Tables(0).Rows(0).Item("Suburb").ToString
-            txtCity.Text = myData.Tables(0).Rows(0).Item("City").ToString
             txtState.Text = myData.Tables(0).Rows(0).Item("State").ToString
             txtPostCode.Text = myData.Tables(0).Rows(0).Item("PostCode").ToString
             ddlCountry.SelectedValue = myData.Tables(0).Rows(0).Item("Country").ToString
@@ -204,12 +202,10 @@ Partial Class Setting_Quote
         Try
             If msgErrorAddress.InnerText = "" Then
                 Using thisConn As New SqlConnection(myConn)
-                    Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerQuotes SET UnitNumber=@UnitNumber, Street=@Street, Suburb=@Suburb, City=@City, State=@State, PostCode=@PostCode, Country=@Country WHERE Id=@Id", thisConn)
+                    Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerQuotes SET Address=@Address, Suburb=@Suburb, State=@State, PostCode=@PostCode, Country=@Country WHERE Id=@Id", thisConn)
                         myCmd.Parameters.AddWithValue("@Id", customerId)
-                        myCmd.Parameters.AddWithValue("@UnitNumber", txtUnitNumber.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@Street", txtStreet.Text.Trim())
+                        myCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim())
                         myCmd.Parameters.AddWithValue("@Suburb", txtSuburb.Text.Trim())
-                        myCmd.Parameters.AddWithValue("@City", txtCity.Text.Trim())
                         myCmd.Parameters.AddWithValue("@State", txtState.Text.Trim())
                         myCmd.Parameters.AddWithValue("@PostCode", txtPostCode.Text.Trim())
                         myCmd.Parameters.AddWithValue("@Country", ddlCountry.SelectedValue)
@@ -303,16 +299,10 @@ Partial Class Setting_Quote
 
             Dim address As String = String.Empty
 
-            address &= String.Format("- Unit Number : {0}", thisData.Tables(0).Rows(0).Item("UnitNumber").ToString())
-            address &= "<br />"
-            address &= String.Format("- Street : {0}", thisData.Tables(0).Rows(0).Item("Street").ToString())
+            address &= String.Format("- Address : {0}", thisData.Tables(0).Rows(0).Item("Address").ToString())
             address &= "<br />"
             address &= String.Format("- Suburb : {0}", thisData.Tables(0).Rows(0).Item("Suburb").ToString())
             address &= "<br />"
-            If companyId = "1" OrElse companyId = "3" Then
-                address &= String.Format("- City : {0}", thisData.Tables(0).Rows(0).Item("City").ToString())
-                address &= "<br />"
-            End If
             address &= String.Format("- State : {0}", thisData.Tables(0).Rows(0).Item("State").ToString())
             address &= "<br />"
             address &= String.Format("- Post Code : {0}", thisData.Tables(0).Rows(0).Item("PostCode").ToString())
@@ -337,11 +327,6 @@ Partial Class Setting_Quote
             pAddress.InnerHtml = address
             pContact.InnerHtml = contact
             pTerms.InnerHtml = termText
-
-            divCity.Visible = False
-            If companyId = "1" OrElse companyId = "3" Then
-                divCity.Visible = True
-            End If
 
             imgQuoteExample.ImageUrl = "~/assets/images/quotation/full.jpg"
             imgQuoteExample2.ImageUrl = "~/assets/images/quotation/full.jpg"

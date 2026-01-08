@@ -2571,23 +2571,13 @@ Partial Class Setting_Customer_Detail
         If Not customerId = "" Then
             Dim thisData As DataSet = settingClass.GetListData("SELECT * FROM CustomerQuotes WHERE Id='" & customerId & "'")
             If thisData.Tables(0).Rows.Count > 0 Then
-                Dim unitNumber As String = thisData.Tables(0).Rows(0).Item("UnitNumber").ToString()
-                Dim street As String = thisData.Tables(0).Rows(0).Item("Street").ToString()
+                Dim address As String = thisData.Tables(0).Rows(0).Item("Address").ToString()
                 Dim suburb As String = thisData.Tables(0).Rows(0).Item("Suburb").ToString()
-                Dim city As String = thisData.Tables(0).Rows(0).Item("City").ToString()
                 Dim state As String = thisData.Tables(0).Rows(0).Item("State").ToString()
                 Dim postCode As String = thisData.Tables(0).Rows(0).Item("PostCode").ToString()
                 Dim country As String = thisData.Tables(0).Rows(0).Item("Country").ToString()
 
-                If Not String.IsNullOrEmpty(unitNumber) Then
-                    street = String.Format("{0} {1}", unitNumber, street)
-                End If
-
-                result = street & ", " & suburb & ", " & state & " " & postCode
-                result = String.Format("{0}, {1}, {2} {3} {4}", street, suburb, state, country, postCode)
-                If lblCompanyName.Text = "ACCENT" Then
-                    result = String.Format("{0}, {1}, {2}, {3} {4} {5}", street, suburb, city, state, country, postCode)
-                End If
+                result = String.Format("{0}, {1}, {2} {3} {4}", address, suburb, state, country, postCode)
             End If
         End If
         Return result
