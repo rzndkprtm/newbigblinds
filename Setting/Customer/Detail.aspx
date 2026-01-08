@@ -913,26 +913,15 @@
                             <asp:TextBox runat="server" ID="txtAddressDescription" CssClass="form-control" placeholder="Desciption ..." autocomplete="off"></asp:TextBox>
                         </div>
                         <div class="col-12 col-sm-12 col-lg-6 mb-2 form-group">
-                            <label class="form-label">Unit Number</label>
-                            <asp:TextBox runat="server" ID="txtAddressUnitNumber" CssClass="form-control" placeholder="Unit Number ..." autocomplete="off"></asp:TextBox>
+                            <label class="form-label">Address</label>
+                            <asp:TextBox runat="server" ID="txtAddressName" CssClass="form-control" placeholder="Address ..." autocomplete="off"></asp:TextBox>
                         </div>
                     </div>
                     
                     <div class="mb-2 row">
                         <div class="col-12 col-sm-12 col-lg-6 mb-2 form-group">
-                            <label class="form-label">Street</label>
-                            <asp:TextBox runat="server" ID="txtAddressStreet" CssClass="form-control" placeholder="Street Address ..." autocomplete="off"></asp:TextBox>
-                        </div>
-                        <div class="col-12 col-sm-12 col-lg-6 mb-2 form-group">
                             <label class="form-label">Suburb</label>
                             <asp:TextBox runat="server" ID="txtAddressSuburb" CssClass="form-control" placeholder="Suburb ..." autocomplete="off"></asp:TextBox>
-                        </div>
-                    </div>
-
-                    <div class="mb-2 row">
-                        <div class="col-12 col-sm-12 col-lg-6 mb-2 form-group" runat="server" id="divAddressCity">
-                            <label class="form-label">City</label>
-                            <asp:TextBox runat="server" ID="txtAddressCity" CssClass="form-control" placeholder="City ..." autocomplete="off"></asp:TextBox>
                         </div>
                         <div class="col-12 col-sm-12 col-lg-6 mb-2 form-group">
                             <label class="form-label">State</label>

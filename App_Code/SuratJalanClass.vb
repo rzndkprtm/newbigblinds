@@ -146,11 +146,7 @@ Public Class SuratJalanClass
             Dim fullAddress As String = String.Empty
             Dim customerAddress As DataSet = GetListData("SELECT * FROM CustomerAddress WHERE CustomerId='" & customerId & "' AND [Primary]=1")
             If customerAddress.Tables(0).Rows.Count > 0 Then
-                Dim unitNumber As String = customerAddress.Tables(0).Rows(0)("UnitNumber").ToString()
-                Dim street As String = customerAddress.Tables(0).Rows(0)("Street").ToString()
-                Dim address As String = String.Format("{0} {1}", unitNumber, street)
-                If unitNumber = "" Then address = street
-
+                Dim address As String = customerAddress.Tables(0).Rows(0)("Address").ToString()
                 Dim suburb As String = customerAddress.Tables(0).Rows(0)("Suburb").ToString()
                 Dim state As String = customerAddress.Tables(0).Rows(0)("State").ToString()
                 Dim postCode As String = customerAddress.Tables(0).Rows(0)("PostCode").ToString()

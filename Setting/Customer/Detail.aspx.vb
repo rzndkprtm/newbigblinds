@@ -641,9 +641,6 @@ Partial Class Setting_Customer_Detail
             lblActionAddress.Text = "Add"
             titleAddress.InnerText = "Add Customer Address"
 
-            divAddressCity.Visible = False
-            If lblCompanyName.Text = "PT Bumi Indah Global" OrElse lblCompanyName.Text = "Accent At Home" Then divAddressCity.Visible = True
-
             ClientScript.RegisterStartupScript(Me.GetType(), "showProcessAddress", thisScript, True)
         Catch ex As Exception
             MessageError_ProcessAddress(True, ex.ToString())
@@ -672,10 +669,8 @@ Partial Class Setting_Customer_Detail
                     Dim thisData As DataSet = settingClass.GetListData("SELECT * FROM CustomerAddress WHERE Id='" & lblIdAddress.Text & "'")
 
                     txtAddressDescription.Text = thisData.Tables(0).Rows(0).Item("Description").ToString()
-                    txtAddressUnitNumber.Text = thisData.Tables(0).Rows(0).Item("UnitNumber").ToString()
-                    txtAddressStreet.Text = thisData.Tables(0).Rows(0).Item("Street").ToString()
+                    txtAddressName.Text = thisData.Tables(0).Rows(0).Item("Address").ToString()
                     txtAddressSuburb.Text = thisData.Tables(0).Rows(0).Item("Suburb").ToString()
-                    txtAddressCity.Text = thisData.Tables(0).Rows(0).Item("City").ToString()
                     txtAddressState.Text = thisData.Tables(0).Rows(0).Item("State").ToString()
                     txtAddressPostCode.Text = thisData.Tables(0).Rows(0).Item("PostCode").ToString()
                     ddlAddressCountry.SelectedValue = thisData.Tables(0).Rows(0).Item("Country").ToString()
@@ -689,9 +684,6 @@ Partial Class Setting_Customer_Detail
                             lbAddressTags.Items.FindByValue(i).Selected = True
                         End If
                     Next
-
-                    divAddressCity.Visible = False
-                    If lblCompanyName.Text = "PT Bumi Indah Global" OrElse lblCompanyName.Text = "Accent At Home" Then divAddressCity.Visible = True
 
                     ClientScript.RegisterStartupScript(Me.GetType(), "showProcessAddress", thisScript, True)
                 Catch ex As Exception
@@ -728,8 +720,8 @@ Partial Class Setting_Customer_Detail
         Dim thisScript As String = "window.onload = function() { showProcessAddress(); };"
         Session("selectedTabCustomer") = "list-address"
         Try
-            If txtAddressStreet.Text = "" Then
-                MessageError_ProcessAddress(True, "STREET ADDRESS IS REQUIRED !")
+            If txtAddressName.Text = "" Then
+                MessageError_ProcessAddress(True, "ADDRESS IS REQUIRED !")
                 ClientScript.RegisterStartupScript(Me.GetType(), "showProcessAddress", thisScript, True)
                 Exit Sub
             End If
@@ -775,14 +767,12 @@ Partial Class Setting_Customer_Detail
                     Dim thisId As String = settingClass.CreateId("SELECT TOP 1 Id FROM CustomerAddress ORDER BY Id DESC")
 
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CustomerAddress VALUES (@Id, @CustomerId, @Description, @UnitNumber, @Street, @Suburb, @City, @State, @PostCode, @Country, @Tags, @Note, 0)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CustomerAddress VALUES (@Id, @CustomerId, @Description, @Address, @Suburb, @State, @PostCode, @Country, @Tags, @Note, 0)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@CustomerId", lblId.Text)
                             myCmd.Parameters.AddWithValue("@Description", txtAddressDescription.Text)
-                            myCmd.Parameters.AddWithValue("@UnitNumber", txtAddressUnitNumber.Text.Trim())
-                            myCmd.Parameters.AddWithValue("@Street", txtAddressStreet.Text.Trim())
+                            myCmd.Parameters.AddWithValue("@Address", txtAddressName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Suburb", txtAddressSuburb.Text.Trim())
-                            myCmd.Parameters.AddWithValue("@City", txtAddressCity.Text.Trim())
                             myCmd.Parameters.AddWithValue("@State", txtAddressState.Text.Trim())
                             myCmd.Parameters.AddWithValue("@PostCode", txtAddressPostCode.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Country", ddlAddressCountry.SelectedValue)
@@ -803,14 +793,12 @@ Partial Class Setting_Customer_Detail
 
                 If lblActionAddress.Text = "Edit" Then
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerAddress SET CustomerId=@CustomerId, Description=@Description, UnitNumber=@UnitNumber, Street=@Street, Suburb=@Suburb, City=@City, State=@State, PostCode=@PostCode, Country=@Country, Tags=@Tags, Note=@Note WHERE Id=@Id", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerAddress SET CustomerId=@CustomerId, Description=@Description, Address=@Address, Suburb=@Suburb, State=@State, PostCode=@PostCode, Country=@Country, Tags=@Tags, Note=@Note WHERE Id=@Id", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", lblIdAddress.Text)
                             myCmd.Parameters.AddWithValue("@CustomerId", lblId.Text)
                             myCmd.Parameters.AddWithValue("@Description", txtAddressDescription.Text)
-                            myCmd.Parameters.AddWithValue("@UnitNumber", txtAddressUnitNumber.Text.Trim())
-                            myCmd.Parameters.AddWithValue("@Street", txtAddressStreet.Text.Trim())
+                            myCmd.Parameters.AddWithValue("@Address", txtAddressName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Suburb", txtAddressSuburb.Text.Trim())
-                            myCmd.Parameters.AddWithValue("@City", txtAddressCity.Text.Trim())
                             myCmd.Parameters.AddWithValue("@State", txtAddressState.Text.Trim())
                             myCmd.Parameters.AddWithValue("@PostCode", txtAddressPostCode.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Country", ddlAddressCountry.SelectedValue)
@@ -935,16 +923,12 @@ Partial Class Setting_Customer_Detail
         If Not addressId = "" Then
             Dim thisData As DataSet = settingClass.GetListData("SELECT * FROM CustomerAddress WHERE Id='" & addressId & "'")
             If thisData.Tables(0).Rows.Count > 0 Then
-                Dim unitNumber As String = thisData.Tables(0).Rows(0).Item("UnitNumber").ToString()
-                Dim street As String = thisData.Tables(0).Rows(0).Item("Street").ToString()
+                Dim address As String = thisData.Tables(0).Rows(0).Item("Address").ToString()
                 Dim suburb As String = thisData.Tables(0).Rows(0).Item("Suburb").ToString()
                 Dim state As String = thisData.Tables(0).Rows(0).Item("State").ToString()
                 Dim postCode As String = thisData.Tables(0).Rows(0).Item("PostCode").ToString()
 
-                result = street & ", " & suburb & ", " & state & " " & postCode
-                If Not unitNumber = "" Then
-                    result = unitNumber & ", " & street & ", " & suburb & ", " & state & " " & postCode
-                End If
+                result = address & ", " & suburb & ", " & state & " " & postCode
             End If
         End If
         Return result
