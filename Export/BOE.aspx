@@ -699,6 +699,10 @@
                     If String.IsNullOrEmpty(kitId) Then Continue For
                     If String.IsNullOrEmpty(boeFabricId) Then Continue For
 
+                    Dim flatOption As String = thisData.Tables(0).Rows(i).Item("FlatOption").ToString()
+                    If flatOption = "Fabric on Back" Then flatOption = "Fabric on back"
+                    If flatOption = "Fabric on Front" Then flatOption = "Fabric on front"
+
                     writer.WriteStartElement("OrderDetails")
                     writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
                     writer.WriteAttributeString("FKOrdID", thisData.Tables(0).Rows(i).Item("HeaderId").ToString())
@@ -713,7 +717,7 @@
                     writer.WriteAttributeString("Additional", thisData.Tables(0).Rows(i).Item("ChainStopper").ToString())
                     writer.WriteAttributeString("FabricID", boeFabricId)
                     writer.WriteAttributeString("IDBottomRail", boeBottomId)
-                    writer.WriteAttributeString("FlatBottomOp", thisData.Tables(0).Rows(i).Item("FlatOption").ToString())
+                    writer.WriteAttributeString("FlatBottomOp", flatOption)
                     writer.WriteAttributeString("ControlPosition", thisData.Tables(0).Rows(i).Item("ControlPosition").ToString())
                     writer.WriteAttributeString("RollDirection", thisData.Tables(0).Rows(i).Item("Roll").ToString())
                     writer.WriteAttributeString("Width", thisData.Tables(0).Rows(i).Item("Width").ToString())
@@ -760,6 +764,15 @@
 
                     If String.IsNullOrEmpty(kitId) OrElse String.IsNullOrEmpty(kitIdB) Then Continue For
 
+                    Dim flatOption As String = thisData.Tables(0).Rows(i).Item("FlatOption").ToString()
+                    Dim flatOptionB As String = thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString()
+
+                    If flatOption = "Fabric on Back" Then flatOption = "Fabric on back"
+                    If flatOption = "Fabric on Front" Then flatOption = "Fabric on front"
+
+                    If flatOptionB = "Fabric on Back" Then flatOptionB = "Fabric on back"
+                    If flatOptionB = "Fabric on Front" Then flatOptionB = "Fabric on front"
+
                     writer.WriteStartElement("OrderDetails")
                     writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
                     writer.WriteAttributeString("FKOrdID", thisData.Tables(0).Rows(i).Item("HeaderId").ToString())
@@ -783,9 +796,9 @@
                     writer.WriteAttributeString("FabricID", boeFabricId)
                     writer.WriteAttributeString("FabricID_DoubleBracket", boeFabricIdB)
                     writer.WriteAttributeString("IDBottomRail", boeBottomId)
-                    writer.WriteAttributeString("FlatBottomOp", thisData.Tables(0).Rows(i).Item("FlatOption").ToString())
+                    writer.WriteAttributeString("FlatBottomOp", flatOption)
                     writer.WriteAttributeString("IDBottomRail_DoubleBracket", boeBottomIdB)
-                    writer.WriteAttributeString("FlatBottomOp2a", thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString())
+                    writer.WriteAttributeString("FlatBottomOp2a", flatOptionB)
                     writer.WriteAttributeString("ControlPosition", thisData.Tables(0).Rows(i).Item("ControlPosition").ToString())
                     writer.WriteAttributeString("RollDirection", thisData.Tables(0).Rows(i).Item("Roll").ToString())
                     writer.WriteAttributeString("ControlPosition_LSDouble3rd", thisData.Tables(0).Rows(i).Item("ControlPositionB").ToString())
@@ -827,6 +840,15 @@
 
                     If String.IsNullOrEmpty(kitId) OrElse String.IsNullOrEmpty(kitIdB) Then Continue For
 
+                    Dim flatOption As String = thisData.Tables(0).Rows(i).Item("FlatOption").ToString()
+                    Dim flatOptionB As String = thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString()
+
+                    If flatOption = "Fabric on Back" Then flatOption = "Fabric on back"
+                    If flatOption = "Fabric on Front" Then flatOption = "Fabric on front"
+
+                    If flatOptionB = "Fabric on Back" Then flatOptionB = "Fabric on back"
+                    If flatOptionB = "Fabric on Front" Then flatOptionB = "Fabric on front"
+
                     Dim webFabricIdB As String = thisData.Tables(0).Rows(i).Item("FabricColourIdB").ToString()
                     Dim boeFabricIdB As String = GetItemData("SELECT BoeId FROM FabricColours WHERE Id='" & webFabricIdB & "'")
 
@@ -849,9 +871,9 @@
                     writer.WriteAttributeString("FabricID", boeFabricId)
                     writer.WriteAttributeString("FabricID_LinkSys", boeFabricIdB)
                     writer.WriteAttributeString("IDBottomRail", boeBottomId)
-                    writer.WriteAttributeString("FlatBottomOp", thisData.Tables(0).Rows(i).Item("FlatOption").ToString())
+                    writer.WriteAttributeString("FlatBottomOp", flatOption)
                     writer.WriteAttributeString("IDBottomRail_LinkSys", boeBottomIdB)
-                    writer.WriteAttributeString("FlatBottomOp2b", thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString())
+                    writer.WriteAttributeString("FlatBottomOp2b", flatOptionB)
                     writer.WriteAttributeString("ControlPosition", thisData.Tables(0).Rows(i).Item("ControlPosition").ToString())
                     writer.WriteAttributeString("RollDirection", thisData.Tables(0).Rows(i).Item("Roll").ToString())
                     writer.WriteAttributeString("Width", thisData.Tables(0).Rows(i).Item("Width").ToString())
@@ -907,6 +929,19 @@
                     Dim boeBottomIdB As String = GetItemData("SELECT BoeId FROM BottomColours WHERE Id='" & bottomColourIdB & "'")
                     Dim boeBottomIdC As String = GetItemData("SELECT BoeId FROM BottomColours WHERE Id='" & bottomColourIdC & "'")
 
+                    Dim flatOption As String = thisData.Tables(0).Rows(i).Item("FlatOption").ToString()
+                    Dim flatOptionB As String = thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString()
+                    Dim flatOptionC As String = thisData.Tables(0).Rows(i).Item("FlatOptionC").ToString()
+
+                    If flatOption = "Fabric on Back" Then flatOption = "Fabric on back"
+                    If flatOption = "Fabric on Front" Then flatOption = "Fabric on front"
+
+                    If flatOptionB = "Fabric on Back" Then flatOptionB = "Fabric on back"
+                    If flatOptionB = "Fabric on Front" Then flatOptionB = "Fabric on front"
+
+                    If flatOptionC = "Fabric on Back" Then flatOptionC = "Fabric on back"
+                    If flatOptionC = "Fabric on Front" Then flatOptionC = "Fabric on front"
+
                     writer.WriteStartElement("OrderDetails")
                     writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
                     writer.WriteAttributeString("FKOrdID", thisData.Tables(0).Rows(i).Item("HeaderId").ToString())
@@ -925,11 +960,11 @@
                     writer.WriteAttributeString("FabricID_LinkSys", boeFabricIdB)
                     writer.WriteAttributeString("FabricID_LS3rd", boeFabricIdC)
                     writer.WriteAttributeString("IDBottomRail", boeBottomId)
-                    writer.WriteAttributeString("FlatBottomOp", thisData.Tables(0).Rows(i).Item("FlatOption").ToString())
+                    writer.WriteAttributeString("FlatBottomOp", flatOption)
                     writer.WriteAttributeString("IDBottomRail_LinkSys", boeBottomIdB)
-                    writer.WriteAttributeString("FlatBottomOp2b", thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString())
+                    writer.WriteAttributeString("FlatBottomOp2b", flatOptionB)
                     writer.WriteAttributeString("IDBottomRail_LinkSys_3rd", boeBottomIdC)
-                    writer.WriteAttributeString("FlatBottomOp3b", thisData.Tables(0).Rows(i).Item("FlatOptionC").ToString())
+                    writer.WriteAttributeString("FlatBottomOp3b", flatOptionC)
                     writer.WriteAttributeString("ControlPosition", thisData.Tables(0).Rows(i).Item("ControlPosition").ToString())
                     writer.WriteAttributeString("RollDirection", thisData.Tables(0).Rows(i).Item("Roll").ToString())
                     writer.WriteAttributeString("Width", thisData.Tables(0).Rows(i).Item("Width").ToString())
@@ -979,6 +1014,15 @@
                     Dim bottomColourIdB As String = thisData.Tables(0).Rows(i).Item("BottomColourIdB").ToString()
                     Dim boeBottomIdB As String = GetItemData("SELECT BoeId FROM BottomColours WHERE Id='" & bottomColourIdB & "'")
 
+                    Dim flatOption As String = thisData.Tables(0).Rows(i).Item("FlatOption").ToString()
+                    Dim flatOptionB As String = thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString()
+
+                    If flatOption = "Fabric on Back" Then flatOption = "Fabric on back"
+                    If flatOption = "Fabric on Front" Then flatOption = "Fabric on front"
+
+                    If flatOptionB = "Fabric on Back" Then flatOptionB = "Fabric on back"
+                    If flatOptionB = "Fabric on Front" Then flatOptionB = "Fabric on front"
+
                     writer.WriteStartElement("OrderDetails")
                     writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
                     writer.WriteAttributeString("FKOrdID", thisData.Tables(0).Rows(i).Item("HeaderId").ToString())
@@ -1000,9 +1044,9 @@
                     writer.WriteAttributeString("FabricID", boeFabricId)
                     writer.WriteAttributeString("FabricID_LinkSysIdp", boeFabricIdB)
                     writer.WriteAttributeString("IDBottomRail", boeBottomId)
-                    writer.WriteAttributeString("FlatBottomOp", thisData.Tables(0).Rows(i).Item("FlatOption").ToString())
+                    writer.WriteAttributeString("FlatBottomOp", flatOption)
                     writer.WriteAttributeString("IDBottomRail_LinkSysIdp", boeBottomIdB)
-                    writer.WriteAttributeString("FlatBottomOp2c", thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString())
+                    writer.WriteAttributeString("FlatBottomOp2c", flatOption)
                     writer.WriteAttributeString("ControlPosition", thisData.Tables(0).Rows(i).Item("ControlPosition").ToString())
                     writer.WriteAttributeString("RollDirection", thisData.Tables(0).Rows(i).Item("Roll").ToString())
                     writer.WriteAttributeString("Width", thisData.Tables(0).Rows(i).Item("Width").ToString())
@@ -1064,6 +1108,19 @@
                     Dim boeBottomIdB As String = GetItemData("SELECT BoeId FROM BottomColours WHERE Id='" & bottomColourIdB & "'")
                     Dim boeBottomIdC As String = GetItemData("SELECT BoeId FROM BottomColours WHERE Id='" & bottomColourIdC & "'")
 
+                    Dim flatOption As String = thisData.Tables(0).Rows(i).Item("FlatOption").ToString()
+                    Dim flatOptionB As String = thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString()
+                    Dim flatOptionC As String = thisData.Tables(0).Rows(i).Item("FlatOptionC").ToString()
+
+                    If flatOption = "Fabric on Back" Then flatOption = "Fabric on back"
+                    If flatOption = "Fabric on Front" Then flatOption = "Fabric on front"
+
+                    If flatOptionB = "Fabric on Back" Then flatOptionB = "Fabric on back"
+                    If flatOptionB = "Fabric on Front" Then flatOptionB = "Fabric on front"
+
+                    If flatOptionC = "Fabric on Back" Then flatOptionC = "Fabric on back"
+                    If flatOptionC = "Fabric on Front" Then flatOptionC = "Fabric on front"
+
                     writer.WriteStartElement("OrderDetails")
                     writer.WriteAttributeString("OrddID", thisData.Tables(0).Rows(i).Item("Id").ToString())
                     writer.WriteAttributeString("FKOrdID", thisData.Tables(0).Rows(i).Item("HeaderId").ToString())
@@ -1087,11 +1144,11 @@
                     writer.WriteAttributeString("FabricID_LinkSysIdp", boeFabricIdB)
                     writer.WriteAttributeString("FabricID_LSIdp3rd", boeFabricIdC)
                     writer.WriteAttributeString("IDBottomRail", boeBottomId)
-                    writer.WriteAttributeString("FlatBottomOp", thisData.Tables(0).Rows(i).Item("FlatOption").ToString())
+                    writer.WriteAttributeString("FlatBottomOp", flatOption)
                     writer.WriteAttributeString("IDBottomRail_LinkSysIdp", boeBottomIdB)
-                    writer.WriteAttributeString("FlatBottomOp2c", thisData.Tables(0).Rows(i).Item("FlatOptionB").ToString())
+                    writer.WriteAttributeString("FlatBottomOp2c", flatOptionB)
                     writer.WriteAttributeString("IDBottomRail_LinkSysIdp_3rd", boeBottomIdC)
-                    writer.WriteAttributeString("FlatBottomOp3c", thisData.Tables(0).Rows(i).Item("FlatOptionC").ToString())
+                    writer.WriteAttributeString("FlatBottomOp3c", flatOptionC)
                     writer.WriteAttributeString("ControlPosition", thisData.Tables(0).Rows(i).Item("ControlPosition").ToString())
                     writer.WriteAttributeString("RollDirection", thisData.Tables(0).Rows(i).Item("Roll").ToString())
                     writer.WriteAttributeString("Width", thisData.Tables(0).Rows(i).Item("Width").ToString())
