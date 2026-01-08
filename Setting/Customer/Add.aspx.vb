@@ -143,9 +143,7 @@ Partial Class Setting_Customer_Add
                         myCmd.ExecuteNonQuery()
                     End Using
 
-                    Dim logoCustomer As String = "boos.png"
-                    If ddlCompany.SelectedValue = "2" Then logoCustomer = "jpmdirect.jpg"
-                    If ddlCompany.SelectedValue = "3" Then logoCustomer = "accent.png"
+                    Dim logoCustomer As String = "yourlogo.png"
 
                     Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CustomerQuotes(Id, Logo) VALUES (@Id, @Logo)", thisConn)
                         myCmd.Parameters.AddWithValue("@Id", thisId)

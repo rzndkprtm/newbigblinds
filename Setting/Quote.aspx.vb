@@ -201,6 +201,9 @@ Partial Class Setting_Quote
         Dim thisScript As String = "window.onload = function() { showAddress(); };"
         Try
             If msgErrorAddress.InnerText = "" Then
+                If Session("CompanyId") = "2" Then ddlCountry.SelectedValue = "Australia"
+                If Session("CompanyId") = "3" OrElse Session("CompanyId") = "5" Then ddlCountry.SelectedValue = "Indonesia"
+
                 Using thisConn As New SqlConnection(myConn)
                     Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerQuotes SET Address=@Address, Suburb=@Suburb, State=@State, PostCode=@PostCode, Country=@Country WHERE Id=@Id", thisConn)
                         myCmd.Parameters.AddWithValue("@Id", customerId)
