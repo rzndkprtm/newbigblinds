@@ -71,7 +71,7 @@ Partial Class Setting_Customer_Address
                     ddlCustomer.SelectedValue = thisData.Tables(0).Rows(0).Item("CustomerId").ToString()
 
                     txtDescription.Text = thisData.Tables(0).Rows(0).Item("Description").ToString()
-                    txtStreet.Text = thisData.Tables(0).Rows(0).Item("Address").ToString()
+                    txtAddress.Text = thisData.Tables(0).Rows(0).Item("Address").ToString()
                     txtSuburb.Text = thisData.Tables(0).Rows(0).Item("Suburb").ToString()
                     txtState.Text = thisData.Tables(0).Rows(0).Item("State").ToString()
                     txtPostCode.Text = thisData.Tables(0).Rows(0).Item("PostCode").ToString()
@@ -118,8 +118,8 @@ Partial Class Setting_Customer_Address
                 Exit Sub
             End If
 
-            If txtStreet.Text = "" Then
-                MessageError_Process(True, "STREET ADDRESS IS REQUIRED !")
+            If txtAddress.Text = "" Then
+                MessageError_Process(True, "ADDRESS IS REQUIRED !")
                 ClientScript.RegisterStartupScript(Me.GetType(), "showProcess", thisScript, True)
                 Exit Sub
             End If
@@ -167,7 +167,7 @@ Partial Class Setting_Customer_Address
                         Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CustomerAddress VALUES (@Id, @CustomerId, @Description, @Address, @Suburb, @State, @PostCode, @Country, @Tags, @Note, 0)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@CustomerId", ddlCustomer.SelectedValue)
-                            myCmd.Parameters.AddWithValue("@Address", txtStreet.Text.Trim())
+                            myCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Suburb", txtSuburb.Text.Trim())
                             myCmd.Parameters.AddWithValue("@State", txtState.Text.Trim())
                             myCmd.Parameters.AddWithValue("@PostCode", txtPostCode.Text.Trim())
@@ -191,7 +191,7 @@ Partial Class Setting_Customer_Address
                         Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerAddress SET CustomerId=@CustomerId, Address=@Address, Suburb=@Suburb, State=@State, PostCode=@PostCode, Country=@Country, Tags=@Tags, Note=@Note WHERE Id=@Id", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", lblId.Text)
                             myCmd.Parameters.AddWithValue("@CustomerId", ddlCustomer.SelectedValue)
-                            myCmd.Parameters.AddWithValue("@Address", txtStreet.Text.Trim())
+                            myCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Suburb", txtSuburb.Text.Trim())
                             myCmd.Parameters.AddWithValue("@State", txtState.Text.Trim())
                             myCmd.Parameters.AddWithValue("@PostCode", txtPostCode.Text.Trim())

@@ -137,26 +137,15 @@
                             <asp:TextBox runat="server" ID="txtDescription" CssClass="form-control" placeholder="Description ..." autocomplete="off"></asp:TextBox>
                         </div>
                         <div class="col-12 col-sm-12 col-lg-6">
-                            <label class="form-label">Unit Number</label>
-                            <asp:TextBox runat="server" ID="txtUnitNumber" CssClass="form-control" placeholder="Unit Number ..." autocomplete="off"></asp:TextBox>
+                            <label class="form-label">Address</label>
+                            <asp:TextBox runat="server" ID="txtAddress" CssClass="form-control" placeholder="Address ..." autocomplete="off"></asp:TextBox>
                         </div>
                     </div>
                 
                     <div class="mb-2 row">
                         <div class="col-12 col-sm-12 col-lg-6 form-group">
-                            <label class="form-label">Street</label>
-                            <asp:TextBox runat="server" ID="txtStreet" CssClass="form-control" placeholder="Street Address ..." autocomplete="off"></asp:TextBox>
-                        </div>
-                        <div class="col-12 col-sm-12 col-lg-6 form-group">
                             <label class="form-label">Suburb</label>
                             <asp:TextBox runat="server" ID="txtSuburb" CssClass="form-control" placeholder="Suburb ..." autocomplete="off"></asp:TextBox>
-                        </div>
-                    </div>
-
-                    <div class="mb-2 row">
-                        <div class="col-12 col-sm-12 col-lg-6 form-group">
-                            <label class="form-label">City</label>
-                            <asp:TextBox runat="server" ID="txtCity" CssClass="form-control" placeholder="City ..." autocomplete="off"></asp:TextBox>
                         </div>
                         <div class="col-12 col-sm-12 col-lg-6 form-group">
                             <label class="form-label">State</label>
