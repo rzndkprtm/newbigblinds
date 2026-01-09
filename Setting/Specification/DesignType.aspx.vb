@@ -217,7 +217,7 @@ Partial Class Setting_Specification_Design
             dataLog = {"Designs", lblId.Text, Session("LoginId").ToString(), "Deleted"}
 
             Using thisConn As New SqlConnection(myConn)
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Designs SET Active=0, Delete=0 WHERE Id=@Id", thisConn)
+                Using myCmd As SqlCommand = New SqlCommand("UPDATE Designs SET Active=0 WHERE Id=@Id", thisConn)
                     myCmd.Parameters.AddWithValue("@Id", thisId)
 
                     thisConn.Open()
