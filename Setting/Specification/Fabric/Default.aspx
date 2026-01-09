@@ -90,6 +90,9 @@
                                                             <li runat="server" visible='<%# PageAction("Edit") %>'>
                                                                 <asp:LinkButton runat="server" ID="linkEdit" CssClass="dropdown-item" Text="Edit" CommandName="Ubah" CommandArgument='<%# Eval("Id") %>'></asp:LinkButton>
                                                             </li>
+                                                            <li runat="server" visible='<%# PageAction("Active") %>'>
+                                                                <a href="#" runat="server" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalActive" onclick='<%# String.Format("return showActive(`{0}`, `{1}`);", Eval("Id").ToString(), Convert.ToInt32(Eval("Active"))) %>'><%# TextActive(Eval("Active")) %></a>
+                                                            </li>
                                                             <li runat="server" visible='<%# PageAction("Delete") %>'>
                                                                 <a href="#" runat="server" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalDelete" onclick='<%# String.Format("return showDelete(`{0}`);", Eval("Id").ToString()) %>'>Delete</a>
                                                             </li>
@@ -245,6 +248,25 @@
         </div>
     </div>
 
+    <div class="modal modal-blur fade" id="modalActive" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title white" id="titleActive"></h5>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <asp:TextBox runat="server" ID="txtIdActive" style="display:none;"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="txtActive" style="display:none;"></asp:TextBox>
+                    Hi <b><%: Session("FullName") %></b>,<br />Are you sure you would like to do this?
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancel</a>
+                    <asp:Button runat="server" ID="btnActive" CssClass="btn btn-warning" Text="Confirm" OnClick="btnActive_Click" />
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal modal-blur fade" id="modalLog" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -302,16 +324,29 @@
                 });
             }
         });
+
         function showProcess() {
             $("#modalProcess").modal("show");
         }
         function showDelete(id) {
             document.getElementById("<%=txtIdDelete.ClientID %>").value = id;
         }
+        function showActive(id, active) {
+            document.getElementById("<%=txtIdActive.ClientID %>").value = id;
+            document.getElementById("<%=txtActive.ClientID %>").value = active;
+
+            let title = "";
+            if (active === "1") {
+                title = "Deactivate Fabric";
+            } else {
+                title = "Activate Fabric";
+            }
+            document.getElementById("titleActive").innerHTML = title;
+        }
         function showLog() {
             $("#modalLog").modal("show");
         }
-        ["modalProcess", "modalDelete", "modalAlias", "modalLog"].forEach(function (id) {
+        ["modalProcess", "modalDelete", "modalAlias", "modalLog", "modalActiveLogin"].forEach(function (id) {
             document.getElementById(id).addEventListener("hide.bs.modal", function () {
                 document.activeElement.blur();
                 document.body.focus();

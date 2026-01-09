@@ -1,5 +1,7 @@
 ﻿Imports System.Data
 Imports System.Data.SqlClient
+Imports OfficeOpenXml.Drawing.Chart
+Imports Org.BouncyCastle.Asn1.Pkcs
 
 Partial Class Setting_Specification_Fabric_Default
     Inherits Page
@@ -275,6 +277,63 @@ Partial Class Setting_Specification_Fabric_Default
         End Try
     End Sub
 
+    Protected Sub btnActive_Click(sender As Object, e As EventArgs)
+        MessageError(False, String.Empty)
+        Try
+            Dim thisId As String = txtIdActive.Text
+
+            Dim active As Integer = 1
+            If txtActive.Text = "1" Then : active = 0 : End If
+
+            Using thisConn As New SqlConnection(myConn)
+                Using myCmd As SqlCommand = New SqlCommand("UPDATE Fabrics SET Active=@Active WHERE Id=@Id", thisConn)
+                    myCmd.Parameters.AddWithValue("@Id", thisId)
+                    myCmd.Parameters.AddWithValue("@Active", active)
+
+                    thisConn.Open()
+                    myCmd.ExecuteNonQuery()
+                End Using
+            End Using
+
+            Dim activeDesc As String = "Fabric Has Been Activated"
+            If active = 0 Then activeDesc = "Fabric Has Been Deactivated"
+
+            Dim dataLog As Object() = {"Fabrics", thisId, Session("LoginId").ToString(), activeDesc}
+            settingClass.Logs(dataLog)
+
+            Dim fabricDetail As DataSet = settingClass.GetListData("SELECT * FROM FabricColours WHERE FabricId='" & thisId & "'")
+            If fabricDetail.Tables(0).Rows.Count > 0 Then
+                For i As Integer = 0 To fabricDetail.Tables(0).Rows.Count - 1
+                    Dim detailId As String = fabricDetail.Tables(0).Rows(i).Item("Id").ToString()
+
+                    Using thisConn As New SqlConnection(myConn)
+                        Using myCmd As SqlCommand = New SqlCommand("UPDATE FabricColours SET Active=@Active WHERE Id=@Id", thisConn)
+                            myCmd.Parameters.AddWithValue("@Id", detailId)
+                            myCmd.Parameters.AddWithValue("@Active", active)
+
+                            thisConn.Open()
+                            myCmd.ExecuteNonQuery()
+                        End Using
+                    End Using
+
+                    activeDesc = "Fabric Colour Has Been Activated from Fabric Type"
+                    If active = 0 Then activeDesc = "Fabric Colour Has Been Deactivated from Fabric Type"
+
+                    dataLog = {"FabricColours", detailId, Session("LoginId").ToString(), activeDesc}
+                    settingClass.Logs(dataLog)
+                Next
+            End If
+
+            Session("SearchFabric") = txtSearch.Text
+            Response.Redirect("~/setting/specification/fabric", False)
+        Catch ex As Exception
+            MessageError(True, ex.ToString())
+            If Not Session("RoleName") = "Developer" Then
+                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
+            End If
+        End Try
+    End Sub
+
     Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
         MessageError(False, String.Empty)
         Try
@@ -441,6 +500,11 @@ Partial Class Setting_Specification_Fabric_Default
             Return hasil.Remove(hasil.Length - 2).ToString()
         End If
         Return "Error"
+    End Function
+
+    Protected Function TextActive(active As Boolean) As String
+        If active = True Then Return "Deactivate"
+        Return "Activate"
     End Function
 
     Protected Function BindTextLog(logId As String) As String
