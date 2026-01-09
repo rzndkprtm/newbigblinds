@@ -32,7 +32,7 @@ Partial Class Account_Login
                 Exit Sub
             End If
 
-            Dim thisQuery As String = "SELECT CustomerLogins.*, CustomerLoginRoles.Name AS RoleName, CustomerLoginRoles.Active AS RoleActive, CustomerLoginLevels.Name AS LevelName, CustomerLoginLevels.Active AS LevelActive FROM CustomerLogins INNER JOIN CustomerLoginRoles ON CustomerLogins.RoleId=CustomerLoginRoles.Id INNER JOIN CustomerLoginLevels ON CustomerLogins.LevelId=CustomerLoginLevels.Id INNER JOIN Customers ON CustomerLogins.CustomerId=Customers.Id WHERE CustomerLogins.UserName='" & txtUserLogin.Text & "'"
+            Dim thisQuery As String = "SELECT * FROM CustomerLogins WHERE UserName='" & txtUserLogin.Text & "'"
 
             Dim myData As DataSet = settingClass.GetListData(thisQuery)
 

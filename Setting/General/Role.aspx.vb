@@ -8,6 +8,8 @@ Partial Class Setting_General_Role
 
     Dim settingClass As New SettingClass
 
+    Dim dataLog As Object() = Nothing
+
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim pageAccess As Boolean = PageAction("Load")
         If pageAccess = False Then
@@ -18,7 +20,7 @@ Partial Class Setting_General_Role
         If Not IsPostBack Then
             MessageError(False, String.Empty)
             txtSearch.Text = Session("SearchRole")
-            BindData(txtSearch.Text)
+            BindData(txtSearch.Text, ddlDelete.SelectedValue)
         End If
     End Sub
 
@@ -43,14 +45,19 @@ Partial Class Setting_General_Role
 
     Protected Sub btnSearch_Click(sender As Object, e As EventArgs)
         MessageError(False, String.Empty)
-        BindData(txtSearch.Text)
+        BindData(txtSearch.Text, ddlDelete.SelectedValue)
+    End Sub
+
+    Protected Sub ddlDelete_SelectedIndexChanged(sender As Object, e As EventArgs)
+        MessageError(False, String.Empty)
+        BindData(txtSearch.Text, ddlDelete.SelectedValue)
     End Sub
 
     Protected Sub gvList_PageIndexChanging(sender As Object, e As GridViewPageEventArgs)
         MessageError(False, String.Empty)
         Try
             gvList.PageIndex = e.NewPageIndex
-            BindData(txtSearch.Text)
+            BindData(txtSearch.Text, ddlDelete.SelectedValue)
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then
@@ -75,7 +82,7 @@ Partial Class Setting_General_Role
                     Dim myData As DataSet = settingClass.GetListData("SELECT * FROM CustomerLoginRoles WHERE Id='" & lblId.Text & "'")
                     txtName.Text = myData.Tables(0).Rows(0).Item("Name").ToString()
                     txtDescription.Text = myData.Tables(0).Rows(0).Item("Description").ToString()
-                    ddlActive.SelectedValue = Convert.ToInt32(myData.Tables(0).Rows(0).Item("Active"))
+                    ddlActive.SelectedValue = Convert.ToInt32(myData.Tables(0).Rows(0).Item("IsActive"))
 
                     ClientScript.RegisterStartupScript(Me.GetType(), "showProcess", thisScript, True)
                 Catch ex As Exception
@@ -89,7 +96,7 @@ Partial Class Setting_General_Role
                 MessageError_Log(False, String.Empty)
                 Dim thisScript As String = "window.onload = function() { showLog(); };"
                 Try
-                    gvListLog.DataSource = settingClass.GetListData("SELECT * FROM Logs WHERE DataId='" & dataId & "' AND Type='LoginRoles' ORDER BY ActionDate DESC")
+                    gvListLog.DataSource = settingClass.GetListData("SELECT * FROM Logs WHERE DataId='" & dataId & "' AND Type='CustomerLoginRoles' ORDER BY ActionDate DESC")
                     gvListLog.DataBind()
 
                     ClientScript.RegisterStartupScript(Me.GetType(), "showLog", thisScript, True)
@@ -102,42 +109,6 @@ Partial Class Setting_General_Role
                 End Try
             End If
         End If
-    End Sub
-
-    Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
-        MessageError(False, String.Empty)
-        Try
-            Dim thisId As String = txtIdDelete.Text
-
-            Using thisConn As New SqlConnection(myConn)
-                thisConn.Open()
-
-                Using myCmd As SqlCommand = New SqlCommand("DELETE FROM CustomerLoginRoles WHERE Id=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                Using myCmd As SqlCommand = New SqlCommand("DELETE FROM Logs WHERE Type='LoginRoles' AND DataId=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerLogins SET RoleId=NULL WHERE RoleId=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                thisConn.Close()
-            End Using
-
-            Session("SearchRole") = txtSearch.Text
-            Response.Redirect("~/setting/general/role", False)
-        Catch ex As Exception
-            MessageError(True, ex.ToString())
-            If Not Session("RoleName") = "Developer" Then
-                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
-            End If
-        End Try
     End Sub
 
     Protected Sub btnProcess_Click(sender As Object, e As EventArgs)
@@ -156,18 +127,18 @@ Partial Class Setting_General_Role
                     Dim thisId As String = settingClass.CreateId("SELECT TOP 1 Id FROM CustomerLoginRoles ORDER BY Id DESC")
 
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CustomerLoginRoles VALUES (@Id, @Name, @Description, @Active)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CustomerLoginRoles VALUES (@Id, @Name, @Description, @IsActive, 0)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Description", descText)
-                            myCmd.Parameters.AddWithValue("@Active", ddlActive.SelectedValue)
+                            myCmd.Parameters.AddWithValue("@IsActive", ddlActive.SelectedValue)
 
                             thisConn.Open()
                             myCmd.ExecuteNonQuery()
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"LoginRoles", thisId, Session("LoginId").ToString(), "Login Role Created"}
+                    dataLog = {"CustomerLoginRoles", thisId, Session("LoginId").ToString(), "Created"}
                     settingClass.Logs(dataLog)
 
                     Session("SearchRole") = txtSearch.Text
@@ -176,18 +147,18 @@ Partial Class Setting_General_Role
 
                 If lblAction.Text = "Edit" Then
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerLoginRoles SET Name=@Name, Description=@Description, Active=@Active WHERE Id=@Id", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerLoginRoles SET Name=@Name, Description=@Description, IsActive=@IsActive WHERE Id=@Id", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", lblId.Text)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Description", descText)
-                            myCmd.Parameters.AddWithValue("@Active", ddlActive.SelectedValue)
+                            myCmd.Parameters.AddWithValue("@IsActive", ddlActive.SelectedValue)
 
                             thisConn.Open()
                             myCmd.ExecuteNonQuery()
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"LoginRoles", lblId.Text, Session("LoginId").ToString(), "Login Role Updated"}
+                    dataLog = {"CustomerLoginRoles", lblId.Text, Session("LoginId").ToString(), "Updated"}
                     settingClass.Logs(dataLog)
 
                     Session("SearchRole") = txtSearch.Text
@@ -203,20 +174,51 @@ Partial Class Setting_General_Role
         End Try
     End Sub
 
-    Protected Sub BindData(searchText As String)
+    Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
+        MessageError(False, String.Empty)
+        Try
+            Dim thisId As String = txtIdDelete.Text
+
+            Using thisConn As New SqlConnection(myConn)
+                Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerLoginRoles SET IsActive=0, IsDelete=1 WHERE Id=@Id; UPDATE CustomerLogins SET RoleId=NULL WHERE RoleId=@Id;", thisConn)
+                    myCmd.Parameters.AddWithValue("@Id", thisId)
+
+                    thisConn.Open()
+                    myCmd.ExecuteNonQuery()
+                End Using
+            End Using
+
+            dataLog = {"CustomerLoginRoles", thisId, Session("LoginId").ToString(), "Deleted"}
+            settingClass.Logs(dataLog)
+
+            Session("SearchRole") = txtSearch.Text
+            Response.Redirect("~/setting/general/role", False)
+        Catch ex As Exception
+            MessageError(True, ex.ToString())
+            If Not Session("RoleName") = "Developer" Then
+                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
+            End If
+        End Try
+    End Sub
+
+    Protected Sub BindData(searchText As String, deleteText As String)
         Session("SearchRole") = String.Empty
         Try
-            Dim search As String = String.Empty
+            Dim deleteString As String = "WHERE IsDelete='" & deleteText & "'"
+            Dim searchString As String = String.Empty
             If Not searchText = "" Then
-                search = " WHERE Id LIKE '%" & searchText.Trim() & "%' OR Name LIKE '%" & searchText.Trim() & "%' OR Description LIKE '%" & searchText.Trim() & "%'"
+                searchString = "AND Id LIKE '%" & searchText.Trim() & "%' OR Name LIKE '%" & searchText.Trim() & "%' OR Description LIKE '%" & searchText.Trim() & "%'"
             End If
 
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM CustomerLoginRoles {0} ORDER BY Name ASC", search)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN IsActive=1 THEN 'Yes' WHEN IsActive=0 THEN 'No' ELSE 'Error' END AS DataActive, CASE WHEN IsDelete=1 THEN 'Yes' WHEN IsDelete=0 THEN 'No' ELSE 'Error' END AS DataDelete FROM CustomerLoginRoles {0} {1} ORDER BY Name ASC", deleteString, searchString)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()
 
             gvList.Columns(1).Visible = PageAction("Visible ID")
+            gvList.Columns(5).Visible = PageAction("Visible IsDelete")
+            divDelete.Visible = PageAction("Visible IsDelete")
+
             btnAdd.Visible = PageAction("Add")
         Catch ex As Exception
             MessageError(True, ex.ToString())

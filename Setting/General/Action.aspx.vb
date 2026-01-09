@@ -207,7 +207,7 @@ Partial Class Setting_General_Action
     Protected Sub BindRole()
         ddlRoleId.Items.Clear()
         Try
-            ddlRoleId.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginRoles ORDER BY Name ASC")
+            ddlRoleId.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginRoles WHERE IsDelete=0 ORDER BY Name ASC")
             ddlRoleId.DataTextField = "Name"
             ddlRoleId.DataValueField = "Id"
             ddlRoleId.DataBind()
@@ -223,7 +223,7 @@ Partial Class Setting_General_Action
     Protected Sub BindLevel()
         ddlLevelId.Items.Clear()
         Try
-            ddlLevelId.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels ORDER BY Name ASC")
+            ddlLevelId.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels WHERE IsDelete=0 ORDER BY Name ASC")
             ddlLevelId.DataTextField = "Name"
             ddlLevelId.DataValueField = "Id"
             ddlLevelId.DataBind()

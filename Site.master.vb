@@ -41,7 +41,7 @@ Public Partial Class SiteMaster
             If Session("IsLoggedIn") = True Then
                 Dim loginId As String = Session("LoginId")
 
-                Dim thisQuery As String = "SELECT CustomerLogins.*, Customers.CompanyId AS CompanyId, Customers.[Level] AS CustomerLevel, Customers.CompanyDetailId AS CompanyDetailId, Companys.Name AS CompanyName, Companys.Active AS CompanyActive, CASE WHEN Companys.Active=1 THEN 'Yes' ELSE 'No' END AS CompanyActive, Customers.Active AS CustomerActive, CASE WHEN CustomerLogins.Pricing=1 THEN 'Yes' ELSE '' END AS PriceAccess, CustomerLoginRoles.Name AS RoleName, CustomerLoginRoles.Active AS RoleActive, CustomerLoginLevels.Name AS LevelName, CustomerLoginLevels.Active AS LevelActive FROM CustomerLogins INNER JOIN CustomerLoginRoles ON CustomerLogins.RoleId=CustomerLoginRoles.Id INNER JOIN CustomerLoginLevels ON CustomerLogins.LevelId=CustomerLoginLevels.Id INNER JOIN Customers ON CustomerLogins.CustomerId=Customers.Id INNER JOIN Companys ON Customers.CompanyId=Companys.Id WHERE CustomerLogins.Id='" & loginId & "'"
+                Dim thisQuery As String = "SELECT CustomerLogins.*, Customers.CompanyId AS CompanyId, Customers.[Level] AS CustomerLevel, Customers.CompanyDetailId AS CompanyDetailId, Companys.Name AS CompanyName, Companys.Active AS CompanyActive, CASE WHEN Companys.Active=1 THEN 'Yes' ELSE 'No' END AS CompanyActive, Customers.Active AS CustomerActive, CASE WHEN CustomerLogins.Pricing=1 THEN 'Yes' ELSE '' END AS PriceAccess, CustomerLoginRoles.Name AS RoleName, CustomerLoginRoles.IsActive AS RoleActive, CustomerLoginLevels.Name AS LevelName, CustomerLoginLevels.IsActive AS LevelActive FROM CustomerLogins INNER JOIN CustomerLoginRoles ON CustomerLogins.RoleId=CustomerLoginRoles.Id INNER JOIN CustomerLoginLevels ON CustomerLogins.LevelId=CustomerLoginLevels.Id INNER JOIN Customers ON CustomerLogins.CustomerId=Customers.Id INNER JOIN Companys ON Customers.CompanyId=Companys.Id WHERE CustomerLogins.Id='" & loginId & "'"
 
                 Dim myData As DataSet = settingClass.GetListData(thisQuery)
 
@@ -81,6 +81,11 @@ Public Partial Class SiteMaster
                     Exit Sub
                 End If
 
+                If roleActive = False Then
+                    Response.Redirect("~/error", False)
+                    Exit Sub
+                End If
+
                 If resetLogin = True AndAlso Not Request.Url.AbsolutePath.ToLower().EndsWith("/account/password") Then
                     Response.Redirect("~/account/password", False)
                     Exit Sub
@@ -112,9 +117,9 @@ Public Partial Class SiteMaster
                 End Using
             End If
         Catch ex As Exception
-            dataMailing = {Session("LoginId").ToString(), Session("CompanyId").ToString(), Page.Title, "MyLoad", ex.ToString()}
-            mailingClass.WebError(dataMailing)
-            Session.Clear()
+            'dataMailing = {Session("LoginId").ToString(), Session("CompanyId").ToString(), Page.Title, "MyLoad", ex.ToString()}
+            'mailingClass.WebError(dataMailing)
+            'Session.Clear()
             Response.Redirect("~/account/login", False)
         End Try
     End Sub

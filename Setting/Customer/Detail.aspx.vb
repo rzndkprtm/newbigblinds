@@ -1381,12 +1381,6 @@ Partial Class Setting_Customer_Detail
                 End If
             End If
 
-            If txtLoginFullName.Text = "" Then
-                MessageError_ProcesLogin(True, "FULL NAME IS REQUIRED !")
-                ClientScript.RegisterStartupScript(Me.GetType(), "showProcessLogin", thisScript, True)
-                Exit Sub
-            End If
-
             If txtLoginUserName.Text = "" Then
                 MessageError_ProcesLogin(True, "USERNAME IS REQUIRED !")
                 ClientScript.RegisterStartupScript(Me.GetType(), "showProcessLogin", thisScript, True)
@@ -1419,6 +1413,8 @@ Partial Class Setting_Customer_Detail
 
             If msgErrorProcessLogin.InnerText = "" Then
                 If txtLoginPassword.Text = "" Then txtLoginPassword.Text = txtLoginUserName.Text
+
+                If txtLoginFullName.Text = "" Then txtLoginFullName.Text = txtLoginUserName.Text
 
                 Dim password As String = settingClass.Encrypt(txtLoginPassword.Text)
 
@@ -1661,17 +1657,17 @@ Partial Class Setting_Customer_Detail
     Protected Sub BindDataLoginRole()
         ddlLoginRole.Items.Clear()
         Try
-            Dim thisQuery As String = "SELECT * FROM CustomerLoginRoles ORDER BY Name ASC"
+            Dim thisQuery As String = "SELECT * FROM CustomerLoginRoles WHERE IsDelete=0 ORDER BY Name ASC"
             If Session("RoleName") = "IT" Then
-                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' ORDER BY Name ASC"
+                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND IsDelete=0 ORDER BY Name ASC"
                 If Session("LevelName") = "Member" Then
-                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' ORDER BY Name ASC"
+                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND IsDelete=0 ORDER BY Name ASC"
                 End If
             End If
             If Session("RoleName") = "Factory Office" Then
-                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' ORDER BY Name ASC"
+                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND IsDelete=0 ORDER BY Name ASC"
                 If Session("LevelName") = "Member" Then
-                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND Id<>'3' ORDER BY Name ASC"
+                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND Id<>'3' AND IsDelete=0 ORDER BY Name ASC"
                 End If
             End If
 
@@ -1691,7 +1687,7 @@ Partial Class Setting_Customer_Detail
     Protected Sub BindDataLoginLevel()
         ddlLoginLevel.Items.Clear()
         Try
-            ddlLoginLevel.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels ORDER BY Name ASC")
+            ddlLoginLevel.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels WHERE IsDelete=0 ORDER BY Name ASC")
             ddlLoginLevel.DataTextField = "Name"
             ddlLoginLevel.DataValueField = "Id"
             ddlLoginLevel.DataBind()
