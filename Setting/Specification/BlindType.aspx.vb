@@ -284,7 +284,7 @@ Partial Class Setting_Specification_BlindType
     Protected Sub BindDesign()
         ddlDesign.Items.Clear()
         Try
-            ddlDesign.DataSource = settingClass.GetListData("SELECT * FROM Designs ORDER BY Name ASC")
+            ddlDesign.DataSource = settingClass.GetListData("SELECT * FROM Designs WHERE IsDelete=0 ORDER BY Name ASC")
             ddlDesign.DataTextField = "Name"
             ddlDesign.DataValueField = "Id"
             ddlDesign.DataBind()

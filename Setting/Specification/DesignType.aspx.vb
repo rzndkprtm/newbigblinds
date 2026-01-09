@@ -242,7 +242,7 @@ Partial Class Setting_Specification_Design
             If Not searchText = "" Then
                 search = " AND Id LIKE '%" & searchText.Trim() & "%' OR Name LIKE '%" & searchText.Trim() & "%' OR Page LIKE '%" & searchText.Trim() & "%' OR Description LIKE '%" & searchText.Trim() & "%'"
             End If
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Designs WHERE Delete=0 {0} ORDER BY Name ASC", search)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Designs WHERE IsDelete=0 {0} ORDER BY Name ASC", search)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()
