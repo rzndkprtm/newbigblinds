@@ -93,7 +93,7 @@
                             End Using
                         End Using
 
-                        Dim dataLog As Object() = {"OrderHeaders", headerId, "2", "In Production Order"}
+                        Dim dataLog As Object() = {"OrderHeaders", headerId, "2", "Order In Production"}
                         orderClass.Logs(dataLog)
 
                         If company = "2" OrElse company = "jpmd" Then

@@ -318,7 +318,7 @@ Partial Class Order_Detail
                 orderClass.FinalCostItem(headerId, thisId)
             End If
 
-            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Submit Order"}
+            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order Submitted"}
             orderClass.Logs(dataLog)
 
             Dim previewClass As New PreviewClass
@@ -396,7 +396,7 @@ Partial Class Order_Detail
 
             orderClass.CalculatePriceByOrder(headerId)
 
-            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Unsubmit Order"}
+            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order Unsubmitted"}
             orderClass.Logs(dataLog)
 
             url = String.Format("~/order/detail?orderid={0}", headerId)
@@ -440,7 +440,7 @@ Partial Class Order_Detail
                     salesClass.RefreshData()
                 End If
 
-                dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Cancel Order"}
+                dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order Canceled"}
                 orderClass.Logs(dataLog)
 
                 url = String.Format("~/order/detail?orderid={0}", headerId)
@@ -469,7 +469,7 @@ Partial Class Order_Detail
                 End Using
             End Using
 
-            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "In Production Order"}
+            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order In Production"}
             orderClass.Logs(dataLog)
 
             ' SALES
@@ -505,7 +505,7 @@ Partial Class Order_Detail
                 End Using
             End Using
 
-            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Hold Order"}
+            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order On Hold"}
             orderClass.Logs(dataLog)
 
             url = String.Format("~/order/detail?orderid={0}", headerId)
@@ -535,7 +535,7 @@ Partial Class Order_Detail
                 End Using
             End Using
 
-            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "In Production Order (Unhold Order)"}
+            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order In Production (Unhold Order)"}
             orderClass.Logs(dataLog)
 
             url = String.Format("~/order/detail?orderid={0}", headerId)
@@ -595,7 +595,7 @@ Partial Class Order_Detail
                     End Using
                 End Using
 
-                dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Shipped Order"}
+                dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order Shipped"}
                 orderClass.Logs(dataLog)
 
                 url = String.Format("~/order/detail?orderid={0}", headerId)
@@ -624,7 +624,7 @@ Partial Class Order_Detail
                 End Using
             End Using
 
-            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Complete Order"}
+            dataLog = {"OrderHeaders", headerId, Session("LoginId"), "Order Completed"}
             orderClass.Logs(dataLog)
 
             url = String.Format("~/order/detail?orderid={0}", headerId)
