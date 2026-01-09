@@ -150,7 +150,7 @@ Partial Class Setting_Specification_Design
                     Using thisConn As New SqlConnection(myConn)
                         thisConn.Open()
 
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Designs VALUES (@Id, @Name, @CompanyId, @Type, @Page, @Description, @Active, 0)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Designs VALUES (@Id, @Name, @CompanyId, @Type, @Page, @Description, @Active)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@CompanyId", company)
@@ -240,9 +240,9 @@ Partial Class Setting_Specification_Design
         Try
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                search = " AND Id LIKE '%" & searchText.Trim() & "%' OR Name LIKE '%" & searchText.Trim() & "%' OR Page LIKE '%" & searchText.Trim() & "%' OR Description LIKE '%" & searchText.Trim() & "%'"
+                search = "WHERE Id LIKE '%" & searchText.Trim() & "%' OR Name LIKE '%" & searchText.Trim() & "%' OR Page LIKE '%" & searchText.Trim() & "%' OR Description LIKE '%" & searchText.Trim() & "%'"
             End If
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Designs WHERE IsDelete=0 {0} ORDER BY Name ASC", search)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Designs {0} ORDER BY Name ASC", search)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()
@@ -260,7 +260,7 @@ Partial Class Setting_Specification_Design
     Protected Sub BindCompany()
         lbCompany.Items.Clear()
         Try
-            lbCompany.DataSource = settingClass.GetListData("SELECT * FROM Companys WHERE IsDelete=0 ORDER BY Name ASC")
+            lbCompany.DataSource = settingClass.GetListData("SELECT * FROM Companys ORDER BY Name ASC")
             lbCompany.DataTextField = "Name"
             lbCompany.DataValueField = "Id"
             lbCompany.DataBind()

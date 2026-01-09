@@ -84,7 +84,7 @@ Partial Class Setting_General_Company_Default
                     txtName.Text = thisData.Tables(0).Rows(0).Item("Name").ToString()
                     txtAlias.Text = thisData.Tables(0).Rows(0).Item("Alias").ToString()
                     txtDescription.Text = thisData.Tables(0).Rows(0).Item("Description").ToString()
-                    ddlActive.SelectedValue = Convert.ToInt32(thisData.Tables(0).Rows(0).Item("IsActive"))
+                    ddlActive.SelectedValue = Convert.ToInt32(thisData.Tables(0).Rows(0).Item("Active"))
 
                     ClientScript.RegisterStartupScript(Me.GetType(), "showProcess", thisScript, True)
                 Catch ex As Exception
@@ -136,7 +136,7 @@ Partial Class Setting_General_Company_Default
                     Dim thisId As String = settingClass.CreateId("SELECT TOP 1 Id FROM Companys ORDER BY Id DESC")
 
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Companys VALUES (@Id, @Name, @Alias, NULL, @Description, @Active, 0)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Companys VALUES (@Id, @Name, @Alias, NULL, @Description, @Active)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Alias", txtAlias.Text.Trim())
@@ -196,7 +196,7 @@ Partial Class Setting_General_Company_Default
             settingClass.Logs(dataLog)
 
             Using thisConn As New SqlConnection(myConn)
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Companys SET IsActive=0, IsDelete=1 WHERE Id=@Id", thisConn)
+                Using myCmd As SqlCommand = New SqlCommand("UPDATE Companys SET Active=0 WHERE Id=@Id", thisConn)
                     myCmd.Parameters.AddWithValue("@Id", thisId)
 
                     thisConn.Open()
@@ -216,10 +216,10 @@ Partial Class Setting_General_Company_Default
         Try
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                search = "AND Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Alias LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
+                search = "WHERE Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Alias LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
             End If
 
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Companys WHERE IsDelete=0 {0} ORDER BY Id ASC", search)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Companys {0} ORDER BY Id ASC", search)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()

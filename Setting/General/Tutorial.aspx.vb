@@ -242,7 +242,7 @@ Partial Class Setting_General_Tutorial
     Protected Sub BindCompany()
         ddlCompanyId.Items.Clear()
         Try
-            ddlCompanyId.DataSource = settingClass.GetListData("SELECT * FROM Companys WHERE IsDelete=0 ORDER BY Name ASC")
+            ddlCompanyId.DataSource = settingClass.GetListData("SELECT * FROM Companys ORDER BY Name ASC")
             ddlCompanyId.DataTextField = "Name"
             ddlCompanyId.DataValueField = "Id"
             ddlCompanyId.DataBind()

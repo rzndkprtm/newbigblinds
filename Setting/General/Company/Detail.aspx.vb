@@ -163,7 +163,7 @@ Partial Class Setting_General_Company_Detail
                     Dim thisId As String = settingClass.CreateId("SELECT TOP 1 Id FROM CompanyDetails ORDER BY Id DESC")
 
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CompanyDetails VALUES(@Id, @Name, @CompanyId, @Description, @Active)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CompanyDetails VALUES(@Id, @Name, @CompanyId, @Description, @Active, 0)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtNameDetail.Text.Trim())
                             myCmd.Parameters.AddWithValue("@CompanyId", lblId.Text)
@@ -175,7 +175,7 @@ Partial Class Setting_General_Company_Detail
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"CompanyDetails", thisId, Session("LoginId").ToString(), "Company Detail Created"}
+                    Dim dataLog As Object() = {"CompanyDetails", thisId, Session("LoginId").ToString(), "Created"}
                     settingClass.Logs(dataLog)
 
                     url = String.Format("~/setting/general/company/detail?boosid={0}", lblId.Text)
@@ -195,7 +195,7 @@ Partial Class Setting_General_Company_Detail
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"CompanyDetails", lblDetailId.Text, Session("LoginId").ToString(), "Company Detail Updated"}
+                    Dim dataLog As Object() = {"CompanyDetails", lblDetailId.Text, Session("LoginId").ToString(), "Updated"}
                     settingClass.Logs(dataLog)
 
                     url = String.Format("~/setting/general/company/detail?boosid={0}", lblId.Text)

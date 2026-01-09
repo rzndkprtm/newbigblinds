@@ -200,9 +200,9 @@ Partial Class Setting_Customer_Default
     Protected Sub BindCompany()
         ddlCompany.Items.Clear()
         Try
-            Dim thisQuery As String = "SELECT * FROM Companys WHERE Id<>'1' AND IsDelete=0 ORDER BY Id ASC"
+            Dim thisQuery As String = "SELECT * FROM Companys WHERE Id<>'1' ORDER BY Id ASC"
             If Session("RoleName") = "Developer" Then
-                thisQuery = "SELECT * FROM Companys WHERE IsDelete=0 ORDER BY Id ASC"
+                thisQuery = "SELECT * FROM Companys ORDER BY Id ASC"
             End If
 
             ddlCompany.DataSource = settingClass.GetListData(thisQuery)

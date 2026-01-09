@@ -880,7 +880,7 @@ Partial Class Order_Default
     Protected Sub BindCompany()
         ddlCompany.Items.Clear()
         Try
-            ddlCompany.DataSource = orderClass.GetListData("SELECT * FROM Companys WHERE Id<>'1' AND IsDelete=0 ORDER BY Name ASC")
+            ddlCompany.DataSource = orderClass.GetListData("SELECT * FROM Companys WHERE Id<>'1' ORDER BY Name ASC")
             ddlCompany.DataTextField = "Name"
             ddlCompany.DataValueField = "Id"
             ddlCompany.DataBind()
