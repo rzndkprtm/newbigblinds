@@ -1661,9 +1661,6 @@ Partial Class Order_Method
             If tubeName = "Plantation" Then
                 If String.IsNullOrEmpty(data.batten) Then Return "FRONT BATTEN COLOUR IS REQUIRED !"
             End If
-            If tubeName = "Plantation" OrElse tubeName = "Sewless" Then
-                If String.IsNullOrEmpty(data.battenb) Then Return "BACK BATTEN COLOUR IS REQUIRED !"
-            End If
         End If
 
         If Not String.IsNullOrEmpty(data.notes) Then
@@ -1711,10 +1708,7 @@ Partial Class Order_Method
             squareMetre = width * drop / 1000000
         End If
 
-        If tubeName = "Plain" Then
-            data.batten = String.Empty : data.battenb = String.Empty
-        End If
-        If tubeName = "Sewless" Then
+        If tubeName = "Plain" OrElse tubeName = "Sewless" Then
             data.batten = String.Empty
         End If
 
@@ -1733,7 +1727,7 @@ Partial Class Order_Method
                 Dim itemId As String = orderClass.GetNewOrderItemId()
 
                 Using thisConn As New SqlConnection(myConn)
-                    Using myCmd As New SqlCommand("INSERT INTO OrderDetails(Id, HeaderId, ProductId, FabricId, FabricColourId, PriceProductGroupId, Qty, Room, Mounting, Width, [Drop], WandColour, WandLength, WandLengthValue, LayoutCode, LayoutCodeCustom, TrackType, PanelQty, Batten, BattenB, LinearMetre, SquareMetre, TotalItems, Notes, Markup, Active) VALUES(@Id, @HeaderId, @ProductId, @FabricId, @FabricColourId, @PriceProductGroupId, @Qty, @Room, @Mounting, @Width, @Drop, @WandColour, @WandLength, @WandLengthValue, @LayoutCode, @LayoutCodeCustom, @TrackType, @PanelQty, @Batten, @BattenB, @LinearMetre, @SquareMetre, 1, @Notes, @MarkUp, 1)", thisConn)
+                    Using myCmd As New SqlCommand("INSERT INTO OrderDetails(Id, HeaderId, ProductId, FabricId, FabricColourId, PriceProductGroupId, Qty, Room, Mounting, Width, [Drop], WandColour, WandLength, WandLengthValue, LayoutCode, LayoutCodeCustom, TrackType, PanelQty, Batten, LinearMetre, SquareMetre, TotalItems, Notes, Markup, Active) VALUES(@Id, @HeaderId, @ProductId, @FabricId, @FabricColourId, @PriceProductGroupId, @Qty, @Room, @Mounting, @Width, @Drop, @WandColour, @WandLength, @WandLengthValue, @LayoutCode, @LayoutCodeCustom, @TrackType, @PanelQty, @Batten, @LinearMetre, @SquareMetre, 1, @Notes, @MarkUp, 1)", thisConn)
                         myCmd.Parameters.AddWithValue("@Id", itemId)
                         myCmd.Parameters.AddWithValue("@HeaderId", data.headerid)
                         myCmd.Parameters.AddWithValue("@ProductId", data.colourtype)
@@ -1753,7 +1747,6 @@ Partial Class Order_Method
                         myCmd.Parameters.AddWithValue("@TrackType", data.tracktype)
                         myCmd.Parameters.AddWithValue("@PanelQty", panelQty)
                         myCmd.Parameters.AddWithValue("@Batten", data.batten)
-                        myCmd.Parameters.AddWithValue("@BattenB", data.battenb)
                         myCmd.Parameters.AddWithValue("@LinearMetre", linearMetre)
                         myCmd.Parameters.AddWithValue("@SquareMetre", squareMetre)
                         myCmd.Parameters.AddWithValue("@Notes", data.notes)
@@ -1778,7 +1771,7 @@ Partial Class Order_Method
             Dim itemId As String = data.itemid
 
             Using thisConn As SqlConnection = New SqlConnection(myConn)
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE OrderDetails SET ProductId=@ProductId, FabricId=@FabricId, FabricColourId=@FabricColourId, PriceProductGroupId=@PriceProductGroupId, Qty=@Qty, Room=@Room, Mounting=@Mounting, Width=@Width, [Drop]=@Drop, WandColour=@WandColour, WandLength=@WandLength, WandLengthValue=@WandLengthValue, LayoutCode=@LayoutCode, LayoutCodeCustom=@LayoutCodeCustom, TrackType=@TrackType, PanelQty=@PanelQty, Batten=@Batten, BattenB=@BattenB, LinearMetre=@LinearMetre, SquareMetre=@SquareMetre, TotalItems=1, Notes=@Notes, MarkUp=@MarkUp, Active=1 WHERE Id=@Id", thisConn)
+                Using myCmd As SqlCommand = New SqlCommand("UPDATE OrderDetails SET ProductId=@ProductId, FabricId=@FabricId, FabricColourId=@FabricColourId, PriceProductGroupId=@PriceProductGroupId, Qty=@Qty, Room=@Room, Mounting=@Mounting, Width=@Width, [Drop]=@Drop, WandColour=@WandColour, WandLength=@WandLength, WandLengthValue=@WandLengthValue, LayoutCode=@LayoutCode, LayoutCodeCustom=@LayoutCodeCustom, TrackType=@TrackType, PanelQty=@PanelQty, Batten=@Batten, LinearMetre=@LinearMetre, SquareMetre=@SquareMetre, TotalItems=1, Notes=@Notes, MarkUp=@MarkUp, Active=1 WHERE Id=@Id", thisConn)
                     myCmd.Parameters.AddWithValue("@Id", itemId)
                     myCmd.Parameters.AddWithValue("@HeaderId", data.headerid)
                     myCmd.Parameters.AddWithValue("@ProductId", data.colourtype)
@@ -1798,7 +1791,6 @@ Partial Class Order_Method
                     myCmd.Parameters.AddWithValue("@TrackType", data.tracktype)
                     myCmd.Parameters.AddWithValue("@PanelQty", panelQty)
                     myCmd.Parameters.AddWithValue("@Batten", data.batten)
-                    myCmd.Parameters.AddWithValue("@BattenB", data.battenb)
                     myCmd.Parameters.AddWithValue("@LinearMetre", linearMetre)
                     myCmd.Parameters.AddWithValue("@SquareMetre", squareMetre)
                     myCmd.Parameters.AddWithValue("@Notes", data.notes)

@@ -756,7 +756,6 @@ function visibleDetail(blindType, tubeType, colourType) {
         const layoutcustom = document.getElementById("divlayoutcustom");
         const panelqty = document.getElementById("divpanelqty");
         const battenfront = document.getElementById("divbattenfront");
-        const battenback = document.getElementById("divbattenback");
         const markup = document.getElementById("divmarkup");
 
         function toggleDisplay(element, show) {
@@ -775,7 +774,6 @@ function visibleDetail(blindType, tubeType, colourType) {
         toggleDisplay(layoutcustom, false);
         toggleDisplay(panelqty, false);
         toggleDisplay(battenfront, false);
-        toggleDisplay(battenback, false);
         toggleDisplay(markup, false);
 
         const wandSelect = document.getElementById("wandlength");
@@ -789,11 +787,7 @@ function visibleDetail(blindType, tubeType, colourType) {
             const tubePromise = getTubeName(tubeType).then(tubeName => {
                 if (tubeName === "Plantation") {
                     toggleDisplay(battenfront, true);
-                    toggleDisplay(battenback, true);
-                }
-                if (tubeName === "Sewless") {
-                    toggleDisplay(battenback, true);
-                }                
+                }               
             }).catch(err => {
                 resolve();
             });
@@ -869,7 +863,7 @@ function process() {
     const fields = [
         "blindtype", "tubetype", "colourtype", "qty", "room", "mounting",
         "fabrictype", "fabriccolour", "width", "drop", "tracktype", "wandlength", "wandlengthvalue",
-        "layoutcode", "layoutcodecustom", "panelqty", "batten", "battenb", "notes", "markup"
+        "layoutcode", "layoutcodecustom", "panelqty", "batten", "notes", "markup"
     ];
 
     const formData = {
@@ -1007,7 +1001,6 @@ function setFormValues(itemData) {
         layoutcodecustom: "LayoutCodeCustom",
         panelqty: "PanelQty",
         batten: "Batten",
-        battenb: "BattenB",
         notes: "Notes",
         markup: "MarkUp"
     };
@@ -1047,7 +1040,7 @@ function controlForm(status, isEditItem, isCopyItem) {
     const inputs = [
         "blindtype", "tubetype", "colourtype", "qty", "room", "mounting",
         "fabrictype", "fabriccolour", "width", "drop", "tracktype", "wandlength", "wandlengthvalue",
-        "layoutcode", "layoutcodecustom", "panelqty", "batten", "battenb", "notes", "markup"
+        "layoutcode", "layoutcodecustom", "panelqty", "batten", "notes", "markup"
     ];
 
     inputs.forEach(id => {

@@ -233,24 +233,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="row" id="divbattenback">
-                                            <div class="col-12 col-sm-12 col-lg-3">
-                                                <label>Batten Colour (Back)</label>
-                                            </div>
-                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
-                                                <select id="battenb" class="form-select">
-                                                    <option value=""></option>
-                                                    <option value="Baltic">Baltic</option>
-                                                    <option value="Black">Black</option>
-                                                    <option value="Brown">Brown</option>
-                                                    <option value="Cherry">Cherry</option>
-                                                    <option value="Natural">Natural</option>
-                                                    <option value="Teak">Teak</option>
-                                                    <option value="White">White</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         <div class="row mt-3">
                                             <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Special Information</label>

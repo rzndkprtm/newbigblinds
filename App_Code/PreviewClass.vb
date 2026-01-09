@@ -603,7 +603,7 @@ Public Class PreviewClass
                     table.WidthPercentage = 100
 
                     Dim dt As DataTable = panelData.Tables(0)
-                    Dim items(18, dt.Rows.Count - 1) As String
+                    Dim items(17, dt.Rows.Count - 1) As String
 
                     For i As Integer = 0 To dt.Rows.Count - 1
                         Dim number As Integer = i + 1
@@ -637,8 +637,7 @@ Public Class PreviewClass
                         items(13, i) = dt.Rows(i)("TrackType").ToString()
                         items(14, i) = layoutCode
                         items(15, i) = dt.Rows(i)("Batten").ToString()
-                        items(16, i) = dt.Rows(i)("BattenB").ToString()
-                        items(17, i) = dt.Rows(i)("Notes").ToString()
+                        items(16, i) = dt.Rows(i)("Notes").ToString()
                     Next
 
                     For i As Integer = 0 To items.GetLength(1) - 1 Step 6
@@ -649,7 +648,7 @@ Public Class PreviewClass
                         Dim fontHeader As New Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD)
                         Dim fontContent As New Font(Font.FontFamily.TIMES_ROMAN, 8)
 
-                        Dim headers As String() = {"", "Location", "Mounting", "Panel System", "Panel Style", "Track Colour", "Fabric Type", "Fabric Colour", "Width (mm)", "Drop (mm)", "Wand Colour", "Wand Length", "Panel Qty", "Track Type", "Layout Code", "Batten (Front)", "Batten (Back)", "Notes"}
+                        Dim headers As String() = {"", "Location", "Mounting", "Panel System", "Panel Style", "Track Colour", "Fabric Type", "Fabric Colour", "Width (mm)", "Drop (mm)", "Wand Colour", "Wand Length", "Panel Qty", "Track Type", "Layout Code", "Batten Colour", "Notes"}
 
                         For row As Integer = 0 To headers.Length - 1
                             Dim cellHeader As New PdfPCell(New Phrase(headers(row), fontHeader))
