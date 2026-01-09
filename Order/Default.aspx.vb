@@ -265,7 +265,7 @@ Partial Class Order_Default
                     End Using
                 End Using
 
-                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Unsubmit Order"}
+                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Order Unsubmitted"}
                 orderClass.Logs(dataLog)
 
                 Session("OrderStatus") = ddlStatus.SelectedValue
@@ -287,7 +287,7 @@ Partial Class Order_Default
                     End Using
                 End Using
 
-                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "In Production Order"}
+                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Order In Production"}
                 orderClass.Logs(dataLog)
 
                 ' SALES
@@ -314,7 +314,7 @@ Partial Class Order_Default
                     End Using
                 End Using
 
-                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Hold Order"}
+                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Order On Hold"}
                 orderClass.Logs(dataLog)
 
                 Session("OrderStatus") = ddlStatus.SelectedValue
@@ -366,7 +366,7 @@ Partial Class Order_Default
                     End Using
                 End Using
 
-                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Complete Order"}
+                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Order Completed"}
                 orderClass.Logs(dataLog)
 
                 Response.Redirect("~/order", False)
@@ -420,7 +420,7 @@ Partial Class Order_Default
                     End Using
                 End Using
 
-                Dim descLog As String = String.Format("Cancel Order. Reason : {0}", txtCancelDescription.Text.Trim())
+                Dim descLog As String = String.Format("Order Canceled. Reason : {0}", txtCancelDescription.Text.Trim())
                 Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), descLog}
                 orderClass.Logs(dataLog)
 
@@ -481,7 +481,7 @@ Partial Class Order_Default
                     End Using
                 End Using
 
-                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Shipped Order"}
+                Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId"), "Order Shipped"}
                 orderClass.Logs(dataLog)
 
                 Response.Redirect("~/order", False)
@@ -567,49 +567,6 @@ Partial Class Order_Default
             Response.AddHeader("Content-Disposition", "attachment; filename=""" & fileName & """")
             Response.TransmitFile(pdfFilePath)
             HttpContext.Current.ApplicationInstance.CompleteRequest()
-        Catch ex As Exception
-            MessageError(True, ex.ToString())
-            If Not Session("RoleName") = "Developer" Then
-                MessageError(True, "PLEASE CONTACT IT SUPPORT AT REZA@BIGBLINDS.CO.ID !")
-            End If
-        End Try
-    End Sub
-
-    Protected Sub btnAuthorization_Click(sender As Object, e As EventArgs)
-        MessageError(False, String.Empty)
-        Try
-            Dim thisQuery As String = "SELECT * FROM OrderHeaders WHERE Active=1 AND (Status='New Order' OR Status='Payment Received')"
-            If Session("RoleName") = "Customer Service" Then
-                thisQuery = "SELECT OrderHeaders.* FROM OrderHeaders LEFT JOIN Customers ON OrderHeaders.CustomerId=Customers.Id WHERE OrderHeaders.Active=1 AND (OrderHeaders.Status='New Order' OR OrderHeaders.Status='Payment Received') AND Customers.CompanyId='" & Session("CompanyId") & "'"
-            End If
-            Dim authorizationData As DataSet = orderClass.GetListData(thisQuery)
-
-            If authorizationData.Tables(0).Rows.Count > 0 Then
-                For i As Integer = 0 To authorizationData.Tables(0).Rows.Count - 1
-                    Dim thisId As String = authorizationData.Tables(0).Rows(i).Item("Id").ToString()
-
-                    Dim companyId As String = orderClass.GetCompanyIdByOrder(thisId)
-
-                    Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("UPDATE OrderHeaders SET Status='In Production', ProductionDate=GETDATE(), DownloadBOE=1, OnHoldDate=NULL WHERE Id=@Id; INSERT INTO OrderShipments(Id) VALUES (@Id)", thisConn)
-                            myCmd.Parameters.AddWithValue("@Id", thisId)
-
-                            thisConn.Open()
-                            myCmd.ExecuteNonQuery()
-                        End Using
-                    End Using
-
-                    Dim dataLog As Object() = {"OrderHeaders", thisId, Session("LoginId").ToString(), "In Production Order"}
-                    orderClass.Logs(dataLog)
-
-                    If companyId = "2" Then
-                        Dim salesClass As New SalesClass
-                        salesClass.RefreshData()
-                    End If
-                Next
-            End If
-
-            Response.Redirect("~/order", False)
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then
@@ -844,21 +801,14 @@ Partial Class Order_Default
             btnAddCSV.Visible = PageAction("Add CSV")
             btnRework.Visible = PageAction("Rework")
             divActive.Visible = PageAction("Active")
-            aAuthorization.Visible = PageAction("Authorization")
             divCompany.Visible = PageAction("Filter Company")
 
             Dim authorizationQuery As String = "SELECT COUNT(OrderHeaders.Id) FROM OrderHeaders LEFT JOIN Customers ON OrderHeaders.CustomerId=Customers.Id WHERE OrderHeaders.Status='New Order' OR OrderHeaders.Status='Payment Received'"
             If Session("RoleName") = "Customer Service" Then
                 authorizationQuery = "SELECT COUNT(OrderHeaders.Id) FROM OrderHeaders LEFT JOIN Customers ON OrderHeaders.CustomerId=Customers.Id WHERE Customers.CompanyId='" & Session("CompanyId") & "' AND OrderHeaders.Active=1 AND (OrderHeaders.Status='New Order' OR OrderHeaders.Status='Payment Received')"
             End If
-            spanAuthorization.InnerText = orderClass.GetItemData(authorizationQuery)
-            If spanAuthorization.InnerText = "0" Then
-                aAuthorization.Visible = False
-            End If
 
-            If Session("CustomerId") = "127" Then
-                btnAddCSV.Visible = True
-            End If
+            If Session("CustomerId") = "127" Then btnAddCSV.Visible = True
 
             If Session("RoleName") = "Customer" Then
                 Dim onStop As Boolean = orderClass.GetCustomerOnStop(Session("CustomerId").ToString())

@@ -37,10 +37,6 @@
                 <asp:Button runat="server" ID="btnAdd" CssClass="btn btn-primary" Text="Create Order" OnClick="btnAdd_Click" />
                 <asp:Button runat="server" ID="btnAddCSV" CssClass="btn btn-secondary" Text="Import Order (CSV)" OnClick="btnAddCSV_Click" />
                 <asp:Button runat="server" ID="btnRework" CssClass="btn btn-info" Text="Rework Order" OnClick="btnRework_Click" />
-                <a class="btn btn-success" href="#" runat="server" id="aAuthorization" data-bs-toggle="modal" data-bs-target="#modalAuthorization">
-                    Authorize BOE Download
-                    <span runat="server" id="spanAuthorization" class="badge bg-transparent"></span>
-                </a>
             </div>
         </section>
         
@@ -351,30 +347,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade text-center" id="modalAuthorization" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-success">
-                    <h5 class="modal-title white">BOE Access</h5>
-                </div>
-
-                <div class="modal-body text-center py-4">
-                    Hi <b><%: Session("FullName") %></b>,<br />
-                    If you confirm this action, all orders currently in <b>New Order</b> & <b>Payment Received</b> status will be updated to <b>In Production</b>, and BOE will be granted access to retrieve order data from the web.
-                    <br /><br />
-                    <asp:DropDownList runat="server" ID="ddlCompanyDownload" CssClass="form-select"></asp:DropDownList>
-                    <br /><br />
-                    *** Once the confirmation is completed, please open the <b>BOE Application</b> and proceed with the download process.
-                </div>
-
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancel</a>
-                    <asp:Button runat="server" ID="btnAuthorization" CssClass="btn btn-success" Text="Confirm" OnClick="btnAuthorization_Click" />
-                </div>
-            </div>
-        </div>
-    </div>
     
     <div class="modal fade text-center" id="modalPrintDO" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -518,7 +490,7 @@
             return true;
         }
 
-        ["modalShipment", "modalStatusOrder", "modalCancelOrder", "modalShipmentOrder", "modalRestore", "modalPrintDO", "modalLog", "modalAuthorization"].forEach(function (id) {
+        ["modalShipment", "modalStatusOrder", "modalCancelOrder", "modalShipmentOrder", "modalRestore", "modalPrintDO", "modalLog"].forEach(function (id) {
             document.getElementById(id).addEventListener("hide.bs.modal", function () {
                 document.activeElement.blur();
                 document.body.focus();
