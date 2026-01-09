@@ -184,19 +184,43 @@ Partial Class Order_Default
                 Dim customerId As String = orderClass.GetCustomerIdByOrder(thisId)
                 Dim companyAlias As String = orderClass.GetCompanyAliasByCustomer(customerId)
 
-                Dim orderId As String = String.Format("{0}-{1}", companyAlias, newIdHeader)
+                Dim success As Boolean = False
+                Dim retry As Integer = 0
+                Dim maxRetry As Integer = 10
+                Dim orderId As String = ""
 
-                Using thisConn As New SqlConnection(myConn)
-                    Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderHeaders SELECT @NewID, @OrderId, CustomerId, 'Copy ' + CAST(@NewID AS VARCHAR(20)) + ' - ' + OrderNumber, 'Copy ' + CAST(@NewID AS VARCHAR(20)) + ' - ' + OrderName, NULL, OrderType, 'Unsubmitted', NULL, CreatedBy, GETDATE(), NULL, NULL, NULL, NULL, NULL, NULL, 0, 1 FROM OrderHeaders WHERE Id=@OldId; INSERT INTO OrderQuotes VALUES(@NewID, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
-                        myCmd.Parameters.AddWithValue("@OldId", thisId)
-                        myCmd.Parameters.AddWithValue("@NewID", newIdHeader)
-                        myCmd.Parameters.AddWithValue("@OrderId", orderId)
-                        myCmd.Parameters.AddWithValue("@CreatedBy", Session("LoginId").ToString())
+                Do While Not success
+                    retry += 1
+                    If retry > maxRetry Then
+                        Throw New Exception("FAILED TO GENERATE UNIQUE ORDER ID")
+                    End If
 
-                        thisConn.Open()
-                        myCmd.ExecuteNonQuery()
-                    End Using
-                End Using
+                    Dim randomCode As String = orderClass.GenerateRandomCode()
+                    orderId = companyAlias & randomCode
+
+                    Try
+                        Using thisConn As New SqlConnection(myConn)
+                            Using myCmd As SqlCommand = New SqlCommand("INSERT INTO OrderHeaders SELECT @NewID, @OrderId, CustomerId, 'Copy ' + CAST(@NewID AS VARCHAR(20)) + ' - ' + OrderNumber, 'Copy ' + CAST(@NewID AS VARCHAR(20)) + ' - ' + OrderName, NULL, OrderType, 'Unsubmitted', NULL, CreatedBy, GETDATE(), NULL, NULL, NULL, NULL, NULL, NULL, 0, 1 FROM OrderHeaders WHERE Id=@OldId; INSERT INTO OrderQuotes VALUES(@NewID, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00);", thisConn)
+                                myCmd.Parameters.AddWithValue("@OldId", thisId)
+                                myCmd.Parameters.AddWithValue("@NewID", newIdHeader)
+                                myCmd.Parameters.AddWithValue("@OrderId", orderId)
+                                myCmd.Parameters.AddWithValue("@CreatedBy", Session("LoginId").ToString())
+
+                                thisConn.Open()
+                                myCmd.ExecuteNonQuery()
+                            End Using
+                        End Using
+
+                        success = True
+
+                    Catch exSql As SqlException
+                        If exSql.Number = 2601 OrElse exSql.Number = 2627 Then
+                            success = False
+                        Else
+                            Throw
+                        End If
+                    End Try
+                Loop
 
                 Dim dataLog As Object() = {"OrderHeaders", newIdHeader, Session("LoginId").ToString(), "Order Created | Copy"}
                 orderClass.Logs(dataLog)
