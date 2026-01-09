@@ -6,6 +6,7 @@ Partial Class Setting_Specification_Design
 
     Dim myConn As String = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
     Dim dataMailing As Object() = Nothing
+    Dim dataLog As Object() = Nothing
 
     Dim settingClass As New SettingClass
 
@@ -126,13 +127,7 @@ Partial Class Setting_Specification_Design
         Dim thisScript As String = "window.onload = function() { showProcess(); };"
         Try
             If txtName.Text = "" Then
-                MessageError_Process(True, "DESIGN TYPE NAME IS REQUIRED !")
-                ClientScript.RegisterStartupScript(Me.GetType(), "showProcess", thisScript, True)
-                Exit Sub
-            End If
-
-            If lbCompany.SelectedValue = "" Then
-                MessageError_Process(True, "COMPANY IS REQUIRED !")
+                MessageError_Process(True, "NAME IS REQUIRED !")
                 ClientScript.RegisterStartupScript(Me.GetType(), "showProcess", thisScript, True)
                 Exit Sub
             End If
@@ -144,7 +139,10 @@ Partial Class Setting_Specification_Design
             End If
 
             If msgErrorProcess.InnerText = "" Then
-                Dim company As String = String.Join(",", lbCompany.Items.Cast(Of ListItem)().Where(Function(i) i.Selected).Select(Function(i) i.Value))
+                Dim company As String = String.Empty
+                If Not lbCompany.SelectedValue = "" Then
+                    company = String.Join(",", lbCompany.Items.Cast(Of ListItem)().Where(Function(i) i.Selected).Select(Function(i) i.Value))
+                End If
 
                 Dim descText As String = txtDescription.Text.Replace(vbCrLf, "").Replace(vbCr, "").Replace(vbLf, "")
                 If lblAction.Text = "Add" Then
@@ -152,7 +150,7 @@ Partial Class Setting_Specification_Design
                     Using thisConn As New SqlConnection(myConn)
                         thisConn.Open()
 
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Designs VALUES (@Id, @Name, @CompanyId, @Type, @Page, @Description, @Active)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Designs VALUES (@Id, @Name, @CompanyId, @Type, @Page, @Description, @Active, 0)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@CompanyId", company)
@@ -173,7 +171,7 @@ Partial Class Setting_Specification_Design
                         thisConn.Close()
                     End Using
 
-                    Dim dataLog As Object() = {"Designs", thisId, Session("LoginId").ToString(), "Design Type Created"}
+                    dataLog = {"Designs", thisId, Session("LoginId").ToString(), "Created"}
                     settingClass.Logs(dataLog)
 
                     Session("SearchDesign") = txtSearch.Text
@@ -195,7 +193,7 @@ Partial Class Setting_Specification_Design
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"Designs", lblId.Text, Session("LoginId").ToString(), "Design Type Updated"}
+                    dataLog = {"Designs", lblId.Text, Session("LoginId").ToString(), "Updated"}
                     settingClass.Logs(dataLog)
 
                     Session("SearchDesign") = txtSearch.Text
@@ -216,64 +214,15 @@ Partial Class Setting_Specification_Design
         Try
             Dim thisId As String = txtIdDelete.Text
 
+            dataLog = {"Designs", lblId.Text, Session("LoginId").ToString(), "Deleted"}
+
             Using thisConn As New SqlConnection(myConn)
-                thisConn.Open()
-
-                ' LOGS
-                Using myCmd As SqlCommand = New SqlCommand("DELETE FROM Logs WHERE Type='Designs' AND DataId=@Id", thisConn)
+                Using myCmd As SqlCommand = New SqlCommand("UPDATE Designs SET Active=0, Delete=0 WHERE Id=@Id", thisConn)
                     myCmd.Parameters.AddWithValue("@Id", thisId)
+
+                    thisConn.Open()
                     myCmd.ExecuteNonQuery()
                 End Using
-
-                ' BLINDS
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Blinds SET DesignId=NULL WHERE DesignId=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                ' PRODUCTS
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Products SET DesignId=NULL WHERE DesignId=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                ' CHAINS
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Chains SET DesignId=LTRIM(RTRIM(TRIM(',' FROM REPLACE(REPLACE(',' + DesignId + ',', ',' + @Id + ',', ','), ',,', ',')))) WHERE (',' + DesignId + ',') LIKE '%,' + @Id + ',%';", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                ' CUSTOMER PRODUCT ACCESS
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE CustomerProductAccess SET DesignId=LTRIM(RTRIM(TRIM(',' FROM REPLACE(REPLACE(',' + DesignId + ',', ',' + @Id + ',', ','), ',,', ',')))) WHERE (',' + DesignId + ',') LIKE '%,' + @Id + ',%';", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                ' FABRICS
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Fabrics SET DesignId=LTRIM(RTRIM(TRIM(',' FROM REPLACE(REPLACE(',' + DesignId + ',', ',' + @Id + ',', ','), ',,', ',')))) WHERE (',' + DesignId + ',') LIKE '%,' + @Id + ',%';", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                ' PRICE BOTTOMS
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Bottoms SET DesignId=NULL WHERE DesignId=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                ' PRICE PRODUDCT GROUPS
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE PriceProductGroups SET DesignId=NULL WHERE DesignId=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                ' PRICE SURCHARGES
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE PriceSurcharges SET DesignId=NULL WHERE DesignId=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                thisConn.Close()
             End Using
 
             Session("SearchDesign") = txtSearch.Text
@@ -291,9 +240,9 @@ Partial Class Setting_Specification_Design
         Try
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                search = " WHERE Id LIKE '%" & searchText.Trim() & "%' OR Name LIKE '%" & searchText.Trim() & "%' OR Page LIKE '%" & searchText.Trim() & "%' OR Description LIKE '%" & searchText.Trim() & "%'"
+                search = " AND Id LIKE '%" & searchText.Trim() & "%' OR Name LIKE '%" & searchText.Trim() & "%' OR Page LIKE '%" & searchText.Trim() & "%' OR Description LIKE '%" & searchText.Trim() & "%'"
             End If
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Designs {0} ORDER BY Name ASC", search)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Designs WHERE Delete=0 {0} ORDER BY Name ASC", search)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()
@@ -334,10 +283,10 @@ Partial Class Setting_Specification_Design
             If Not myData.Tables(0).Rows.Count = 0 Then
                 For i As Integer = 0 To myData.Tables(0).Rows.Count - 1
                     Dim designName As String = myData.Tables(0).Rows(i).Item("CompanyName").ToString()
-                    hasil += designName & ", "
+                    hasil += designName & ","
                 Next
             End If
-            Return hasil.Remove(hasil.Length - 2).ToString()
+            Return hasil.Remove(hasil.Length - 1).ToString()
         End If
         Return "Error"
     End Function
