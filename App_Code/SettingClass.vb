@@ -239,7 +239,7 @@ Public Class SettingClass
             If Not String.IsNullOrEmpty(companyId) Then
                 Dim hasil As String = String.Empty
 
-                Dim cekDesign As DataSet = GetListData("SELECT * FROM Designs CROSS APPLY STRING_SPLIT(CompanyId, ',') AS companyArray WHERE companyArray.VALUE='" & companyId & "' ORDER BY Name ASC")
+                Dim cekDesign As DataSet = GetListData("SELECT * FROM Designs CROSS APPLY STRING_SPLIT(CompanyId, ',') AS companyArray WHERE IsDelete=0 AND companyArray.VALUE='" & companyId & "' ORDER BY Name ASC")
                 If Not cekDesign.Tables(0).Rows.Count = 0 Then
                     For i As Integer = 0 To cekDesign.Tables(0).Rows.Count - 1
                         Dim id As String = cekDesign.Tables(0).Rows(i).Item("Id").ToString()
