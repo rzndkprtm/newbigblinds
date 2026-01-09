@@ -29,7 +29,7 @@ Partial Class Spam_Default
             Dim myData As DataSet = orderClass.GetListData(thisQuery)
 
             If myData.Tables(0).Rows.Count = 0 Then
-                Response.Redirect("https://ordersblindonline.com/ViewOrder.aspx")
+                Response.Redirect("https://ordersblindonline.com/viewOrder.aspx")
                 Exit Sub
             End If
 

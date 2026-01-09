@@ -264,7 +264,7 @@ Partial Class Setting_Price_Group
     Protected Sub BindCompany()
         ddlCompany.Items.Clear()
         Try
-            ddlCompany.DataSource = settingClass.GetListData("SELECT * FROM Companys ORDER BY Id ASC")
+            ddlCompany.DataSource = settingClass.GetListData("SELECT * FROM Companys WHERE IsDelete=0 ORDER BY Id ASC")
             ddlCompany.DataTextField = "Name"
             ddlCompany.DataValueField = "Id"
             ddlCompany.DataBind()

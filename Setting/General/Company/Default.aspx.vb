@@ -9,6 +9,8 @@ Partial Class Setting_General_Company_Default
     Dim myConn As String = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
     Dim url As String = String.Empty
 
+    Dim dataLog As Object() = Nothing
+
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim pageAccess As Boolean = PageAction("Load")
         If pageAccess = False Then
@@ -82,7 +84,7 @@ Partial Class Setting_General_Company_Default
                     txtName.Text = thisData.Tables(0).Rows(0).Item("Name").ToString()
                     txtAlias.Text = thisData.Tables(0).Rows(0).Item("Alias").ToString()
                     txtDescription.Text = thisData.Tables(0).Rows(0).Item("Description").ToString()
-                    ddlActive.SelectedValue = Convert.ToInt32(thisData.Tables(0).Rows(0).Item("Active"))
+                    ddlActive.SelectedValue = Convert.ToInt32(thisData.Tables(0).Rows(0).Item("IsActive"))
 
                     ClientScript.RegisterStartupScript(Me.GetType(), "showProcess", thisScript, True)
                 Catch ex As Exception
@@ -134,7 +136,7 @@ Partial Class Setting_General_Company_Default
                     Dim thisId As String = settingClass.CreateId("SELECT TOP 1 Id FROM Companys ORDER BY Id DESC")
 
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Companys VALUES (@Id, @Name, @Alias, NULL, @Description, @Active)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Companys VALUES (@Id, @Name, @Alias, NULL, @Description, @Active, 0)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@Alias", txtAlias.Text.Trim())
@@ -146,7 +148,7 @@ Partial Class Setting_General_Company_Default
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"Companys", thisId, Session("LoginId").ToString(), "Company Created"}
+                    dataLog = {"Companys", thisId, Session("LoginId").ToString(), "Created"}
                     settingClass.Logs(dataLog)
 
                     Session("SearchCompany") = txtSearch.Text
@@ -169,7 +171,7 @@ Partial Class Setting_General_Company_Default
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"Companys", lblId.Text, Session("LoginId").ToString(), "Company Updated"}
+                    dataLog = {"Companys", lblId.Text, Session("LoginId").ToString(), "Updated"}
                     settingClass.Logs(dataLog)
 
                     Session("SearchCompany") = txtSearch.Text
@@ -190,25 +192,16 @@ Partial Class Setting_General_Company_Default
         Try
             Dim thisId As String = txtIdDelete.Text
 
+            dataLog = {"Companys", lblId.Text, Session("LoginId").ToString(), "Deleted"}
+            settingClass.Logs(dataLog)
+
             Using thisConn As New SqlConnection(myConn)
-                thisConn.Open()
-
-                Using myCmd As SqlCommand = New SqlCommand("DELETE FROM Companys WHERE Id=@Id", thisConn)
+                Using myCmd As SqlCommand = New SqlCommand("UPDATE Companys SET IsActive=0, IsDelete=1 WHERE Id=@Id", thisConn)
                     myCmd.Parameters.AddWithValue("@Id", thisId)
+
+                    thisConn.Open()
                     myCmd.ExecuteNonQuery()
                 End Using
-
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE CompanyDetails WHERE CompanyId=@CompanyId", thisConn)
-                    myCmd.Parameters.AddWithValue("@CompanyId", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Customers SET CompanyId=NULL WHERE CompanyId=@CompanyId; UPDATE Mailings SET CompanyId=NULL WHERE CompanyId=@CompanyId; UPDATE Tutorials SET CompanyId=NULL WHERE CompanyId=@CompanyId;", thisConn)
-                    myCmd.Parameters.AddWithValue("@CompanyId", thisId)
-                    myCmd.ExecuteNonQuery()
-                End Using
-
-                thisConn.Close()
             End Using
         Catch ex As Exception
             MessageError(True, ex.ToString())
@@ -223,10 +216,10 @@ Partial Class Setting_General_Company_Default
         Try
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                search = " WHERE Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Alias LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
+                search = "AND Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Alias LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
             End If
 
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Companys {0} ORDER BY Id ASC", search)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Companys WHERE IsDelete=0 {0} ORDER BY Id ASC", search)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()

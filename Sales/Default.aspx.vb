@@ -1,5 +1,4 @@
-﻿
-Partial Class Sales_Default
+﻿Partial Class Sales_Default
     Inherits Page
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load

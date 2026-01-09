@@ -260,7 +260,7 @@ Partial Class Setting_Specification_Design
     Protected Sub BindCompany()
         lbCompany.Items.Clear()
         Try
-            lbCompany.DataSource = settingClass.GetListData("SELECT * FROM Companys ORDER BY Name ASC")
+            lbCompany.DataSource = settingClass.GetListData("SELECT * FROM Companys WHERE IsDelete=0 ORDER BY Name ASC")
             lbCompany.DataTextField = "Name"
             lbCompany.DataValueField = "Id"
             lbCompany.DataBind()

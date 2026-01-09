@@ -234,12 +234,12 @@ Partial Class Setting_Customer_Edit
     Private Sub BindCompany()
         ddlCompany.Items.Clear()
         Try
-            Dim thisQuery As String = "SELECT * FROM Companys ORDER BY Id ASC"
+            Dim thisQuery As String = "SELECT * FROM Companys WHERE IsDelete=0 ORDER BY Id ASC"
             If Session("RoleName") = "IT" OrElse Session("RoleName") = "Factory Office" Then
-                thisQuery = "SELECT * FROM Companys WHERE Id <> '1' ORDER BY Id ASC"
+                thisQuery = "SELECT * FROM Companys WHERE Id<>'1' AND IsDelete=0 ORDER BY Id ASC"
             End If
             If Session("RoleName") = "Sales" OrElse Session("RoleName") = "Account" Then
-                thisQuery = "SELECT * FROM Companys WHERE Id='" & Session("CompanyId") & "' ORDER BY Id ASC"
+                thisQuery = "SELECT * FROM Companys WHERE Id='" & Session("CompanyId") & "' AND IsDelete=0 ORDER BY Id ASC"
             End If
 
             ddlCompany.DataSource = settingClass.GetListData(thisQuery)
