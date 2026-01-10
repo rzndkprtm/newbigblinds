@@ -246,8 +246,8 @@ Partial Class Setting_Specification_Mounting
             gvList.DataBind()
 
             gvList.Columns(1).Visible = PageAction("Visible ID")
-            'gvList.Columns(5).Visible = PageAction("Visible IsDelete")
-            'divDelete.Visible = PageAction("Visible IsDelete")
+            gvList.Columns(5).Visible = PageAction("Visible IsDelete")
+            divDelete.Visible = PageAction("Visible IsDelete")
 
             btnAdd.Visible = PageAction("Add")
         Catch ex As Exception
