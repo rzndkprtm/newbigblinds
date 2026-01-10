@@ -126,10 +126,6 @@ Partial Class Order_Default
         Response.Redirect("~/order/add", False)
     End Sub
 
-    Protected Sub btnAddCSV_Click(sender As Object, e As EventArgs)
-        Response.Redirect("~/order/addcsv", False)
-    End Sub
-
     Protected Sub btnRework_Click(sender As Object, e As EventArgs)
         Response.Redirect("~/order/rework", False)
     End Sub
@@ -798,7 +794,6 @@ Partial Class Order_Default
             gvList.Columns(7).Visible = PageAction("Visible Created Date")
 
             btnAdd.Visible = PageAction("Add")
-            btnAddCSV.Visible = PageAction("Add CSV")
             btnRework.Visible = PageAction("Rework")
             divActive.Visible = PageAction("Active")
             divCompany.Visible = PageAction("Filter Company")
@@ -807,8 +802,6 @@ Partial Class Order_Default
             If Session("RoleName") = "Customer Service" Then
                 authorizationQuery = "SELECT COUNT(OrderHeaders.Id) FROM OrderHeaders LEFT JOIN Customers ON OrderHeaders.CustomerId=Customers.Id WHERE Customers.CompanyId='" & Session("CompanyId") & "' AND OrderHeaders.Active=1 AND (OrderHeaders.Status='New Order' OR OrderHeaders.Status='Payment Received')"
             End If
-
-            If Session("CustomerId") = "127" Then btnAddCSV.Visible = True
 
             If Session("RoleName") = "Customer" Then
                 Dim onStop As Boolean = orderClass.GetCustomerOnStop(Session("CustomerId").ToString())

@@ -38,7 +38,7 @@
                                             <label>Customer Account</label>
                                         </div>
                                         <div class="col-12 col-sm-12 col-lg-9 form-group">
-                                            <asp:DropDownList runat="server" ID="ddlCustomer" CssClass="form-select"></asp:DropDownList>
+                                            <asp:DropDownList runat="server" ID="ddlCustomer" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlCustomer_SelectedIndexChanged"></asp:DropDownList>
                                         </div>
                                     </div>
                                     
@@ -59,31 +59,68 @@
                                             <asp:TextBox runat="server" ID="txtCreatedDate" TextMode="Date" CssClass="form-control"></asp:TextBox>
                                         </div>
                                     </div>
-                                    
-                                    <div class="row">
+
+                                    <div class="row mb-3" runat="server" id="divMethod">
                                         <div class="col-12 col-sm-12 col-lg-3">
-                                            <label>Order Number</label>
+                                            <label class="form-label">Method</label>
                                         </div>
-                                        <div class="col-12 col-sm-12 col-lg-9 form-group">
-                                            <asp:TextBox runat="server" ID="txtOrderNumber" CssClass="form-control" placeholder="Order Number ..." autocomplete="off"></asp:TextBox>
+                                        <div class="col-12 col-sm-12 col-lg-4 form-group">
+                                            <asp:DropDownList runat="server" ID="ddlMethod" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlMethod_SelectedIndexChanged">
+                                                <asp:ListItem Value="Manual" Text="Manual Entry"></asp:ListItem>
+                                                <asp:ListItem Value="Upload" Text="File Upload"></asp:ListItem>
+                                                <asp:ListItem Value="API" Text="API Integration"></asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+
+                                    <div runat="server" id="divManual">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-12 col-lg-3">
+                                                <label>Order Number</label>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-lg-9 form-group">
+                                                <asp:TextBox runat="server" ID="txtOrderNumber" CssClass="form-control" placeholder="Order Number ..." autocomplete="off"></asp:TextBox>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 col-sm-12 col-lg-3">
+                                                <label>Order Name</label>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-lg-9 form-group">
+                                                <asp:TextBox runat="server" ID="txtOrderName" CssClass="form-control" placeholder="Customer Name ...." autocomplete="off"></asp:TextBox>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-12 col-sm-12 col-lg-3">
+                                                <label>Order Note</label>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-lg-9 form-group">
+                                                <asp:TextBox runat="server" TextMode="MultiLine" ID="txtOrderNote" Height="130px" CssClass="form-control" placeholder="Order Note ...." autocomplete="off" style="resize: none"></asp:TextBox>
+                                            </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="row">
-                                        <div class="col-12 col-sm-12 col-lg-3">
-                                            <label>Order Name</label>
-                                        </div>
-                                        <div class="col-12 col-sm-12 col-lg-9 form-group">
-                                            <asp:TextBox runat="server" ID="txtOrderName" CssClass="form-control" placeholder="Customer Name ...." autocomplete="off"></asp:TextBox>
+                                    <div runat="server" id="divApi">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-12 col-lg-3" >
+                                                <label class="form-label">Order ID</label>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-lg-6 form-group">
+                                                <asp:TextBox runat="server" ID="txtApiId" CssClass="form-control" placeholder="Order ID ..." autocomplete="off"></asp:TextBox>
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class="row mb-3">
-                                        <div class="col-12 col-sm-12 col-lg-3">
-                                            <label>Order Note</label>
-                                        </div>
-                                        <div class="col-12 col-sm-12 col-lg-9 form-group">
-                                            <asp:TextBox runat="server" TextMode="MultiLine" ID="txtOrderNote" Height="130px" CssClass="form-control" placeholder="Order Note ...." autocomplete="off" style="resize: none"></asp:TextBox>
+
+                                    <div runat="server" id="divUpload">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-12 col-lg-3" >
+                                                <label class="form-label">Upload CSV Order</label>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-lg-9 form-group">
+                                                <asp:FileUpload runat="server" ID="fuFile" CssClass="form-control" />
+                                            </div>
                                         </div>
                                     </div>
 

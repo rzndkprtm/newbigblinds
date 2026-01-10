@@ -35,7 +35,6 @@
         <section class="row mb-3">
             <div class="col-12 d-flex justify-content-end flex-wrap gap-2">
                 <asp:Button runat="server" ID="btnAdd" CssClass="btn btn-primary" Text="Create Order" OnClick="btnAdd_Click" />
-                <asp:Button runat="server" ID="btnAddCSV" CssClass="btn btn-secondary" Text="Import Order (CSV)" OnClick="btnAddCSV_Click" />
                 <asp:Button runat="server" ID="btnRework" CssClass="btn btn-info" Text="Rework Order" OnClick="btnRework_Click" />
             </div>
         </section>
