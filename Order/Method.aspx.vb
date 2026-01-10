@@ -123,7 +123,7 @@ Partial Class Order_Method
         End If
 
         If type = "Mounting" Then
-            Dim dataSet As DataSet = orderClass.GetListData("SELECT Name FROM Mountings CROSS APPLY STRING_SPLIT(BlindId, ',') AS blindArray WHERE blindArray.VALUE='" & blindtype & "' AND Active=1 ORDER BY Name ASC")
+            Dim dataSet As DataSet = orderClass.GetListData("SELECT Name FROM Mountings CROSS APPLY STRING_SPLIT(BlindId, ',') AS blindArray WHERE blindArray.VALUE='" & blindtype & "' AND IsActive=1 ORDER BY Name ASC")
             If dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
                 For Each row As DataRow In dataSet.Tables(0).Rows
                     result.Add(New With {.Value = row("Name").ToString(), .Text = row("Name").ToString()})

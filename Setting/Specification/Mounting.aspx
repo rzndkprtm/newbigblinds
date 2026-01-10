@@ -64,9 +64,10 @@
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:BoundField DataField="Id" HeaderText="ID" />
-                                                 <asp:BoundField DataField="Name" HeaderText="Name" />
-                                                 <asp:BoundField DataField="Description" HeaderText="Description" />
-                                                 <asp:BoundField DataField="DataActive" HeaderText="Active" />
+                                                <asp:BoundField DataField="Name" HeaderText="Name" />
+                                                <asp:BoundField DataField="Description" HeaderText="Description" />
+                                                <asp:BoundField DataField="DataActive" HeaderText="Active" />
+                                                <asp:BoundField DataField="DataDelete" HeaderText="Delete" />
                                                 <asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="180px">
                                                     <ItemTemplate>
                                                         <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Actions</button>
@@ -89,6 +90,18 @@
                                             <AlternatingRowStyle BackColor="White" />
                                         </asp:GridView>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <div class="d-flex" runat="server" id="divDelete">
+                            <div class="ms-auto">
+                                <div class="ms-2 d-inline-block">
+                                    <asp:DropDownList runat="server" ID="ddlDelete" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlDelete_SelectedIndexChanged">
+                                        <asp:ListItem Value="0" Text="Not Deleted"></asp:ListItem>
+                                        <asp:ListItem Value="1" Text="Deleted"></asp:ListItem>
+                                    </asp:DropDownList>
                                 </div>
                             </div>
                         </div>
