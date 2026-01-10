@@ -107,7 +107,7 @@ Partial Class Setting_General_Newsletter_Default
         Try
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                search = " WHERE Newsletters.Id LIKE '%" & searchText.Trim() & "%' OR Newsletters.Name LIKE '%" & searchText.Trim() & "%' OR Newsletters.Description LIKE '%" & searchText.Trim() & "%'"
+                search = "WHERE Newsletters.Id LIKE '%" & searchText.Trim() & "%' OR Newsletters.Name LIKE '%" & searchText.Trim() & "%' OR Newsletters.Description LIKE '%" & searchText.Trim() & "%'"
             End If
 
             Dim thisString As String = String.Format("SELECT Newsletters.*, Companys.Name AS CompanyName CASE WHEN Newsletters.Active=1 THEN 'Yes' WHEN Newsletters.Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Newsletters LEFT JOIN Companys ON Newsletters.CompanyId=Companys.Id {0} ORDER BY Newsletters.Name ASC", search)

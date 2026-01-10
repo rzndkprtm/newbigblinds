@@ -1657,17 +1657,17 @@ Partial Class Setting_Customer_Detail
     Protected Sub BindDataLoginRole()
         ddlLoginRole.Items.Clear()
         Try
-            Dim thisQuery As String = "SELECT * FROM CustomerLoginRoles WHERE IsDelete=0 ORDER BY Name ASC"
+            Dim thisQuery As String = "SELECT * FROM CustomerLoginRoles ORDER BY Name ASC"
             If Session("RoleName") = "IT" Then
-                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND IsDelete=0 ORDER BY Name ASC"
+                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' ORDER BY Name ASC"
                 If Session("LevelName") = "Member" Then
-                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND IsDelete=0 ORDER BY Name ASC"
+                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' ORDER BY Name ASC"
                 End If
             End If
             If Session("RoleName") = "Factory Office" Then
-                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND IsDelete=0 ORDER BY Name ASC"
+                thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' ORDER BY Name ASC"
                 If Session("LevelName") = "Member" Then
-                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND Id<>'3' AND IsDelete=0 ORDER BY Name ASC"
+                    thisQuery = "SELECT * FROM CustomerLoginRoles WHERE Id<>'1' AND Id<>'2' AND Id<>'3' ORDER BY Name ASC"
                 End If
             End If
 
@@ -1687,7 +1687,7 @@ Partial Class Setting_Customer_Detail
     Protected Sub BindDataLoginLevel()
         ddlLoginLevel.Items.Clear()
         Try
-            ddlLoginLevel.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels WHERE IsDelete=0 ORDER BY Name ASC")
+            ddlLoginLevel.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels ORDER BY Name ASC")
             ddlLoginLevel.DataTextField = "Name"
             ddlLoginLevel.DataValueField = "Id"
             ddlLoginLevel.DataBind()

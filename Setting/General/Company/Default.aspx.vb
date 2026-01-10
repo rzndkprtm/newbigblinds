@@ -190,19 +190,19 @@ Partial Class Setting_General_Company_Default
     Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
         MessageError(False, String.Empty)
         Try
-            Dim thisId As String = txtIdDelete.Text
+            'Dim thisId As String = txtIdDelete.Text
 
-            dataLog = {"Companys", lblId.Text, Session("LoginId").ToString(), "Deleted"}
-            settingClass.Logs(dataLog)
+            'Using thisConn As New SqlConnection(myConn)
+            '    Using myCmd As SqlCommand = New SqlCommand("UPDATE Companys SET Active=0 WHERE Id=@Id; UPDATE Customers SET CompanyId=NULL WHERE CompanyId=@Id; UPDATE Mailings SET CompanyId=NULL WHERE CompanyId=@Id; UPDATE Newsletters SET CompanyId=NULL WHERE CompanyId=@Id; UPDATE Tutorials SET CompanyId=NULL WHERE CompanyId=@Id; UPDATE PriceGroups SET CompanyId=NULL WHERE CompanyId=@Id;", thisConn)
+            '        myCmd.Parameters.AddWithValue("@Id", thisId)
 
-            Using thisConn As New SqlConnection(myConn)
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Companys SET Active=0 WHERE Id=@Id", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
+            '        thisConn.Open()
+            '        myCmd.ExecuteNonQuery()
+            '    End Using
+            'End Using
 
-                    thisConn.Open()
-                    myCmd.ExecuteNonQuery()
-                End Using
-            End Using
+            'dataLog = {"Companys", lblId.Text, Session("LoginId").ToString(), "Deleted"}
+            'settingClass.Logs(dataLog)
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then
@@ -214,17 +214,18 @@ Partial Class Setting_General_Company_Default
     Protected Sub BindData(searchText As String)
         Session("SearchCompany") = String.Empty
         Try
-            Dim search As String = String.Empty
+            Dim searchString As String = String.Empty
             If Not searchText = "" Then
-                search = "WHERE Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Alias LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
+                searchString = "WHERE Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Alias LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
             End If
 
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Companys {0} ORDER BY Id ASC", search)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Companys {0} ORDER BY Id ASC", searchString)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()
 
             gvList.Columns(1).Visible = PageAction("Visible ID")
+
             btnAdd.Visible = PageAction("Add")
         Catch ex As Exception
             MessageError(True, ex.ToString())

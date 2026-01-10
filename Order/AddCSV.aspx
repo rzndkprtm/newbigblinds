@@ -36,7 +36,23 @@
                                     <asp:DropDownList runat="server" ID="ddlCustomer" CssClass="form-select"></asp:DropDownList>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-4">
+                                <div class="col-12 col-sm-12 col-lg-4">
+                                    <label class="form-label">Method</label>
+                                    <asp:DropDownList runat="server" ID="ddlMethod" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlMethod_SelectedIndexChanged">
+                                        <asp:ListItem Value="" Text=""></asp:ListItem>
+                                        <asp:ListItem Value="XLSX" Text="XLSX"></asp:ListItem>
+                                        <asp:ListItem Value="API" Text="API"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="row mb-3" runat="server" id="divApi">
+                                <div class="col-12 col-sm-12 col-lg-4">
+                                    <label class="form-label">Order ID</label>
+                                    <asp:TextBox runat="server" ID="txtApiId" CssClass="form-control" placeholder="Order ID ..." autocomplete="off"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="row mb-3" runat="server" id="divXls">
                                 <div class="col-12 form-group">
                                     <label class="form-label">Upload CSV Order</label>
                                     <asp:FileUpload runat="server" ID="fuFile" CssClass="form-control" />

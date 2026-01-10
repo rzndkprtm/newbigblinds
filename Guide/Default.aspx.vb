@@ -60,7 +60,7 @@
 
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                bySearch = " AND Tutorials.Title LIKE '%" & searchText.Trim() & "%'"
+                bySearch = "AND Tutorials.Title LIKE '%" & searchText.Trim() & "%'"
             End If
 
             Dim thisString = String.Format("SELECT Tutorials.*, Companys.Name AS CompanyName FROM Tutorials LEFT JOIN Companys ON Tutorials.CompanyId=Companys.Id WHERE Tutorials.Active=1 {0} {1} ORDER BY Tutorials.Title ASC", byCompany, bySearch)
@@ -68,7 +68,7 @@
             gvList.DataBind()
 
             gvList.Columns(1).Visible = PageAction("Visible ID") ' ID
-            gvList.Columns(2).Visible = PageAction("Visible Company") ' ID
+            gvList.Columns(2).Visible = PageAction("Visible Company") ' COMPANY
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then

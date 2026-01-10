@@ -20,7 +20,7 @@ Partial Class Setting_Specification_Mounting
         If Not IsPostBack Then
             MessageError(False, String.Empty)
             txtSearch.Text = Session("SearchMounting")
-            BindData(txtSearch.Text, ddlDelete.SelectedValue)
+            BindData(txtSearch.Text)
         End If
     End Sub
 
@@ -47,19 +47,14 @@ Partial Class Setting_Specification_Mounting
 
     Protected Sub btnSearch_Click(sender As Object, e As EventArgs)
         MessageError(False, String.Empty)
-        BindData(txtSearch.Text, ddlDelete.SelectedValue)
-    End Sub
-
-    Protected Sub ddlDelete_SelectedIndexChanged(sender As Object, e As EventArgs)
-        MessageError(False, String.Empty)
-        BindData(txtSearch.Text, ddlDelete.SelectedValue)
+        BindData(txtSearch.Text)
     End Sub
 
     Protected Sub gvList_PageIndexChanging(sender As Object, e As GridViewPageEventArgs)
         MessageError(False, String.Empty)
         Try
             gvList.PageIndex = e.NewPageIndex
-            BindData(txtSearch.Text, ddlDelete.SelectedValue)
+            BindData(txtSearch.Text)
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then
@@ -83,10 +78,10 @@ Partial Class Setting_Specification_Mounting
 
                     BindBlind()
 
-                    Dim myData As DataSet = settingClass.GetListData("SELECT * FROM Mountings WHERE Id='" & lblId.Text & "'")
+                    Dim myData As DataSet = settingClass.GetListData("SELECT * FROM Mountings WHERE Id='" & dataId & "'")
                     txtName.Text = myData.Tables(0).Rows(0).Item("Name").ToString()
                     txtDescription.Text = myData.Tables(0).Rows(0).Item("Description").ToString()
-                    ddlActive.SelectedValue = Convert.ToInt32(myData.Tables(0).Rows(0).Item("IsActive"))
+                    ddlActive.SelectedValue = Convert.ToInt32(myData.Tables(0).Rows(0).Item("Active"))
 
                     If Not myData.Tables(0).Rows(0).Item("BlindId").ToString() = "" Then
                         Dim blindArray() As String = myData.Tables(0).Rows(0).Item("BlindId").ToString().Split(",")
@@ -155,12 +150,12 @@ Partial Class Setting_Specification_Mounting
                     Dim thisId As String = settingClass.CreateId("SELECT TOP 1 Id FROM Mountings ORDER BY Id DESC")
 
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Mountings VALUES (@Id, @Name, @BlindId, @Description, @IsActive, 0)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO Mountings VALUES (@Id, @Name, @BlindId, @Description, @Active)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@BlindId", blindId)
                             myCmd.Parameters.AddWithValue("@Description", descText)
-                            myCmd.Parameters.AddWithValue("@IsActive", ddlActive.SelectedValue)
+                            myCmd.Parameters.AddWithValue("@Active", ddlActive.SelectedValue)
 
                             thisConn.Open()
                             myCmd.ExecuteNonQuery()
@@ -176,12 +171,12 @@ Partial Class Setting_Specification_Mounting
 
                 If lblAction.Text = "Edit" Then
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("UPDATE Mountings SET Name=@Name, BlindId=@BlindId, Description=@Description, IsActive=@IsActive WHERE Id=@Id", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("UPDATE Mountings SET Name=@Name, BlindId=@BlindId, Description=@Description, Active=@Active WHERE Id=@Id", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", lblId.Text)
                             myCmd.Parameters.AddWithValue("@Name", txtName.Text.Trim())
                             myCmd.Parameters.AddWithValue("@BlindId", blindId)
                             myCmd.Parameters.AddWithValue("@Description", descText)
-                            myCmd.Parameters.AddWithValue("@IsActive", ddlActive.SelectedValue)
+                            myCmd.Parameters.AddWithValue("@Active", ddlActive.SelectedValue)
 
                             thisConn.Open()
                             myCmd.ExecuteNonQuery()
@@ -207,19 +202,19 @@ Partial Class Setting_Specification_Mounting
     Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
         MessageError(False, String.Empty)
         Try
-            Dim thisId As String = txtIdDelete.Text
+            'Dim thisId As String = txtIdDelete.Text
 
-            Using thisConn As New SqlConnection(myConn)
-                Using myCmd As SqlCommand = New SqlCommand("UPDATE Mountings SET IsActive=0, IsDelete=1 WHERE Id=@Id;", thisConn)
-                    myCmd.Parameters.AddWithValue("@Id", thisId)
+            'Using thisConn As New SqlConnection(myConn)
+            '    Using myCmd As SqlCommand = New SqlCommand("UPDATE Mountings SET Active=0 WHERE Id=@Id;", thisConn)
+            '        myCmd.Parameters.AddWithValue("@Id", thisId)
 
-                    thisConn.Open()
-                    myCmd.ExecuteNonQuery()
-                End Using
-            End Using
+            '        thisConn.Open()
+            '        myCmd.ExecuteNonQuery()
+            '    End Using
+            'End Using
 
-            dataLog = {"Mountings", thisId, Session("LoginId").ToString(), "Deleted"}
-            settingClass.Logs(dataLog)
+            'dataLog = {"Mountings", thisId, Session("LoginId").ToString(), "Deleted"}
+            'settingClass.Logs(dataLog)
 
             txtSearch.Text = Session("SearchMounting")
             Response.Redirect("~/setting/specification/mounting", False)
@@ -231,23 +226,20 @@ Partial Class Setting_Specification_Mounting
         End Try
     End Sub
 
-    Protected Sub BindData(searchText As String, deleteText As String)
+    Protected Sub BindData(searchText As String)
         Session("SearchMounting") = String.Empty
         Try
-            Dim deleteString As String = "WHERE IsDelete='" & deleteText & "'"
             Dim searchString As String = String.Empty
             If Not searchText = "" Then
-                searchString = "AND Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
+                searchString = "WHERE Id LIKE '%" & searchText & "%' OR Name LIKE '%" & searchText & "%' OR Description LIKE '%" & searchText & "%'"
             End If
 
-            Dim thisString As String = String.Format("SELECT *, CASE WHEN IsActive=1 THEN 'Yes' WHEN IsActive=0 THEN 'No' ELSE 'Error' END AS DataActive, CASE WHEN IsDelete=1 THEN 'Yes' WHEN IsDelete=0 THEN 'No' ELSE 'Error' END AS DataDelete FROM Mountings {0} {1} ORDER BY Id ASC", deleteString, searchString)
+            Dim thisString As String = String.Format("SELECT *, CASE WHEN Active=1 THEN 'Yes' WHEN Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Mountings {0} ORDER BY Id ASC", searchString)
 
             gvList.DataSource = settingClass.GetListData(thisString)
             gvList.DataBind()
 
             gvList.Columns(1).Visible = PageAction("Visible ID")
-            gvList.Columns(5).Visible = PageAction("Visible IsDelete")
-            divDelete.Visible = PageAction("Visible IsDelete")
 
             btnAdd.Visible = PageAction("Add")
         Catch ex As Exception

@@ -274,7 +274,7 @@ Partial Class Setting_General_Mailing
         Try
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                search = " WHERE Mailings.Name LIKE '%" & searchText.Trim() & "%' OR Mailings.Name LIKE '%" & searchText.Trim() & "%' OR Companys.Name LIKE '%" & searchText.Trim() & "%'"
+                search = "WHERE Mailings.Name LIKE '%" & searchText.Trim() & "%' OR Mailings.Name LIKE '%" & searchText.Trim() & "%' OR Companys.Name LIKE '%" & searchText.Trim() & "%'"
             End If
 
             Dim thisQuery As String = String.Format("SELECT Mailings.*, Companys.Name AS CompanyName, CASE WHEN Mailings.Active=1 THEN 'Yes' WHEN Mailings.Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Mailings LEFT JOIN Companys ON Mailings.CompanyId=Companys.Id {0} ORDER BY Companys.Id, Mailings.Name ASC", search)

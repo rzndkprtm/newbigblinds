@@ -1,6 +1,5 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
-Imports System.Windows
 Imports OfficeOpenXml
 
 Partial Class Order_AddCSV
@@ -23,7 +22,13 @@ Partial Class Order_AddCSV
         If Not IsPostBack Then
             MessageError(False, String.Empty)
             BindDataCustomer()
+            BindComponent(ddlMethod.SelectedValue)
         End If
+    End Sub
+
+    Protected Sub ddlMethod_SelectedIndexChanged(sender As Object, e As EventArgs)
+        MessageError(False, String.Empty)
+        BindComponent(ddlMethod.SelectedValue)
     End Sub
 
     Protected Sub btnSubmit_Click(sender As Object, e As EventArgs)
@@ -33,20 +38,30 @@ Partial Class Order_AddCSV
                 MessageError(True, "CUSTOMER ACCOUNT IS REQUIRED !")
                 Exit Sub
             End If
+            If ddlMethod.SelectedValue = "" Then
+                MessageError(True, "METHOD IS REQUIRED !")
+                Exit Sub
+            End If
             If Not fuFile.HasFiles Then
                 MessageError(True, "NO FILE SELECTED. PLEASE SELECT A FILE TO UPLOAD !")
                 Exit Sub
             End If
-            If fuFile.HasFiles Then
-                Dim fileExtension As String = Path.GetExtension(fuFile.FileName).ToLower()
-                If fileExtension = ".xls" Or fileExtension = ".xlsx" Then
-                    Dim fileName As String = fuFile.FileName
+            If ddlMethod.SelectedValue = "API" Then
 
-                    Dim savePath As String = Server.MapPath(String.Format("~/file/cws/{0}", fileName))
-                    fuFile.SaveAs(savePath)
-                    ReadExcelData(savePath)
+            End If
+            If ddlMethod.SelectedValue = "XLSX" Then
+                If fuFile.HasFiles Then
+                    Dim fileExtension As String = Path.GetExtension(fuFile.FileName).ToLower()
+                    If fileExtension = ".xls" Or fileExtension = ".xlsx" Then
+                        Dim fileName As String = fuFile.FileName
+
+                        Dim savePath As String = Server.MapPath(String.Format("~/file/cws/{0}", fileName))
+                        fuFile.SaveAs(savePath)
+                        ReadExcelData(savePath)
+                    End If
                 End If
             End If
+
         Catch ex As Exception
             MessageError(True, ex.ToString())
             If Not Session("RoleName") = "Developer" Then
@@ -62,6 +77,12 @@ Partial Class Order_AddCSV
 
     Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Response.Redirect("~/order", False)
+    End Sub
+
+    Protected Sub BindComponent(method As String)
+        divApi.Visible = False : divXls.Visible = False
+        If method = "API" Then divApi.Visible = True
+        If method = "XLSX" Then divXls.Visible = True
     End Sub
 
     Protected Sub BindDataCustomer()

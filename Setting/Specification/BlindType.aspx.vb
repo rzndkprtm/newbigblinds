@@ -335,14 +335,15 @@ Partial Class Setting_Specification_BlindType
         If Not String.IsNullOrEmpty(blindId) Then
             Dim myData As DataSet = settingClass.GetListData("SELECT CompanyDetails.Name AS CompanyName FROM Blinds CROSS APPLY STRING_SPLIT(Blinds.CompanyDetailId, ',') AS splitArray LEFT JOIN CompanyDetails ON splitArray.VALUE=CompanyDetails.Id WHERE Blinds.Id='" & blindId & "' ORDER BY CompanyDetails.Id ASC")
             Dim hasil As String = String.Empty
-            If Not myData.Tables(0).Rows.Count = 0 Then
+            If myData.Tables(0).Rows.Count > 0 Then
                 For i As Integer = 0 To myData.Tables(0).Rows.Count - 1
                     Dim designName As String = myData.Tables(0).Rows(i).Item("CompanyName").ToString()
                     hasil += designName & ", "
                 Next
+                Return hasil.Remove(hasil.Length - 2).ToString()
+            Else
+                Return String.Empty
             End If
-
-            Return hasil.Remove(hasil.Length - 2).ToString()
         End If
         Return "Error"
     End Function

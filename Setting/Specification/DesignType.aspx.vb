@@ -88,9 +88,13 @@ Partial Class Setting_Specification_Design
 
                     If Not myData.Tables(0).Rows(0).Item("CompanyId").ToString() = "" Then
                         Dim companyArray() As String = myData.Tables(0).Rows(0).Item("CompanyId").ToString().Split(",")
+
                         For Each i In companyArray
-                            If Not (i.Equals(String.Empty)) Then
-                                lbCompany.Items.FindByValue(i).Selected = True
+                            If Not String.IsNullOrEmpty(i) Then
+                                Dim item = lbCompany.Items.FindByValue(i)
+                                If item IsNot Nothing Then
+                                    item.Selected = True
+                                End If
                             End If
                         Next
                     End If
@@ -214,8 +218,6 @@ Partial Class Setting_Specification_Design
         Try
             Dim thisId As String = txtIdDelete.Text
 
-            dataLog = {"Designs", lblId.Text, Session("LoginId").ToString(), "Deleted"}
-
             Using thisConn As New SqlConnection(myConn)
                 Using myCmd As SqlCommand = New SqlCommand("UPDATE Designs SET Active=0 WHERE Id=@Id", thisConn)
                     myCmd.Parameters.AddWithValue("@Id", thisId)
@@ -224,6 +226,8 @@ Partial Class Setting_Specification_Design
                     myCmd.ExecuteNonQuery()
                 End Using
             End Using
+
+            dataLog = {"Designs", lblId.Text, Session("LoginId").ToString(), "Deleted"}
 
             Session("SearchDesign") = txtSearch.Text
             Response.Redirect("~/setting/specification/designtype", False)
@@ -248,6 +252,7 @@ Partial Class Setting_Specification_Design
             gvList.DataBind()
 
             gvList.Columns(1).Visible = PageAction("Visible ID")
+
             btnAdd.Visible = PageAction("Add")
         Catch ex As Exception
             MessageError(True, ex.ToString())
@@ -280,13 +285,15 @@ Partial Class Setting_Specification_Design
         If Not String.IsNullOrEmpty(designId) Then
             Dim myData As DataSet = settingClass.GetListData("SELECT Companys.Alias AS CompanyName FROM Designs CROSS APPLY STRING_SPLIT(Designs.CompanyId, ',') AS companyArray LEFT JOIN Companys ON companyArray.VALUE=Companys.Id WHERE Designs.Id='" & designId & "' ORDER BY Companys.Id ASC")
             Dim hasil As String = String.Empty
-            If Not myData.Tables(0).Rows.Count = 0 Then
+            If myData.Tables(0).Rows.Count > 0 Then
                 For i As Integer = 0 To myData.Tables(0).Rows.Count - 1
                     Dim designName As String = myData.Tables(0).Rows(i).Item("CompanyName").ToString()
                     hasil += designName & ","
                 Next
+                Return hasil.Remove(hasil.Length - 1).ToString()
+            Else
+                Return String.Empty
             End If
-            Return hasil.Remove(hasil.Length - 1).ToString()
         End If
         Return "Error"
     End Function

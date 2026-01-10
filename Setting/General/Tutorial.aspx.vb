@@ -221,7 +221,7 @@ Partial Class Setting_General_Tutorial
         Try
             Dim search As String = String.Empty
             If Not searchText = "" Then
-                search = " WHERE Tutorials.Title LIKE '%" & searchText.Trim() & "%' OR Companys.Name LIKE '%" & searchText.Trim() & "%'"
+                search = "WHERE Tutorials.Title LIKE '%" & searchText.Trim() & "%' OR Companys.Name LIKE '%" & searchText.Trim() & "%'"
             End If
 
             Dim thisQuery As String = String.Format("SELECT Tutorials.*, Companys.Name AS CompanyName, CASE WHEN Tutorials.Active=1 THEN 'Yes' WHEN Tutorials.Active=0 THEN 'No' ELSE 'Error' END AS DataActive FROM Tutorials LEFT JOIN Companys ON Tutorials.CompanyId=Companys.Id {0} ORDER BY Companys.Id, Tutorials.Title ASC", search)

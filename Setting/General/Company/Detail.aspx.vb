@@ -9,6 +9,8 @@ Partial Class Setting_General_Company_Detail
     Dim myConn As String = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
     Dim url As String = String.Empty
 
+    Dim dataLog As Object() = Nothing
+
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim pageAccess As Boolean = PageAction("Load")
         If pageAccess = False Then
@@ -71,7 +73,7 @@ Partial Class Setting_General_Company_Detail
                     lblAction.Text = "Edit"
                     titleProcessDetail.InnerText = "Edit Company Detail"
 
-                    Dim myData As DataSet = settingClass.GetListData("SELECT * FROM CompanyDetails WHERE Id='" & lblDetailId.Text & "'")
+                    Dim myData As DataSet = settingClass.GetListData("SELECT * FROM CompanyDetails WHERE Id='" & dataId & "'")
 
                     txtNameDetail.Text = myData.Tables(0).Rows(0).Item("Name").ToString()
                     txtNameDetail.Text = myData.Tables(0).Rows(0).Item("Name").ToString()
@@ -131,7 +133,7 @@ Partial Class Setting_General_Company_Detail
                     End Using
                 End Using
 
-                Dim dataLog As Object() = {"Companys", lblId.Text, Session("LoginId").ToString(), "Company Updated"}
+                dataLog = {"Companys", lblId.Text, Session("LoginId").ToString(), "Updated"}
                 settingClass.Logs(dataLog)
 
                 url = String.Format("~/setting/general/company/detail?boosid={0}", lblId.Text)
@@ -163,7 +165,7 @@ Partial Class Setting_General_Company_Detail
                     Dim thisId As String = settingClass.CreateId("SELECT TOP 1 Id FROM CompanyDetails ORDER BY Id DESC")
 
                     Using thisConn As New SqlConnection(myConn)
-                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CompanyDetails VALUES(@Id, @Name, @CompanyId, @Description, @Active, 0)", thisConn)
+                        Using myCmd As SqlCommand = New SqlCommand("INSERT INTO CompanyDetails VALUES(@Id, @Name, @CompanyId, @Description, @Active)", thisConn)
                             myCmd.Parameters.AddWithValue("@Id", thisId)
                             myCmd.Parameters.AddWithValue("@Name", txtNameDetail.Text.Trim())
                             myCmd.Parameters.AddWithValue("@CompanyId", lblId.Text)
@@ -175,7 +177,7 @@ Partial Class Setting_General_Company_Detail
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"CompanyDetails", thisId, Session("LoginId").ToString(), "Created"}
+                    dataLog = {"CompanyDetails", thisId, Session("LoginId").ToString(), "Created"}
                     settingClass.Logs(dataLog)
 
                     url = String.Format("~/setting/general/company/detail?boosid={0}", lblId.Text)
@@ -195,7 +197,7 @@ Partial Class Setting_General_Company_Detail
                         End Using
                     End Using
 
-                    Dim dataLog As Object() = {"CompanyDetails", lblDetailId.Text, Session("LoginId").ToString(), "Updated"}
+                    dataLog = {"CompanyDetails", lblDetailId.Text, Session("LoginId").ToString(), "Updated"}
                     settingClass.Logs(dataLog)
 
                     url = String.Format("~/setting/general/company/detail?boosid={0}", lblId.Text)
@@ -306,6 +308,7 @@ Partial Class Setting_General_Company_Detail
 
             gvList.Columns(1).Visible = PageAction("Visible ID Detail")
             btnAddDetail.Visible = PageAction("Add Detail")
+
             divEdit.Visible = PageAction("Edit")
         Catch ex As Exception
             MessageError(True, ex.ToString)

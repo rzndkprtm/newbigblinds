@@ -10,6 +10,7 @@
     
     <link rel="stylesheet" href="<%: ResolveUrl("~/assets/vendors/choices.js/choices.min.css") %>?v=<%= DateTime.Now.Ticks %>" />
     <link rel="stylesheet" href="<%: ResolveUrl("~/assets/css/bootstrap.css") %>?v=<%= DateTime.Now.Ticks %>" />
+    <link rel="stylesheet" href="<%: ResolveUrl("~/assets/vendors/toastify/toastify.css") %>?v=<%= DateTime.Now.Ticks %>" />
     <link rel="stylesheet" href="<%: ResolveUrl("~/assets/vendors/iconly/bold.css") %>?v=<%= DateTime.Now.Ticks %>" />
     <link rel="stylesheet" href="<%: ResolveUrl("~/assets/vendors/perfect-scrollbar/perfect-scrollbar.css") %>?v=<%= DateTime.Now.Ticks %>" />
     <link rel="stylesheet" href="<%: ResolveUrl("~/assets/vendors/bootstrap-icons/bootstrap-icons.css") %>?v=<%= DateTime.Now.Ticks %>" />
@@ -384,9 +385,23 @@
 
         <script src="<%: ResolveUrl("~/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js") %>?v=<%= DateTime.Now.Ticks %>"></script>
         <script src="<%: ResolveUrl("~/assets/js/bootstrap.bundle.min.js") %>?v=<%= DateTime.Now.Ticks %>"></script>
+        <script src="<%: ResolveUrl("~/assets/vendors/toastify/toastify.js") %>?v=<%= DateTime.Now.Ticks %>"></script>
         <script src="<%: ResolveUrl("~/assets/vendors/choices.js/choices.min.js") %>?v=<%= DateTime.Now.Ticks %>"></script>
         <script src="<%: ResolveUrl("~/assets/js/pages/form-element-select.js") %>?v=<%= DateTime.Now.Ticks %>"></script>
         <script src="<%: ResolveUrl("~/assets/js/pages/horizontal-layout.js") %>?v=<%= DateTime.Now.Ticks %>"></script>
+
+        <script type="text/javascript">
+            //window.addEventListener('load', function () {
+            //    Toastify({
+            //        text: "This is toast in top center",
+            //        duration: 3000,
+            //        close: true,
+            //        gravity: "top",
+            //        position: "center",
+            //        backgroundColor: "#4fbe87",
+            //    }).showToast();
+            //});
+        </script>
     </form>
 </body>
 </html>

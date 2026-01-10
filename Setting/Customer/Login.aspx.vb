@@ -345,7 +345,7 @@ Partial Class Setting_Customer_Login
     Protected Sub BindRole()
         ddlRole.Items.Clear()
         Try
-            ddlRole.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginRoles WHERE IsDelete=0 ORDER BY Name ASC")
+            ddlRole.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginRoles ORDER BY Name ASC")
             ddlRole.DataTextField = "Name"
             ddlRole.DataValueField = "Id"
             ddlRole.DataBind()
@@ -359,7 +359,7 @@ Partial Class Setting_Customer_Login
     Protected Sub BindLevel()
         ddlLevel.Items.Clear()
         Try
-            ddlLevel.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels WHERE IsDelete=0 ORDER BY Name ASC")
+            ddlLevel.DataSource = settingClass.GetListData("SELECT * FROM CustomerLoginLevels ORDER BY Name ASC")
             ddlLevel.DataTextField = "Name"
             ddlLevel.DataValueField = "Id"
             ddlLevel.DataBind()
