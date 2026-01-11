@@ -283,7 +283,7 @@ Partial Class Order_Detail
             Dim orderStatus As String = "New Order"
             If cashSale = True Then orderStatus = "Waiting Proforma"
 
-            Dim invoiceNumber As String = String.Format("INV {0}", lblOrderId.Text)
+            Dim invoiceNumber As String = lblOrderId.Text
 
             Using thisConn As New SqlConnection(myConn)
                 Using myCmd As SqlCommand = New SqlCommand("UPDATE OrderHeaders SET SubmittedDate=GETDATE(), Status=@Status WHERE Id=@Id; INSERT OrderInvoices(Id, InvoiceNumber, Payment, Amount) VALUES (@Id, @InvoiceNumber, @Payment, 0)", thisConn)

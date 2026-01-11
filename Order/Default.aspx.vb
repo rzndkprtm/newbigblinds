@@ -689,15 +689,13 @@ Partial Class Order_Default
         Session("OrderSearch") = String.Empty
         Session("OrderActive") = String.Empty
         Try
-            Dim byActive As String = "WHERE OrderHeaders.Active=1"
+            Dim byActive As String = "WHERE OrderHeaders.Active='" & active & "'"
             Dim byRole As String = String.Empty
             Dim byCompany As String = String.Empty
             Dim byInstaller As String = String.Empty
             Dim byStatus As String = String.Empty
             Dim byText As String = String.Empty
-            Dim byOrder As String = "ORDER BY OrderHeaders.Id DESC"
-
-            If active = "0" Then byActive = "WHERE OrderHeaders.Active=0"
+            Dim byOrder As String = String.Empty
 
             If Not String.IsNullOrEmpty(company) Then
                 byCompany = "AND Customers.CompanyId = '" & company & "'"
@@ -705,7 +703,6 @@ Partial Class Order_Default
 
             If Not String.IsNullOrEmpty(status) Then
                 byStatus = "AND OrderHeaders.Status='" & status & "'"
-                byOrder = "ORDER BY OrderHeaders.Id ASC"
             End If
 
             If Not search = "" Then
@@ -740,8 +737,10 @@ Partial Class Order_Default
             If Session("RoleName") = "Account" Then
                 byRole = "AND Customers.CompanyId='" & Session("CompanyId") & "'"
                 byStatus = String.Empty
+                byOrder = "ORDER BY CASE WHEN OrderHeaders.Status='Waiting Proforma' THEN 1 WHEN OrderHeaders.Status='Proforma Sent' THEN 2 WHEN OrderHeaders.Status='New Order' THEN 3 ELSE 4 END, OrderHeaders.Id ASC"
                 If Not status = "" Then
                     byStatus = "AND OrderHeaders.Status='" & status & "'"
+                    byOrder = "ORDER BY OrderHeaders.Id ASC"
                 End If
             End If
 

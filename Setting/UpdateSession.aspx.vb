@@ -1,6 +1,5 @@
-﻿
-Partial Class Setting_UpdateSession
-    Inherits System.Web.UI.Page
+﻿Partial Class Setting_UpdateSession
+    Inherits Page
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim keys As List(Of String) = Session.Keys.Cast(Of String)().ToList()

@@ -176,20 +176,18 @@ Partial Class Setting_Task
     End Sub
 
     Protected Sub ProductionOrder()
-        'Try
+        Try
+            Dim thisData As DataSet = settingClass.GetListData("SELECT * FROM OrderHeaders WHERE ProductionDate=CAST(GETDATE() AS DATE) AND Active=1")
+            If thisData.Tables(0).Rows.Count > 0 Then
+                Dim mailingClass As New MailingClass
+                For i As Integer = 0 To thisData.Tables(0).Rows.Count - 1
+                    Dim headerId As String = thisData.Tables(0).Rows(i).Item("Id").ToString()
 
-        'Catch ex As Exception
-        'End Try
-
-        Dim thisData As DataSet = settingClass.GetListData("SELECT * FROM OrderHeaders WHERE ProductionDate=CAST(GETDATE() AS DATE) AND Active=1")
-        If thisData.Tables(0).Rows.Count > 0 Then
-            Dim mailingClass As New MailingClass
-            For i As Integer = 0 To thisData.Tables(0).Rows.Count - 1
-                Dim headerId As String = thisData.Tables(0).Rows(i).Item("Id").ToString()
-
-                mailingClass.ProductionOrder(headerId)
-            Next
-        End If
+                    mailingClass.ProductionOrder(headerId)
+                Next
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     Protected Sub ClearSession()
