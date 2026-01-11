@@ -1183,65 +1183,24 @@ async function bindItemOrder(itemId) {
 function showInfo(type) {
     let info;
 
-    if (type === "Cord Length") {
-        info = "<b>Cord Length Information</b>";
+    if (type === "Extension Bracket") {
+        info = "<b>Extension Bracket</b>";
+        info += "<br /><br />";
+        info += "<img src='https://bigblinds.ordersblindonline.com/assets/images/products/vertical/extensionbracket.jpg' alt='' style='max - width: 100 %; height: auto;' />";
+    } else if (type === "Control Length") {
+        info = "Control Length Information";
         info += "<br /><br />";
         info += "- Standard";
         info += "<br />";
-        info += "Our standard pull cord length is 2/3 from your drop.";
+        info += "Our standard wand length is 2/3 from your drop & maximum wand length is 1000mm";
         info += "<br /><br />";
         info += "- Custom";
         info += "<br />";
-        info += "Minimum custom cord length is 450mm.";
-    }
-    else if (type === "Second Drop") {
-        info = "<b>Drop Information</b>";
-        info += "<br /><br />";
-        info += "The second drop automatically matches and follows the first drop.";
+        info += "Minimum custom wand length is 2 / 3 from your drop";
         info += "<br />";
-        info += "If the second drop is changed, the first drop will automatically adjust to match it.";
-    } else if (type === "Wand Length") {
-        info = "<b>Wand Length Information</b>";
-        info += "<br /><br />";
-        info += "- Standard";
-        info += "<br />";
-        info += "Our standard wand length is 2/3 from your drop.";
-        info += "<br /><br />";
-        info += "- Custom";
-        info += "<br />";
-        info += "Minimum custom wand length is 450mm.";
-    } else if (type === "First") {
-        let urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumleft-1.png";
+        info += "Maximum custom wand length is 1000mm.";
+    } else if (type === "Bottom Joining") {
 
-        const subType = document.getElementById("subtype").value;
-        if (subType === "2 on 1 Left-Left") {
-            urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumleft-1.png";
-        } else if (subType === "2 on 1 Right-Right") {
-            urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumright-1.png";
-        } else if (subType === "2 on 1 Left-Right") {
-            urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumleftright-1.png";
-        }
-
-        info = "<b>Layout Information</b>";
-        info += "<br /><br />";
-        info += `<img src="${urlImage}" alt="Sub Type Image" style="max-width:100%;height:auto;">`;
-        info += "<br /><br />";
-    } else if (type === "Second") {
-        let urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumleft-1.png";
-
-        const subType = document.getElementById("subtype").value;
-        if (subType === "2 on 1 Left-Left") {
-            urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumleft-2.png";
-        } else if (subType === "2 on 1 Right-Right") {
-            urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumright-2.png";
-        } else if (subType === "2 on 1 Left-Right") {
-            urlImage = "https://bigblinds.ordersblindonline.com/assets/images/products/2on1aluminiumleftright-2.png";
-        }
-
-        info = "<b>Layout Information</b>";
-        info += "<br /><br />";
-        info += `<img src="${urlImage}" alt="Sub Type Image" style="max-width:100%;height:auto;">`;
-        info += "<br /><br />";
     }
     document.getElementById("spanInfo").innerHTML = info;
 }

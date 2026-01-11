@@ -182,7 +182,7 @@
                                             <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Stack Position</label>
                                             </div>
-                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
                                                 <select id="stackposition" class="form-select">
                                                     <option value=""></option>
                                                     <option value="Left">Left</option>
@@ -242,7 +242,7 @@
                                                         <option value="Standard">Standard</option>
                                                         <option value="Custom">Custom</option>
                                                     </select>
-                                                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Cord Length');"> ? </a>
+                                                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Control Length');"> ? </a>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-12 col-lg-4 form-group" id="divcontrollengthvalue">
@@ -257,13 +257,16 @@
                                             <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Bottom Joining</label>
                                             </div>
-                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
-                                                <select id="bottomjoining" class="form-select">
-                                                    <option value=""></option>
-                                                    <option value="Chainless">Chainless</option>
-                                                    <option value="With Chain">With Chain</option>
-                                                    <option value="Sewn In">Sewn In</option>
-                                                </select>
+                                            <div class="col-12 col-sm-12 col-lg-4 form-group">
+                                                <div class="input-group">
+                                                    <select id="bottomjoining" class="form-select">
+                                                        <option value=""></option>
+                                                        <option value="Chainless">Chainless</option>
+                                                        <option value="With Chain">With Chain</option>
+                                                        <option value="Sewn In">Sewn In</option>
+                                                    </select>
+                                                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Bottom Joining');"> ? </a>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -271,11 +274,14 @@
                                             <div class="col-12 col-sm-12 col-lg-3">
                                                 <label>Extension Bracket</label>
                                             </div>
-                                            <div class="col-12 col-sm-12 col-lg-2 form-group">
-                                                <select id="bracketextension" class="form-select">
-                                                    <option value=""></option>
-                                                    <option value="Yes">Yes</option>
-                                                </select>
+                                            <div class="col-12 col-sm-12 col-lg-3 form-group">
+                                                <div class="input-group">
+                                                    <select id="bracketextension" class="form-select">
+                                                        <option value=""></option>
+                                                        <option value="Yes">Yes</option>
+                                                    </select>
+                                                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfo" onclick="return showInfo('Extension Bracket');"> ? </a>
+                                                </div>
                                             </div>
                                         </div>
 
